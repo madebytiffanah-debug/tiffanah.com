@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Managing the Room — Manager Workshop</title>
+<style>
+  :root {
+    --navy: #1E2761;
+    --navy-deep: #12173F;
+    --ice: #CADCFC;
+    --gold: #C9A227;
+    --gold-tint: #FBF3DC;
+    --berry: #6D2E46;
+    --berry-tint: #F6ECEF;
+    --paper: #FDFDFC;
+    --ink: #23263B;
+    --muted: #666A82;
+    --line: #E4E5EF;
+    --maxw: 1040px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.5;
+  }
+  h1, h2, h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    margin: 0;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+  a { color: inherit; }
+
+  /* Top bar */
+  .topbar {
+    background: var(--navy);
+    padding: 18px 0;
+  }
+  .topbar .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  .brand span { color: var(--ice); font-weight: 400; }
+  .btn {
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 7px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+  }
+  .btn-gold {
+    background: var(--gold);
+    color: var(--navy-deep);
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  .btn-gold:hover { background: #DDB534; }
+  .btn-outline {
+    border: 1.5px solid var(--ice);
+    color: #fff;
+    padding: 9px 18px;
+    font-size: 13.5px;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.08); }
+
+  /* Hero */
+  .hero {
+    background: var(--navy);
+    padding: 64px 0 0;
+  }
+  .hero-inner {
+    display: flex;
+    gap: 48px;
+    align-items: center;
+    padding-bottom: 64px;
+  }
+  .hero-inner > div:first-child { flex: 1.1 1 0; }
+  .hero-inner > .demo-card { flex: 1 1 0; }
+  .eyebrow {
+    color: var(--ice);
+    font-size: 14px;
+    margin: 0 0 14px;
+  }
+  .hero h1 {
+    color: #fff;
+    font-size: 44px;
+    line-height: 1.15;
+    margin-bottom: 18px;
+  }
+  .hero p.lede {
+    color: #C9D2EE;
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 46ch;
+    margin-bottom: 28px;
+  }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  /* Demo card */
+  .demo-card {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 28px 28px 24px;
+    box-shadow: 0 24px 60px rgba(6, 10, 34, 0.4);
+  }
+  .demo-title {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .demo-toggle {
+    display: flex;
+    background: #EFF1F8;
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 18px;
+  }
+  .demo-toggle button {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 9px 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    border-radius: 6px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .demo-toggle button.active-central {
+    background: var(--navy);
+    color: #fff;
+  }
+  .demo-toggle button.active-peripheral {
+    background: var(--berry);
+    color: #fff;
+  }
+  .demo-msg {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+    min-height: 92px;
+  }
+  .demo-caption {
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    margin-top: 16px;
+    padding-top: 14px;
+    font-style: italic;
+  }
+
+  /* Sections */
+  section { padding: 76px 0; }
+  .section-head { max-width: 640px; margin-bottom: 40px; }
+  .section-head h2 { font-size: 30px; color: var(--navy-deep); line-height: 1.25; }
+  .section-head p { color: var(--muted); font-size: 16px; margin-top: 14px; }
+
+  /* Why + stats */
+  .why-grid {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+  }
+  .why-grid > div:first-child { flex: 1.2 1 0; }
+  .why-grid > .stat-list { flex: 1 1 0; }
+  .why-grid p { font-size: 16px; color: var(--ink); line-height: 1.7; }
+  .stat-list { display: flex; flex-direction: column; gap: 22px; }
+  .stat { border-left: 3px solid var(--gold); padding-left: 16px; }
+  .stat .num { font-family: Georgia, serif; font-size: 30px; color: var(--navy-deep); font-weight: 700; line-height: 1; }
+  .stat .label { font-size: 13.5px; color: var(--muted); margin-top: 4px; }
+
+  /* Curriculum */
+  .curriculum { background: #F5F6FC; }
+  .module-row {
+    display: flex;
+    gap: 22px;
+    padding: 26px 0;
+    border-top: 1px solid var(--line);
+  }
+  .module-row > .module-num { flex: 0 0 70px; }
+  .module-row > div:last-child { flex: 1 1 0; }
+  .module-row:last-child { border-bottom: 1px solid var(--line); }
+  .module-num {
+    font-family: Georgia, serif;
+    font-size: 26px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .module-title { font-size: 19px; font-weight: 700; color: var(--navy-deep); margin-bottom: 6px; }
+  .module-desc { font-size: 15px; color: var(--ink); margin-bottom: 6px; }
+  .module-source { font-size: 13px; color: var(--muted); font-style: italic; }
+
+  /* Quote */
+  .quote-band {
+    background: var(--gold-tint);
+    text-align: center;
+    padding: 72px 0;
+  }
+  .quote-band blockquote {
+    margin: 0 auto;
+    max-width: 700px;
+    font-family: Georgia, serif;
+    font-size: 25px;
+    line-height: 1.5;
+    color: var(--navy-deep);
+    font-style: italic;
+  }
+  .quote-band cite {
+    display: block;
+    margin-top: 18px;
+    font-size: 13.5px;
+    color: var(--muted);
+    font-style: normal;
+  }
+
+  /* Audience */
+  .audience-grid {
+    display: flex;
+    gap: 48px;
+  }
+  .audience-grid > div { flex: 1 1 0; }
+  .audience-grid ul { padding-left: 20px; margin: 0; color: var(--ink); font-size: 15.5px; line-height: 1.9; }
+  .audience-grid p { color: var(--ink); font-size: 16px; line-height: 1.7; }
+
+  /* Sample question */
+  .sample { background: #F5F6FC; }
+  .sample-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 30px 32px;
+    max-width: 680px;
+  }
+  .sample-q { font-family: Georgia, serif; font-size: 19px; color: var(--navy-deep); margin-bottom: 18px; }
+  .sample-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .sample-opt {
+    text-align: left;
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 7px;
+    padding: 12px 15px;
+    font-size: 14.5px;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink);
+  }
+  .sample-opt:hover:not(:disabled) { border-color: var(--navy); }
+  .sample-opt.s-correct { border-color: var(--gold); background: var(--gold-tint); font-weight: 600; }
+  .sample-opt.s-incorrect { border-color: var(--berry); background: var(--berry-tint); }
+  .sample-fb { display: none; font-size: 14px; color: var(--ink); background: #EFF1F8; border-radius: 7px; padding: 14px 16px; margin-bottom: 16px; }
+  .sample-fb.show { display: block; }
+  .sample-link { font-size: 14.5px; }
+
+  /* Materials */
+  .materials { background: var(--navy); }
+  .materials .section-head h2 { color: #fff; }
+  .materials .section-head p { color: #B9C3E8; }
+  .material-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .material-card {
+    flex: 1 1 260px;
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 26px 24px;
+    display: flex;
+    flex-direction: column;
+  }
+  .material-card.disabled { background: #2A3268; }
+  .material-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--gold-tint);
+    color: var(--navy-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .material-card.disabled .material-icon { background: #3B4380; color: #8890BE; }
+  .material-name { font-size: 17px; font-weight: 700; color: var(--navy-deep); margin-bottom: 8px; }
+  .material-card.disabled .material-name { color: #C9CFEC; }
+  .material-desc { font-size: 14px; color: var(--muted); line-height: 1.55; margin-bottom: 20px; flex-grow: 1; }
+  .material-card.disabled .material-desc { color: #8890BE; }
+  .material-btn {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    background: var(--navy);
+    color: #fff;
+    padding: 10px 0;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .material-btn:hover { background: var(--navy-deep); }
+  .material-btn.is-disabled {
+    background: #3B4380;
+    color: #8890BE;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  /* Footer */
+  footer {
+    background: var(--navy-deep);
+    color: #9AA3C7;
+    font-size: 12.5px;
+    text-align: center;
+    padding: 22px 0;
+  }
+
+  @media (max-width: 800px) {
+    .topbar .wrap { flex-wrap: wrap; gap: 12px; }
+    .brand span { display: none; }
+    .hero-inner { flex-direction: column; }
+    .hero h1 { font-size: 33px; }
+    .why-grid { flex-direction: column; }
+    .audience-grid { flex-direction: column; }
+    .module-row { gap: 14px; }
+    .module-row > .module-num { flex-basis: 44px; }
+    .material-cards { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">Managing the Room <span>&mdash; Manager Training</span></div>
+    <a class="btn btn-outline" href="#materials">Course Materials</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <p class="eyebrow">Manager &amp; Leadership Training Series</p>
+      <h1>Managing the Room</h1>
+      <p class="lede">A half-day workshop on how groups actually behave &mdash; why effort quietly drops, why decisions swing to extremes, and how to lead and give feedback fairly, grounded in classic social psychology research.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-gold" href="team-dynamics-quiz.html">Take the quiz</a>
+        <a class="btn btn-outline" href="team-dynamics-slide-deck.html" style="border-color:#5b6296;">Open the slide deck</a>
+      </div>
+      <p style="margin-top:16px;"><a href="#curriculum" style="color:#9FADDD; font-size:13.5px; text-decoration:underline;">See what's inside</a></p>
+    </div>
+
+    <div class="demo-card">
+      <p class="demo-title">Same team, before and after discussion</p>
+      <div class="demo-toggle">
+        <button id="btnCentral" type="button">Before discussion</button>
+        <button id="btnPeripheral" type="button">After discussion</button>
+      </div>
+      <div class="demo-msg" id="demoMsg"></div>
+      <p class="demo-caption">This is the shift Module 2 teaches managers to anticipate &mdash; and guard against.</p>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap why-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:20px;">
+        <h2>Managers run meetings every week. Most were never taught how groups actually behave.</h2>
+      </div>
+      <p>A bigger meeting or a longer discussion doesn't automatically produce a better decision. Effort quietly drops when contributions aren't identifiable, unique information gets buried under shared talking points, and group discussion tends to push decisions toward extremes rather than moderate them.</p>
+      <p>This workshop replaces guesswork with the specific, learnable mechanics behind group decisions, leadership fit, and fair feedback.</p>
+    </div>
+    <div class="stat-list">
+      <div class="stat"><div class="num">4 hrs</div><div class="label">Half-day workshop, in person or virtual</div></div>
+      <div class="stat"><div class="num">4</div><div class="label">Research-backed modules</div></div>
+      <div class="stat"><div class="num">12&ndash;24</div><div class="label">Ideal group size per cohort</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="curriculum" id="curriculum">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What managers walk out knowing</h2>
+      <p>Four modules, each pairing a concept briefing with a live, in-room exercise.</p>
+    </div>
+
+    <div class="module-row">
+      <div class="module-num">01</div>
+      <div>
+        <div class="module-title">Why Groups Underperform</div>
+        <div class="module-desc">Social loafing, process loss, and groupthink &mdash; and the structural fixes that counter them.</div>
+        <div class="module-source">Source: Ch. 9 &mdash; Group Processes</div>
+      </div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-num">02</div>
+      <div>
+        <div class="module-title">Group Polarization &amp; Decision-Making</div>
+        <div class="module-desc">Why team decisions land further from the middle than any individual's view going in.</div>
+        <div class="module-source">Source: Ch. 9 &mdash; Group Processes</div>
+      </div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-num">03</div>
+      <div>
+        <div class="module-title">Leadership Styles &amp; Fit</div>
+        <div class="module-desc">Matching task-oriented or relationship-oriented leadership to the team and situation in front of you.</div>
+        <div class="module-source">Source: Ch. 9 &mdash; Group Processes (Leadership in Groups)</div>
+      </div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-num">04</div>
+      <div>
+        <div class="module-title">First Impressions &amp; Attribution Errors</div>
+        <div class="module-desc">Catching character-based bias in feedback before it distorts a performance conversation.</div>
+        <div class="module-source">Source: Ch. 4 &mdash; Social Perception</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="quote-band">
+  <div class="wrap">
+    <blockquote>Group discussion doesn't average opinions; it amplifies the room's initial lean. Capture individual views before the discussion, not just after.</blockquote>
+    <cite>Core takeaway, Module 2</cite>
+  </div>
+</div>
+
+<section class="audience">
+  <div class="wrap audience-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:18px;">
+        <h2>Who this is for</h2>
+      </div>
+      <p>People managers and team leads who run meetings, make group decisions, or evaluate team performance. The exercises use live, in-room decision simulations, so the workshop works best scheduled for an intact cohort.</p>
+    </div>
+    <div>
+      <div class="section-head" style="margin-bottom:18px;">
+        <h2 style="font-size:22px;">Runs best when&hellip;</h2>
+      </div>
+      <ul>
+        <li>Participants are at the same management level, so decision-sharing stays candid</li>
+        <li>Each person brings one recent team decision or feedback moment from their own team</li>
+        <li>Groups stay between 12 and 24 for full small-group participation</li>
+        <li>A 30-day manager check-in follows to reinforce the material</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sample" id="sample">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Try a sample question</h2>
+      <p>One question from the course quiz &mdash; see how it feels before you dive in.</p>
+    </div>
+    <div class="sample-card">
+      <p class="sample-q">According to group polarization research, what tends to happen after a group discusses a decision?</p>
+      <div class="sample-opts" id="sampleOpts">
+        <button class="sample-opt" data-idx="0">The group's view settles at the average of individuals' starting positions</button>
+        <button class="sample-opt" data-idx="1">The group's decision becomes more extreme in the direction it was already leaning</button>
+        <button class="sample-opt" data-idx="2">The group becomes more cautious than any individual, regardless of the initial lean</button>
+        <button class="sample-opt" data-idx="3">Discussion has no measurable effect on the final decision</button>
+      </div>
+      <div class="sample-fb" id="sampleFb">Group polarization means discussion strengthens the group's average initial leaning rather than moderating it &mdash; a group already leaning cautious becomes more cautious, one leaning risky becomes riskier.</div>
+      <a class="sample-link" href="team-dynamics-quiz.html">Want the full 8-question quiz? Take it here &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section class="materials" id="materials">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Course materials</h2>
+      <p>Everything for this module, ready to use.</p>
+    </div>
+    <div class="material-cards">
+      <div class="material-card">
+        <div class="material-icon">S</div>
+        <div class="material-name">Slide Deck</div>
+        <div class="material-desc">21 slides covering all four modules &mdash; concepts, exercises, and takeaways, ready to present.</div>
+        <a class="material-btn" href="team-dynamics-slide-deck.html">Open the slide deck</a>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">Q</div>
+        <div class="material-name">Quiz</div>
+        <div class="material-desc">An interactive 8-question check for understanding, with explanations for every answer.</div>
+        <a class="material-btn" href="team-dynamics-quiz.html">Take the quiz</a>
+      </div>
+      <div class="material-card disabled">
+        <div class="material-icon">A</div>
+        <div class="material-name">Audio Version</div>
+        <div class="material-desc">A narrated walkthrough of the workshop content, for listening on the go.</div>
+        <span class="material-btn is-disabled">Coming soon</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Grounded in Aronson, Wilson &amp; Sommers, <em>Social Psychology</em> (10th ed.), Chapters 9 &amp; 4. &nbsp;|&nbsp; Manager &amp; Leadership Training Series
+</footer>
+
+<script>
+(function () {
+  var demoMsg = document.getElementById('demoMsg');
+  var btnC = document.getElementById('btnCentral');
+  var btnP = document.getElementById('btnPeripheral');
+
+  var CENTRAL_TEXT = "\u201CFive team members privately rate their risk tolerance on entering a new market: 4, 5, 6, 5, 6 out of 10. Average: 5.2 \u2014 a genuinely mixed, cautious-leaning group.\u201D";
+  var PERIPHERAL_TEXT = "\u201CAfter 20 minutes of group discussion, the team's official decision: 8 out of 10 \u2014 go big. No one individually rated it that high going in.\u201D";
+
+  function showCentral() {
+    demoMsg.textContent = CENTRAL_TEXT;
+    btnC.className = 'active-central';
+    btnP.className = '';
+  }
+  function showPeripheral() {
+    demoMsg.textContent = PERIPHERAL_TEXT;
+    btnP.className = 'active-peripheral';
+    btnC.className = '';
+  }
+
+  btnC.addEventListener('click', showCentral);
+  btnP.addEventListener('click', showPeripheral);
+  showCentral();
+
+  // Sample question interaction
+  var sampleOpts = document.getElementById('sampleOpts');
+  var sampleFb = document.getElementById('sampleFb');
+  var correctIdx = 1;
+  var sampleAnswered = false;
+
+  sampleOpts.addEventListener('click', function (e) {
+    var target = e.target;
+    if (!target.classList.contains('sample-opt') || sampleAnswered) return;
+    sampleAnswered = true;
+    var idx = parseInt(target.getAttribute('data-idx'), 10);
+    var opts = sampleOpts.querySelectorAll('.sample-opt');
+    Array.prototype.forEach.call(opts, function (o, i) {
+      o.disabled = true;
+      if (i === correctIdx) o.classList.add('s-correct');
+      if (i === idx && idx !== correctIdx) o.classList.add('s-incorrect');
+    });
+    sampleFb.classList.add('show');
+  });
+})();
+</script>
+
+</body>
+</html>

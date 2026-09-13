@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Influence Without Manipulation — Course Quiz</title>
+<style>
+  :root {
+    --navy: #1E2761;
+    --navy-deep: #161C4A;
+    --ice: #CADCFC;
+    --gold: #C9A227;
+    --gold-tint: #FBF3DC;
+    --berry: #6D2E46;
+    --berry-tint: #F6ECEF;
+    --paper: #FDFDFC;
+    --ink: #23263B;
+    --muted: #6B6E85;
+    --line: #E4E5EF;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--navy);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  .quiz-shell {
+    width: 100%;
+    max-width: 640px;
+  }
+  .eyebrow {
+    color: var(--ice);
+    font-size: 13px;
+    margin: 0 0 6px;
+  }
+  .headline {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #fff;
+    font-size: 28px;
+    line-height: 1.25;
+    margin: 0 0 28px;
+    font-weight: 700;
+  }
+  .card {
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 36px 40px 32px;
+    box-shadow: 0 20px 50px rgba(10, 14, 40, 0.35);
+  }
+  .progress-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .progress-label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .progress-track {
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 26px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.35s ease;
+  }
+  .question-text {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 21px;
+    line-height: 1.45;
+    color: var(--navy-deep);
+    margin: 0 0 22px;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .option {
+    text-align: left;
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 13px 16px;
+    font-size: 15.5px;
+    color: var(--ink);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover:not(:disabled) {
+    border-color: var(--navy);
+  }
+  .option:disabled { cursor: default; }
+  .option.correct {
+    border-color: var(--gold);
+    background: var(--gold-tint);
+    font-weight: 600;
+  }
+  .option.incorrect {
+    border-color: var(--berry);
+    background: var(--berry-tint);
+  }
+  .hint-row {
+    margin: 14px 0 0;
+  }
+  .hint-toggle {
+    background: none;
+    border: none;
+    color: var(--navy);
+    font-size: 13.5px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+  }
+  .hint-text {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .feedback {
+    margin-top: 20px;
+    padding: 16px 18px;
+    border-radius: 8px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb {
+    background: var(--gold-tint);
+    color: var(--navy-deep);
+  }
+  .feedback.incorrect-fb {
+    background: var(--berry-tint);
+    color: var(--berry);
+  }
+  .feedback strong { display: block; margin-bottom: 4px; font-size: 15px; }
+  .feedback .explain { color: var(--ink); font-style: normal; }
+  .controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
+  .next-btn {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 11px 24px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    display: none;
+  }
+  .next-btn.show { display: inline-block; }
+  .next-btn:hover { background: var(--navy-deep); }
+
+  /* Results */
+  .results { display: none; }
+  .results.show { display: block; }
+  .quiz-body.hide { display: none; }
+  .score-wrap { text-align: center; padding: 6px 0 22px; }
+  .score-num {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 52px;
+    color: var(--navy-deep);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .score-of { font-size: 16px; color: var(--muted); margin-top: 4px; }
+  .score-msg { font-size: 15px; color: var(--ink); margin-top: 12px; }
+  .review-list {
+    border-top: 1px solid var(--line);
+    margin-top: 22px;
+    padding-top: 18px;
+  }
+  .review-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .review-item:last-child { border-bottom: none; }
+  .review-mark {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 2px;
+  }
+  .review-mark.right { background: var(--gold); color: var(--navy-deep); }
+  .review-mark.wrong { background: var(--berry); }
+  .review-q { font-size: 14px; color: var(--ink); }
+  .review-q .rq-prompt { font-weight: 600; display: block; margin-bottom: 2px; }
+  .restart-row { text-align: center; margin-top: 26px; }
+  .restart-btn {
+    background: none;
+    border: 1.5px solid var(--navy);
+    color: var(--navy);
+    border-radius: 7px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .restart-btn:hover { background: var(--navy); color: #fff; }
+
+  @media (max-width: 480px) {
+    .card { padding: 26px 20px 24px; }
+    .headline { font-size: 23px; }
+    .question-text { font-size: 18px; }
+    .score-num { font-size: 42px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="quiz-shell">
+  <p class="eyebrow">From the Influence Without Manipulation workshop</p>
+  <h1 class="headline">Check your understanding</h1>
+
+  <div class="card">
+
+    <div class="quiz-body" id="quizBody">
+      <div class="progress-row">
+        <span class="progress-label" id="progressLabel">Question 1 of 8</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width: 12.5%;"></div>
+      </div>
+
+      <p class="question-text" id="questionText"></p>
+      <div class="options" id="optionsWrap"></div>
+
+      <div class="hint-row" id="hintRow">
+        <button class="hint-toggle" id="hintToggle">Show hint</button>
+        <p class="hint-text" id="hintText" style="display:none;"></p>
+      </div>
+
+      <div class="feedback" id="feedback">
+        <strong id="feedbackLabel"></strong>
+        <span class="explain" id="feedbackExplain"></span>
+      </div>
+
+      <div class="controls">
+        <button class="next-btn" id="nextBtn">Next question</button>
+      </div>
+    </div>
+
+    <div class="results" id="results">
+      <div class="score-wrap">
+        <div class="score-num" id="scoreNum">0/8</div>
+        <div class="score-of">correct</div>
+        <p class="score-msg" id="scoreMsg"></p>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+      <div class="restart-row">
+        <button class="restart-btn" id="restartBtn">Retake the quiz</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+const QUESTIONS = [
+  {
+    prompt: "According to the Elaboration Likelihood Model, the central route to persuasion works best when the audience has which two things?",
+    options: [
+      "High social status and a formal title",
+      "Motivation and ability to think carefully about the message",
+      "A prior relationship with the messenger and free time",
+      "Strong emotions and a sense of urgency"
+    ],
+    correct: 1,
+    hint: "Think about what's required for someone to actually engage with detailed arguments.",
+    explain: "The central route requires both motivation (the audience cares enough to engage) and ability (they have the time, attention, and expertise to evaluate the argument). Without both, people default to the peripheral route — relying on cues like credibility or confidence instead."
+  },
+  {
+    prompt: "A manager sends a distracted, time-pressed VP a short, confident one-line request instead of a detailed briefing document. This is an example of relying on which route to persuasion?",
+    options: [
+      "Central route",
+      "Peripheral route",
+      "Counterattitudinal route",
+      "Normative route"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "When motivation or ability to engage is low, peripheral cues — confidence, credibility, brevity — do the persuading instead of detailed arguments. This works for a busy, low-stakes ask, but produces less durable attitude change than the central route."
+  },
+  {
+    prompt: "Why does having a team help write and pilot a new process tend to build stronger buy-in than simply explaining why the process is good?",
+    options: [
+      "It reduces the amount of communication needed from leadership",
+      "Free choice and invested effort make people more likely to justify and value what they helped create",
+      "It shifts legal responsibility for the outcome onto the team",
+      "It shortens the overall rollout timeline"
+    ],
+    correct: 1,
+    hint: "Think about cognitive dissonance and the justification of effort.",
+    explain: "Cognitive dissonance theory shows people resolve the discomfort of effort and choice by shifting their beliefs to match what they've already invested in. Voluntary effort and real, even small, choice build genuine commitment; a mandate delivered as if it were a choice does not."
+  },
+  {
+    prompt: "In Asch's line-judgment studies, roughly how many participants conformed to an obviously incorrect group answer at least once?",
+    options: [
+      "Almost none",
+      "About 1 in 3",
+      "About 2 in 3",
+      "Nearly everyone"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "About one in three participants went along with an obviously wrong group answer at least once, driven by normative social influence — the desire to be accepted rather than a genuine belief the group was right. A single dissenting ally sharply reduces this effect."
+  },
+  {
+    prompt: "A team stays silent when a manager proposes a weak plan in a meeting, but privately, most members disagree. This gap best illustrates the difference between:",
+    options: [
+      "Central and peripheral routes to persuasion",
+      "Informational and normative social influence",
+      "Reactance and minority influence",
+      "Cognitive dissonance and self-affirmation"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "Public silence often reflects normative influence (not wanting to stand out) rather than informational influence (genuinely believing the plan is sound). Anonymous input or 1:1 conversations before a group decision help surface the private disagreement."
+  },
+  {
+    prompt: "A leader repeatedly tells an employee that refusing a request could put their job at risk. The employee complies but starts looking for a new job. This is a likely example of:",
+    options: [
+      "Successful central-route persuasion",
+      "Minority influence",
+      "Reactance",
+      "Informational social influence"
+    ],
+    correct: 2,
+    hint: "Think about what happens when people feel their freedom to choose is threatened.",
+    explain: "Reactance theory predicts that when people feel their freedom is threatened by heavy-handed pressure, they often push back or disengage — sometimes just to reassert control — even if they comply in the short term. Hard-sell tactics can produce compliance now and resistance later."
+  },
+  {
+    prompt: "What does minority influence research suggest about a single team member who consistently and confidently advocates for an unpopular idea?",
+    options: [
+      "They will always be outvoted regardless of consistency",
+      "They have no realistic path to changing majority opinion without formal authority",
+      "Their consistency and confidence can gradually shift majority opinion over time",
+      "They should soften their position immediately to avoid conflict"
+    ],
+    correct: 2,
+    hint: null,
+    explain: "A small number of people — even just one — can shift majority opinion over time if they remain consistent, confident, and unwavering, even without formal authority. This is the constructive counterpart to conformity pressure."
+  },
+  {
+    prompt: "Which best describes the course's ethical line between legitimate influence and manipulation?",
+    options: [
+      "Legitimate influence uses data; manipulation uses emotion",
+      "Legitimate influence adds real choice, information, or opportunity; manipulation removes or disguises it",
+      "Legitimate influence is always slower than manipulation",
+      "Legitimate influence only happens one-on-one; manipulation only happens in groups"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "The course's central ethical distinction is that legitimate influence expands a person's real choice, information, or opportunity, while manipulation works by narrowing, hiding, or disguising it — regardless of the specific tactic used."
+  }
+];
+
+let current = 0;
+let answered = false;
+const userAnswers = new Array(QUESTIONS.length).fill(null);
+
+const questionText = document.getElementById('questionText');
+const optionsWrap = document.getElementById('optionsWrap');
+const progressLabel = document.getElementById('progressLabel');
+const progressFill = document.getElementById('progressFill');
+const feedback = document.getElementById('feedback');
+const feedbackLabel = document.getElementById('feedbackLabel');
+const feedbackExplain = document.getElementById('feedbackExplain');
+const nextBtn = document.getElementById('nextBtn');
+const hintRow = document.getElementById('hintRow');
+const hintToggle = document.getElementById('hintToggle');
+const hintText = document.getElementById('hintText');
+const quizBody = document.getElementById('quizBody');
+const results = document.getElementById('results');
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  answered = false;
+  questionText.textContent = q.prompt;
+  progressLabel.textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+  progressFill.style.width = `${((current) / QUESTIONS.length) * 100 + (100 / QUESTIONS.length)}%`;
+
+  optionsWrap.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => selectOption(i));
+    optionsWrap.appendChild(btn);
+  });
+
+  feedback.classList.remove('show', 'correct-fb', 'incorrect-fb');
+  nextBtn.classList.remove('show');
+
+  if (q.hint) {
+    hintRow.style.display = 'block';
+    hintToggle.style.display = 'inline';
+    hintText.style.display = 'none';
+    hintToggle.textContent = 'Show hint';
+  } else {
+    hintRow.style.display = 'none';
+  }
+}
+
+hintToggle.addEventListener('click', () => {
+  const visible = hintText.style.display === 'block';
+  hintText.style.display = visible ? 'none' : 'block';
+  hintText.textContent = QUESTIONS[current].hint;
+  hintToggle.textContent = visible ? 'Show hint' : 'Hide hint';
+});
+
+function selectOption(i) {
+  if (answered) return;
+  answered = true;
+  const q = QUESTIONS[current];
+  userAnswers[current] = i;
+  const buttons = optionsWrap.querySelectorAll('.option');
+  Array.prototype.forEach.call(buttons, function (b, idx) {
+    b.disabled = true;
+    if (idx === q.correct) b.classList.add('correct');
+    if (idx === i && i !== q.correct) b.classList.add('incorrect');
+  });
+
+  feedback.classList.add('show');
+  if (i === q.correct) {
+    feedback.classList.add('correct-fb');
+    feedbackLabel.textContent = 'Correct.';
+  } else {
+    feedback.classList.add('incorrect-fb');
+    feedbackLabel.textContent = 'Not quite.';
+  }
+  feedbackExplain.textContent = q.explain;
+
+  nextBtn.classList.add('show');
+  nextBtn.textContent = current === QUESTIONS.length - 1 ? 'See your results' : 'Next question';
+}
+
+nextBtn.addEventListener('click', () => {
+  if (current < QUESTIONS.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+});
+
+function showResults() {
+  quizBody.classList.add('hide');
+  results.classList.add('show');
+
+  let score = 0;
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = '';
+
+  QUESTIONS.forEach((q, i) => {
+    const isRight = userAnswers[i] === q.correct;
+    if (isRight) score++;
+    const item = document.createElement('div');
+    item.className = 'review-item';
+    item.innerHTML = `
+      <div class="review-mark ${isRight ? 'right' : 'wrong'}">${isRight ? '✓' : '✕'}</div>
+      <div class="review-q">
+        <span class="rq-prompt">${q.prompt}</span>
+        ${isRight ? '' : `Correct answer: ${q.options[q.correct]}`}
+      </div>
+    `;
+    reviewList.appendChild(item);
+  });
+
+  document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+  const msg = document.getElementById('scoreMsg');
+  if (score === QUESTIONS.length) {
+    msg.textContent = "Perfect score — you've got the mechanics of ethical influence down.";
+  } else if (score >= QUESTIONS.length - 2) {
+    msg.textContent = "Strong grasp of the material, with a couple of spots worth a second look.";
+  } else if (score >= QUESTIONS.length / 2) {
+    msg.textContent = "A solid start — revisit the modules above for the ones you missed.";
+  } else {
+    msg.textContent = "Worth another pass through the workshop material before moving on.";
+  }
+}
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  current = 0;
+  userAnswers.fill(null);
+  results.classList.remove('show');
+  quizBody.classList.remove('hide');
+  renderQuestion();
+});
+
+renderQuestion();
+})();
+</script>
+
+</body>
+</html>

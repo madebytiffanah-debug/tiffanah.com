@@ -16,7 +16,7 @@
     --gold: #C68D33;
     --plum: #6B3F4B;
     --clay: #B2543A;
-    --sage: #8B9574;
+    --sage: #A3AE8A;
     --max: 1080px;
   }
 
@@ -328,7 +328,107 @@
     border-bottom-color: var(--gold);
   }
 
+  /* ---------- COURSES ---------- */
+  .courses-section {
+    background: var(--paper);
+    padding: 84px 0;
+    border-top: 1px solid rgba(51, 42, 34, 0.12);
+  }
+
+  .courses-eyebrow {
+    display: block;
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .courses-section h2 {
+    color: var(--ink);
+    font-size: 32px;
+  }
+
+  .courses-section .section-head p {
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+
+  .course-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-top: 44px;
+  }
+
+  .course-card {
+    background: var(--paper-soft);
+    border: 1px solid rgba(51, 42, 34, 0.14);
+    border-radius: 10px;
+    padding: 30px 26px;
+    transition: transform 0.18s ease, border-color 0.18s ease;
+  }
+
+  .course-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(51, 42, 34, 0.28);
+  }
+
+  .course-num {
+    font-family: 'Fraunces', serif;
+    font-size: 27px;
+    font-weight: 600;
+    color: var(--plum);
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .course-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #7A551F;
+    background: rgba(198, 141, 51, 0.16);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+
+  .course-card h3 {
+    color: var(--ink);
+    font-size: 20px;
+    margin-bottom: 10px;
+    line-height: 1.25;
+  }
+
+  .course-desc {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0 0 22px;
+  }
+
+  .course-meta {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    opacity: 0.8;
+    margin: 0 0 18px;
+  }
+
+  .course-cta {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--clay);
+    border-bottom: 1.5px solid var(--clay);
+    padding-bottom: 2px;
+  }
+
   /* ---------- ABOUT ---------- */
+  .about-section {
+    background: var(--sage);
+  }
   .about-inner {
     display: grid;
     grid-template-columns: 0.8fr 1.2fr;
@@ -371,8 +471,8 @@
   .about-tags span {
     font-size: 13.5px;
     font-weight: 600;
-    background: rgba(198, 141, 51, 0.16);
-    color: #7A551F;
+    background: rgba(51, 42, 34, 0.12);
+    color: var(--ink);
     padding: 6px 13px;
     border-radius: 20px;
   }
@@ -416,6 +516,7 @@
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px) {
     .tile-grid { grid-template-columns: repeat(2, 1fr); }
+    .course-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
   @media (max-width: 760px) {
@@ -423,6 +524,7 @@
     .hero h1 { font-size: 38px; max-width: none; }
     .hero-art { order: -1; }
     .tile-grid { grid-template-columns: 1fr; }
+    .course-grid { grid-template-columns: 1fr; }
     .item-row { grid-template-columns: 1fr; }
     .item-meta { text-align: left; margin-top: 6px; }
     .about-inner { grid-template-columns: 1fr; }
@@ -493,7 +595,7 @@
       <div class="tile-grid">
         <div class="app-tile">
           <span class="app-icon">✳️</span>
-          <h3>Be-ish</h3>
+          <h3>Be-<em>ish</em></h3>
           <p class="app-quote">"I think, therefore I might."</p>
           <p class="app-desc">Pick a feeling, get a daily prompt, journal it out. A gift to your future self, not a promise.</p>
           <a class="app-cta" href="https://tiffanyherndon-alt.github.io/Be-ish/" target="_blank" rel="noopener">Try it free →</a>
@@ -519,61 +621,49 @@
   </section>
 
   <!-- ---------- HR COURSES ---------- -->
-  <section class="stack" id="courses">
+  <section class="courses-section" id="courses">
     <div class="wrap">
       <div class="section-head">
         <div>
+          <span class="courses-eyebrow">Manager &amp; Leadership Training Series</span>
           <h2>Courses I've designed</h2>
-          <p>A manager & leadership training series grounded in social psychology research — half-day workshops built for real workplaces, not compliance checkboxes.</p>
+          <p>Half-day workshops grounded in social psychology research — built for real workplaces, not compliance checkboxes.</p>
         </div>
       </div>
 
-      <div class="item-row">
-        <div>
-          <div class="item-title-line">
-            <h3>Influence Without Manipulation</h3>
-            <span class="item-tag">Influence &amp; persuasion</span>
-          </div>
-          <p class="desc">The real mechanics of persuasion, buy-in, and group influence — with a clear, practical line between leading people and pressuring them.</p>
+      <div class="course-grid">
+        <div class="course-card">
+          <span class="course-num">01</span>
+          <span class="course-tag">Influence &amp; persuasion</span>
+          <h3>Influence Without Manipulation</h3>
+          <p class="course-desc">The real mechanics of persuasion, buy-in, and group influence — with a clear line between leading people and pressuring them.</p>
+          <p class="course-meta">Half-day workshop · Managers</p>
+          <a class="course-cta" href="courses/influence.html">View course →</a>
         </div>
-        <div class="item-meta">
-          <span class="stack-tag">Half-day workshop · Managers</span>
-          <a class="item-link course-link" href="courses/influence.html">View course</a>
-        </div>
-      </div>
 
-      <div class="item-row">
-        <div>
-          <div class="item-title-line">
-            <h3>Managing the Room</h3>
-            <span class="item-tag">Team dynamics</span>
-          </div>
-          <p class="desc">Why effort quietly drops in groups, why decisions swing to extremes, and how to lead and give feedback fairly.</p>
+        <div class="course-card">
+          <span class="course-num">02</span>
+          <span class="course-tag">Team dynamics</span>
+          <h3>Managing the Room</h3>
+          <p class="course-desc">Why effort quietly drops in groups, why decisions swing to extremes, and how to lead and give feedback fairly.</p>
+          <p class="course-meta">Half-day workshop · Managers</p>
+          <a class="course-cta" href="courses/team-dynamics.html">View course →</a>
         </div>
-        <div class="item-meta">
-          <span class="stack-tag">Half-day workshop · Managers</span>
-          <a class="item-link course-link" href="courses/team-dynamics.html">View course</a>
-        </div>
-      </div>
 
-      <div class="item-row">
-        <div>
-          <div class="item-title-line">
-            <h3>Bias-Aware Decisions</h3>
-            <span class="item-tag">Bias-aware decisions</span>
-          </div>
-          <p class="desc">The cognitive mechanics behind biased hiring, reviews, and promotion calls — and the structural fixes that work without relying on willpower.</p>
-        </div>
-        <div class="item-meta">
-          <span class="stack-tag">Half-day workshop · Managers</span>
-          <a class="item-link course-link" href="courses/bias-aware.html">View course</a>
+        <div class="course-card">
+          <span class="course-num">03</span>
+          <span class="course-tag">Bias-aware decisions</span>
+          <h3>Bias-Aware Decisions</h3>
+          <p class="course-desc">The cognitive mechanics behind biased hiring, reviews, and promotions — and the structural fixes that work without relying on willpower.</p>
+          <p class="course-meta">Half-day workshop · Managers</p>
+          <a class="course-cta" href="courses/bias-aware.html">View course →</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ---------- ABOUT ---------- -->
-  <section class="stack" id="about">
+  <section class="stack about-section" id="about">
     <div class="wrap about-inner">
       <div class="about-portrait">
         <img src="portrait.jpg" alt="Tiffany Schonbach" style="width:100%; height:100%; object-fit:cover; border-radius:6px;">
@@ -606,8 +696,6 @@
     <p class="copyright">© 2026 Tiffany Schonbach</p>
     <ul class="footer-links">
       <li><a href="https://linkedin.com/in/tiffany-schonbach">LinkedIn</a></li>
-      <li><a href="https://github.com/tiffanyherndon-alt">GitHub</a></li>
-      <li><a href="mailto:madebytiffanah@gmail.com">Email</a></li>
     </ul>
   </div>
 </footer>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Managing the Room — Slide Deck</title>
+<style>
+  :root {
+    --navy: #1E2761;
+    --navy-deep: #12173F;
+    --ice: #CADCFC;
+    --gold: #C9A227;
+    --gold-tint: #FBF3DC;
+    --berry: #6D2E46;
+    --berry-tint: #F6ECEF;
+    --paper: #FDFDFC;
+    --ink: #23263B;
+    --muted: #666A82;
+    --line: #E4E5EF;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--navy-deep);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 16px 28px;
+  }
+
+  /* Top bar */
+  .deck-top {
+    width: 100%;
+    max-width: 1040px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .deck-back {
+    color: var(--ice);
+    font-size: 13.5px;
+    text-decoration: none;
+  }
+  .deck-back:hover { text-decoration: underline; }
+  .deck-title {
+    color: #fff;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+    flex: 1;
+  }
+  .deck-title span { color: var(--ice); font-weight: 400; font-family: inherit; }
+  .deck-actions { display: flex; align-items: center; gap: 10px; }
+  .icon-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 34px;
+    height: 34px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .icon-btn:hover { background: rgba(255,255,255,0.16); }
+  .icon-btn svg { width: 17px; height: 17px; }
+
+  /* Stage */
+  .stage-wrap {
+    width: 100%;
+    max-width: 1040px;
+  }
+  .stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(6, 10, 34, 0.45);
+    container-type: inline-size;
+    background: #fff;
+  }
+  .stage:fullscreen { border-radius: 0; max-width: none; }
+  .stage:fullscreen .slide { border-radius: 0; }
+
+  .stage {
+    --fs-tiny: 1.05cqw;
+    --fs-small: 1.22cqw;
+    --fs-body: 1.5cqw;
+    --fs-body-lg: 1.72cqw;
+    --fs-h3: 1.95cqw;
+    --fs-h2: 2.62cqw;
+    --fs-h1: 3.4cqw;
+    --fs-hero: 4.3cqw;
+    --fs-quote: 2.34cqw;
+    --pad: 5cqw;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    padding: var(--pad);
+  }
+  .slide.active { display: flex; }
+  .slide-navy { background: var(--navy); color: #fff; }
+  .slide-white { background: #fff; color: var(--ink); }
+
+  .pagenum {
+    position: absolute;
+    right: 2.4cqw;
+    bottom: 2cqw;
+    font-size: var(--fs-tiny);
+    color: var(--muted);
+  }
+  .slide-navy .pagenum { color: rgba(255,255,255,0.45); }
+
+  .icon-badge svg { display: block; }
+
+  /* ---------- Title slide ---------- */
+  .tpl-title { justify-content: center; }
+  .tpl-title .icon-badge { width: 5.6cqw; height: 5.6cqw; color: #fff; margin-bottom: 2.6cqw; }
+  .tpl-title .eyebrow {
+    font-size: var(--fs-small);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ice);
+    margin: 0 0 1.1cqw;
+  }
+  .tpl-title h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: var(--fs-hero);
+    font-weight: 700;
+    margin: 0 0 1.4cqw;
+    line-height: 1.1;
+  }
+  .tpl-title .sub {
+    font-size: var(--fs-h3);
+    color: var(--ice);
+    margin: 0 0 2.6cqw;
+    font-weight: 400;
+  }
+  .tpl-title .divider {
+    width: 15%;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin-bottom: 2.2cqw;
+  }
+  .tpl-title .caption {
+    font-size: var(--fs-body);
+    color: #AAB4E0;
+  }
+
+  /* ---------- Agenda ---------- */
+  .tpl-agenda h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.2cqw; }
+  .agenda-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.6cqw;
+    padding: 1.35cqw 0;
+    border-top: 1px solid var(--line);
+  }
+  .agenda-row:last-of-type { border-bottom: 1px solid var(--line); }
+  .agenda-num {
+    flex: 0 0 auto;
+    width: 3.2cqw;
+    height: 3.2cqw;
+    border-radius: 8px;
+    background: var(--navy);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia, serif;
+    font-weight: 700;
+    font-size: var(--fs-h3);
+  }
+  .agenda-body .a-title { font-size: var(--fs-body-lg); font-weight: 700; color: var(--navy-deep); margin-bottom: 0.3cqw; }
+  .agenda-body .a-desc { font-size: var(--fs-small); color: var(--muted); }
+  .agenda-extra { font-size: var(--fs-small); color: var(--muted); margin-top: 1.4cqw; }
+
+  /* ---------- Why matters (split) ---------- */
+  .tpl-split { flex-direction: row; padding: 0; }
+  .split-left {
+    flex: 0 0 36%;
+    background: var(--navy);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 2cqw;
+  }
+  .split-left .icon-badge { width: 5cqw; height: 5cqw; margin-bottom: 1.6cqw; }
+  .split-left h2 { font-family: Georgia, serif; font-size: var(--fs-h1); margin: 0; }
+  .split-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.7cqw;
+    padding: var(--pad);
+  }
+  .why-item { display: flex; gap: 1.3cqw; align-items: flex-start; }
+  .why-num {
+    flex: 0 0 auto;
+    width: 2.6cqw;
+    height: 2.6cqw;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--navy-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: var(--fs-body);
+  }
+  .why-text { font-size: var(--fs-body-lg); line-height: 1.55; padding-top: 0.2cqw; }
+
+  /* ---------- Module divider ---------- */
+  .tpl-module { justify-content: center; }
+  .tpl-module .icon-badge {
+    position: absolute;
+    top: var(--pad);
+    right: var(--pad);
+    width: 4.6cqw;
+    height: 4.6cqw;
+    color: #fff;
+    opacity: 0.9;
+  }
+  .tpl-module .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); margin: 0 0 1cqw; letter-spacing: 0.03em; }
+  .tpl-module h1 { font-family: Georgia, serif; font-size: 3.1cqw; font-weight: 700; margin: 0 0 1.2cqw; max-width: 88%; line-height: 1.18; }
+  .tpl-module .source { font-size: var(--fs-body); color: var(--ice); }
+
+  /* ---------- 3-row content ---------- */
+  .tpl-rows h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.4cqw; }
+  .row-list { display: flex; flex-direction: column; gap: 1.7cqw; }
+  .row-item { display: flex; gap: 1.4cqw; align-items: flex-start; }
+  .row-num-circle {
+    flex: 0 0 auto;
+    width: 3cqw; height: 3cqw;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: var(--fs-h3);
+    background: var(--gold); color: var(--navy-deep);
+  }
+  .row-heading { flex: 0 0 26%; font-size: var(--fs-body-lg); font-weight: 700; color: var(--navy); padding-top: 0.3cqw; }
+  .row-text { flex: 1; font-size: var(--fs-body); line-height: 1.55; padding-top: 0.3cqw; }
+  .row-list-foot { font-size: var(--fs-body); color: var(--muted); margin-top: 1.6cqw; line-height: 1.5; }
+
+  /* ---------- Exercise / demo / case study ---------- */
+  .badge-pill {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 0.55cqw 1.4cqw;
+    border-radius: 20px;
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.4cqw;
+  }
+  .badge-navy { background: var(--navy); }
+  .badge-berry { background: var(--berry); }
+  .tpl-exercise h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.1cqw; }
+  .ex-list { display: flex; flex-direction: column; gap: 1.35cqw; }
+  .ex-item { display: flex; gap: 1.3cqw; align-items: center; }
+  .ex-num {
+    flex: 0 0 auto; width: 2.8cqw; height: 2.8cqw; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: var(--fs-body-lg);
+  }
+  .ex-text { font-size: var(--fs-body); line-height: 1.5; }
+
+  /* ---------- Key takeaway ---------- */
+  .tpl-takeaway { justify-content: center; align-items: center; text-align: center; }
+  .tpl-takeaway .icon-badge { width: 4.4cqw; height: 4.4cqw; color: #fff; margin-bottom: 1.6cqw; }
+  .tpl-takeaway .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); letter-spacing: 0.05em; margin: 0 0 1.1cqw; }
+  .tpl-takeaway .quote { max-width: 78%; font-size: var(--fs-quote); line-height: 1.5; margin: 0; }
+
+  /* ---------- Comparison cards ---------- */
+  .tpl-compare h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  .tpl-compare .compare-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.8cqw; }
+  .compare-row { display: flex; gap: 1.6cqw; flex: 1; }
+  .compare-card { flex: 1; border-radius: 10px; padding: 1.8cqw 1.9cqw; display: flex; flex-direction: column; gap: 0.9cqw; }
+  .compare-card.tint-blue { background: #F2F4FC; }
+  .compare-card.tint-berry { background: var(--berry-tint); }
+  .compare-head { font-size: var(--fs-h3); font-weight: 700; letter-spacing: 0.02em; }
+  .compare-head.c-navy { color: var(--navy); }
+  .compare-head.c-berry { color: var(--berry); }
+  .compare-card ul { margin: 0; padding-left: 1.3cqw; font-size: var(--fs-body); line-height: 1.65; color: var(--ink); }
+  .compare-card li { margin-bottom: 0.3cqw; }
+  .compare-foot { font-size: var(--fs-body); color: var(--muted); margin-top: 1.6cqw; line-height: 1.5; }
+
+  /* ---------- Action plan ---------- */
+  .tpl-action h2 { font-family: Georgia, serif; font-size: 2.9cqw; color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  .tpl-action .action-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.9cqw; }
+  .action-row { display: flex; gap: 1.4cqw; align-items: center; margin-bottom: 1.15cqw; }
+  .action-icon {
+    flex: 0 0 auto; width: 3cqw; height: 3cqw; border-radius: 8px;
+    background: var(--navy); display: flex; align-items: center; justify-content: center;
+  }
+  .action-icon svg { width: 55%; height: 55%; color: #fff; }
+  .action-text { font-size: var(--fs-body-lg); line-height: 1.45; }
+
+  /* ---------- Closing ---------- */
+  .tpl-closing { justify-content: center; }
+  .tpl-closing h1 { font-family: Georgia, serif; font-size: 3.3cqw; font-weight: 700; margin: 0 0 1cqw; }
+  .tpl-closing .sub { font-size: var(--fs-h3); color: var(--ice); margin: 0 0 2.2cqw; font-weight: 400; }
+  .tpl-closing .divider { width: 15%; height: 3px; background: var(--gold); border-radius: 2px; margin-bottom: 2cqw; }
+  .tpl-closing .caption { font-size: var(--fs-body); color: #AAB4E0; }
+
+  /* ---------- Controls ---------- */
+  .deck-controls {
+    width: 100%;
+    max-width: 1040px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 18px;
+  }
+  .nav-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.22);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .nav-btn:hover:not(:disabled) { background: rgba(255,255,255,0.18); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .nav-btn svg { width: 18px; height: 18px; }
+  .progress-wrap { flex: 1; max-width: 480px; }
+  .progress-track {
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.25s ease; }
+  .slide-counter {
+    color: #C9D2EE;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 700px) {
+    .stage { --fs-tiny: 1.6cqw; --fs-small: 1.9cqw; --fs-body: 2.3cqw; --fs-body-lg: 2.6cqw; --fs-h3: 3cqw; --fs-h2: 3.9cqw; --fs-h1: 4.6cqw; --fs-hero: 5.6cqw; --fs-quote: 3.2cqw; }
+    .deck-title { font-size: 14px; }
+    .row-heading { flex-basis: 32%; }
+  }
+  @media (max-width: 460px) {
+    .tpl-split { flex-direction: column; }
+    .split-left { flex: 0 0 auto; padding: 3cqw 4cqw; }
+    .row-item, .compare-row { flex-direction: column; }
+    .row-heading { flex-basis: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck-top">
+  <a class="deck-back" href="index.html">&larr; Managing the Room</a>
+  <div class="deck-title">Slide Deck <span>&mdash; Manager Workshop</span></div>
+  <div class="deck-actions">
+    <button class="icon-btn" id="fsBtn" type="button" title="Fullscreen" aria-label="Toggle fullscreen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="stage-wrap">
+  <div class="stage" id="stage">
+
+    <!-- Slide 1 -->
+    <section class="slide slide-navy tpl-title active" data-slide="1">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <p class="eyebrow">MANAGER &amp; LEADERSHIP TRAINING SERIES</p>
+      <h1>Managing the Room</h1>
+      <p class="sub">Group Dynamics &amp; Team Leadership for Managers</p>
+      <div class="divider"></div>
+      <p class="caption">Half-day workshop&nbsp; &bull; &nbsp;Grounded in Social Psychology research&nbsp; &bull; &nbsp;For people managers &amp; team leads</p>
+      <span class="pagenum">1</span>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide slide-white tpl-agenda" data-slide="2">
+      <h2>Today&rsquo;s Agenda</h2>
+      <div class="agenda-row">
+        <div class="agenda-num">01</div>
+        <div class="agenda-body">
+          <div class="a-title">Why Groups Underperform</div>
+          <div class="a-desc">Social loafing, process loss &amp; groupthink</div>
+        </div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-num">02</div>
+        <div class="agenda-body">
+          <div class="a-title">Group Polarization &amp; Decision-Making</div>
+          <div class="a-desc">Why teams land on extremes</div>
+        </div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-num">03</div>
+        <div class="agenda-body">
+          <div class="a-title">Leadership Styles &amp; Fit</div>
+          <div class="a-desc">Matching style to the situation</div>
+        </div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-num">04</div>
+        <div class="agenda-body">
+          <div class="a-title">First Impressions &amp; Attribution Errors</div>
+          <div class="a-desc">Fairer, more accurate feedback</div>
+        </div>
+      </div>
+      <p class="agenda-extra">+ Personal action planning and wrap-up</p>
+      <span class="pagenum">2</span>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide slide-white tpl-split" data-slide="3">
+      <div class="split-left">
+        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h2>Why This Matters</h2>
+      </div>
+      <div class="split-right">
+        <div class="why-item">
+          <div class="why-num">1</div>
+          <div class="why-text">Managers run meetings and make group calls constantly, but rarely learn how groups actually behave.</div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">2</div>
+          <div class="why-text">More people in the room doesn&rsquo;t mean a better decision &mdash; the structure of the discussion decides that.</div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">3</div>
+          <div class="why-text">This course gives you the mechanics behind team decisions, leadership fit, and fair feedback.</div>
+        </div>
+      </div>
+      <span class="pagenum">3</span>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide slide-navy tpl-module" data-slide="4">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <p class="eyebrow">MODULE 1</p>
+      <h1>Why Groups Underperform</h1>
+      <p class="source">Source: Ch. 9 &mdash; Group Processes</p>
+      <span class="pagenum">4</span>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide slide-white tpl-compare" data-slide="5">
+      <h2>What Groups Discuss &mdash; and What They Miss</h2>
+      <p class="compare-sub">The hidden profile problem</p>
+      <div class="compare-row">
+        <div class="compare-card tint-blue">
+          <div class="compare-head c-navy">SHARED INFORMATION</div>
+          <ul>
+            <li>Facts everyone in the group already has</li>
+            <li>Comfortable to repeat &mdash; feels productive</li>
+            <li>Reinforces the group&rsquo;s existing lean</li>
+          </ul>
+        </div>
+        <div class="compare-card tint-berry">
+          <div class="compare-head c-berry">UNIQUE INFORMATION</div>
+          <ul>
+            <li>Facts only one person holds</li>
+            <li>Feels riskier to bring up</li>
+            <li>Often the fact that would change the decision</li>
+          </ul>
+        </div>
+      </div>
+      <p class="compare-foot">Social loafing compounds this: when contributions aren&rsquo;t identifiable, individual effort quietly drops too.</p>
+      <span class="pagenum">5</span>
+    </section>
+
+    <!-- Slide 6 -->
+    <section class="slide slide-white tpl-exercise" data-slide="6">
+      <span class="badge-pill badge-navy">EXERCISE &bull; 20 MIN</span>
+      <h2>The Hidden Profile Exercise</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">1</div><div class="ex-text">Each group member gets a briefing: some shared facts, some facts only they hold, about a fictional hiring decision.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">2</div><div class="ex-text">Discuss and reach a decision without comparing full briefings.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">3</div><div class="ex-text">Reveal: the correct call required combining everyone&rsquo;s unique facts.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">4</div><div class="ex-text">Debrief: what structural change would have surfaced the missing information?</div></div>
+      </div>
+      <span class="pagenum">6</span>
+    </section>
+
+    <!-- Slide 7 -->
+    <section class="slide slide-navy tpl-takeaway" data-slide="7">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">If a meeting only confirms what everyone already agreed on, it isn&rsquo;t a discussion &mdash; it&rsquo;s a rehearsal. Structure meetings to force unique information into the open.</p>
+      <span class="pagenum">7</span>
+    </section>
+
+    <!-- Slide 8 -->
+    <section class="slide slide-navy tpl-module" data-slide="8">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+      <p class="eyebrow">MODULE 2</p>
+      <h1>Group Polarization &amp; Decision-Making</h1>
+      <p class="source">Source: Ch. 9 &mdash; Group Processes</p>
+      <span class="pagenum">8</span>
+    </section>
+
+    <!-- Slide 9 -->
+    <section class="slide slide-white tpl-rows" data-slide="9">
+      <h2>Why Groups Land on Extremes</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">Group polarization</div>
+          <div class="row-text">Discussion strengthens the group&rsquo;s average initial lean &mdash; it doesn&rsquo;t moderate it. Cautious groups get more cautious; risk-tolerant groups get riskier.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Two driving forces</div>
+          <div class="row-text">New supporting arguments surface (persuasive arguments), and people shift to match where the group&rsquo;s values seem to be heading (social comparison).</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Practical translation</div>
+          <div class="row-text">Capture individual positions privately before group discussion starts. The gap between that average and the final group call is worth examining.</div>
+        </div>
+      </div>
+      <span class="pagenum">9</span>
+    </section>
+
+    <!-- Slide 10 -->
+    <section class="slide slide-white tpl-exercise" data-slide="10">
+      <span class="badge-pill badge-berry">LIVE DEMO &bull; 20 MIN</span>
+      <h2>Live Polarization Demo</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">1</div><div class="ex-text">Present a moderately risky business scenario. Everyone privately rates their risk tolerance 1&ndash;10 before any discussion.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">2</div><div class="ex-text">Average the private scores and set them aside without revealing them yet.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">3</div><div class="ex-text">Small groups discuss and agree on one group score.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">4</div><div class="ex-text">Compare each group&rsquo;s score to its own pre-discussion average &mdash; groups usually land further from the middle.</div></div>
+      </div>
+      <span class="pagenum">10</span>
+    </section>
+
+    <!-- Slide 11 -->
+    <section class="slide slide-navy tpl-takeaway" data-slide="11">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">Group discussion doesn&rsquo;t average opinions &mdash; it tends to amplify the room&rsquo;s initial lean. Capture individual views before the discussion, not just after.</p>
+      <span class="pagenum">11</span>
+    </section>
+
+    <!-- Slide 12 -->
+    <section class="slide slide-navy tpl-module" data-slide="12">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
+      <p class="eyebrow">MODULE 3</p>
+      <h1>Leadership Styles &amp; Fit</h1>
+      <p class="source">Source: Ch. 9 &mdash; Group Processes (Leadership in Groups)</p>
+      <span class="pagenum">12</span>
+    </section>
+
+    <!-- Slide 13 -->
+    <section class="slide slide-white tpl-compare" data-slide="13">
+      <h2>Two Leadership Orientations</h2>
+      <p class="compare-sub">Neither style is universally &ldquo;better&rdquo;</p>
+      <div class="compare-row">
+        <div class="compare-card tint-blue">
+          <div class="compare-head c-navy">TASK-ORIENTED</div>
+          <ul>
+            <li>Clear direction, structure, standards</li>
+            <li>Fits highly favorable or highly unfavorable situations</li>
+            <li>Best when the task is ambiguous or urgency is high</li>
+          </ul>
+        </div>
+        <div class="compare-card tint-berry">
+          <div class="compare-head c-berry">RELATIONSHIP-ORIENTED</div>
+          <ul>
+            <li>Support, morale, interpersonal trust</li>
+            <li>Fits moderately favorable situations</li>
+            <li>Best when the team is established but needs cohesion</li>
+          </ul>
+        </div>
+      </div>
+      <p class="compare-foot">Situational favorability &mdash; task clarity, leader power, team relationships &mdash; decides which orientation fits. Personality alone predicts leadership success surprisingly poorly.</p>
+      <span class="pagenum">13</span>
+    </section>
+
+    <!-- Slide 14 -->
+    <section class="slide slide-white tpl-exercise" data-slide="14">
+      <span class="badge-pill badge-navy">EXERCISE &bull; 20 MIN</span>
+      <h2>Style-Situation Matching</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">1</div><div class="ex-text">Review four team scenarios that vary in task clarity and team cohesion.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">2</div><div class="ex-text">In small groups, choose a task- or relationship-oriented approach for each, and justify the choice.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">3</div><div class="ex-text">Full-group share-out: discuss where the &ldquo;right&rdquo; style flips as the situation changes.</div></div>
+      </div>
+      <span class="pagenum">14</span>
+    </section>
+
+    <!-- Slide 15 -->
+    <section class="slide slide-navy tpl-takeaway" data-slide="15">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">There is no universally &ldquo;best&rdquo; leadership style &mdash; only the style that fits this team, this task, and this moment.</p>
+      <span class="pagenum">15</span>
+    </section>
+
+    <!-- Slide 16 -->
+    <section class="slide slide-navy tpl-module" data-slide="16">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <p class="eyebrow">MODULE 4</p>
+      <h1>First Impressions &amp; Attribution Errors</h1>
+      <p class="source">Source: Ch. 4 &mdash; Social Perception</p>
+      <span class="pagenum">16</span>
+    </section>
+
+    <!-- Slide 17 -->
+    <section class="slide slide-white tpl-rows" data-slide="17">
+      <h2>Why We Misjudge Other People&rsquo;s Setbacks</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">First impressions</div>
+          <div class="row-text">They form fast and linger, coloring how a person&rsquo;s later behavior gets read &mdash; long after their actual performance has changed.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Fundamental attribution error</div>
+          <div class="row-text">When explaining someone else&rsquo;s behavior, we default to character (&ldquo;they&rsquo;re careless&rdquo;) and underweight situational factors (&ldquo;priorities were unclear&rdquo;).</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Self-serving bias</div>
+          <div class="row-text">The opposite direction for our own outcomes: we credit our successes to skill and blame our failures on circumstances.</div>
+        </div>
+      </div>
+      <span class="pagenum">17</span>
+    </section>
+
+    <!-- Slide 18 -->
+    <section class="slide slide-white tpl-exercise" data-slide="18">
+      <span class="badge-pill badge-berry">EXERCISE &bull; 15 MIN</span>
+      <h2>Attribution Rewrite</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">1</div><div class="ex-text">Read three scenarios of employee &ldquo;failures&rdquo; written in character-based language.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">2</div><div class="ex-text">In pairs, rewrite each with a plausible situational factor &mdash; without dropping accountability.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">3</div><div class="ex-text">Draft one line of feedback that names the factor and still holds the person accountable.</div></div>
+      </div>
+      <span class="pagenum">18</span>
+    </section>
+
+    <!-- Slide 19 -->
+    <section class="slide slide-navy tpl-takeaway" data-slide="19">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">The story you tell about someone&rsquo;s failure &mdash; character flaw or bad circumstances &mdash; determines whether feedback helps them improve or just makes them defensive.</p>
+      <span class="pagenum">19</span>
+    </section>
+
+    <!-- Slide 20 -->
+    <section class="slide slide-white tpl-action" data-slide="20">
+      <h2>Your Action Plan</h2>
+      <p class="action-sub">Return to the decision or feedback moment from your pre-work:</p>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Where might process loss or groupthink have shaped this decision &mdash; what unique information didn&rsquo;t surface?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Did the outcome look more extreme than the individual views going in?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Did the leadership style I used fit this team and task, or was it just habit?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Is there a dispositional assumption in this feedback? What situational factor would a fair observer add?</div>
+      </div>
+      <span class="pagenum">20</span>
+    </section>
+
+    <!-- Slide 21 -->
+    <section class="slide slide-navy tpl-closing" data-slide="21">
+      <h1>The room shapes the decision.</h1>
+      <p class="sub">Structure it on purpose.</p>
+      <div class="divider"></div>
+      <p class="caption">Thank you&nbsp; &mdash; &nbsp;Questions &amp; Evaluation</p>
+      <span class="pagenum">21</span>
+    </section>
+
+  </div>
+</div>
+
+<div class="deck-controls">
+  <button class="nav-btn" id="prevBtn" type="button" aria-label="Previous slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="slide-counter" id="slideCounter">Slide 1 of 21</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" type="button" aria-label="Next slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var current = 0;
+
+  var stage = document.getElementById('stage');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var progressFill = document.getElementById('progressFill');
+  var slideCounter = document.getElementById('slideCounter');
+  var fsBtn = document.getElementById('fsBtn');
+
+  function render() {
+    slides.forEach(function (s, i) {
+      s.classList.toggle('active', i === current);
+    });
+    progressFill.style.width = (((current + 1) / total) * 100) + '%';
+    slideCounter.textContent = 'Slide ' + (current + 1) + ' of ' + total;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  function goTo(i) {
+    if (i < 0 || i > total - 1) return;
+    current = i;
+    render();
+  }
+
+  prevBtn.addEventListener('click', function () { goTo(current - 1); });
+  nextBtn.addEventListener('click', function () { goTo(current + 1); });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { goTo(current + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { goTo(current - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { goTo(0); }
+    else if (e.key === 'End') { goTo(total - 1); }
+    else if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); }
+  });
+
+  var touchStartX = null;
+  stage.addEventListener('touchstart', function (e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchend', function (e) {
+    if (touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) { dx < 0 ? goTo(current + 1) : goTo(current - 1); }
+    touchStartX = null;
+  }, { passive: true });
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      if (stage.requestFullscreen) stage.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+    }
+  }
+  fsBtn.addEventListener('click', toggleFullscreen);
+
+  render();
+})();
+</script>
+
+</body>
+</html>

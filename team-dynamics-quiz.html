@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Managing the Room — Course Quiz</title>
+<style>
+  :root {
+    --navy: #1E2761;
+    --navy-deep: #161C4A;
+    --ice: #CADCFC;
+    --gold: #C9A227;
+    --gold-tint: #FBF3DC;
+    --berry: #6D2E46;
+    --berry-tint: #F6ECEF;
+    --paper: #FDFDFC;
+    --ink: #23263B;
+    --muted: #6B6E85;
+    --line: #E4E5EF;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--navy);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  .quiz-shell {
+    width: 100%;
+    max-width: 640px;
+  }
+  .eyebrow {
+    color: var(--ice);
+    font-size: 13px;
+    margin: 0 0 6px;
+  }
+  .headline {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #fff;
+    font-size: 28px;
+    line-height: 1.25;
+    margin: 0 0 28px;
+    font-weight: 700;
+  }
+  .card {
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 36px 40px 32px;
+    box-shadow: 0 20px 50px rgba(10, 14, 40, 0.35);
+  }
+  .progress-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .progress-label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .progress-track {
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 26px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.35s ease;
+  }
+  .question-text {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 21px;
+    line-height: 1.45;
+    color: var(--navy-deep);
+    margin: 0 0 22px;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .option {
+    text-align: left;
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 13px 16px;
+    font-size: 15.5px;
+    color: var(--ink);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover:not(:disabled) {
+    border-color: var(--navy);
+  }
+  .option:disabled { cursor: default; }
+  .option.correct {
+    border-color: var(--gold);
+    background: var(--gold-tint);
+    font-weight: 600;
+  }
+  .option.incorrect {
+    border-color: var(--berry);
+    background: var(--berry-tint);
+  }
+  .hint-row {
+    margin: 14px 0 0;
+  }
+  .hint-toggle {
+    background: none;
+    border: none;
+    color: var(--navy);
+    font-size: 13.5px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+  }
+  .hint-text {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .feedback {
+    margin-top: 20px;
+    padding: 16px 18px;
+    border-radius: 8px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb {
+    background: var(--gold-tint);
+    color: var(--navy-deep);
+  }
+  .feedback.incorrect-fb {
+    background: var(--berry-tint);
+    color: var(--berry);
+  }
+  .feedback strong { display: block; margin-bottom: 4px; font-size: 15px; }
+  .feedback .explain { color: var(--ink); font-style: normal; }
+  .controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
+  .next-btn {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 11px 24px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    display: none;
+  }
+  .next-btn.show { display: inline-block; }
+  .next-btn:hover { background: var(--navy-deep); }
+
+  /* Results */
+  .results { display: none; }
+  .results.show { display: block; }
+  .quiz-body.hide { display: none; }
+  .score-wrap { text-align: center; padding: 6px 0 22px; }
+  .score-num {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 52px;
+    color: var(--navy-deep);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .score-of { font-size: 16px; color: var(--muted); margin-top: 4px; }
+  .score-msg { font-size: 15px; color: var(--ink); margin-top: 12px; }
+  .review-list {
+    border-top: 1px solid var(--line);
+    margin-top: 22px;
+    padding-top: 18px;
+  }
+  .review-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .review-item:last-child { border-bottom: none; }
+  .review-mark {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 2px;
+  }
+  .review-mark.right { background: var(--gold); color: var(--navy-deep); }
+  .review-mark.wrong { background: var(--berry); }
+  .review-q { font-size: 14px; color: var(--ink); }
+  .review-q .rq-prompt { font-weight: 600; display: block; margin-bottom: 2px; }
+  .restart-row { text-align: center; margin-top: 26px; }
+  .restart-btn {
+    background: none;
+    border: 1.5px solid var(--navy);
+    color: var(--navy);
+    border-radius: 7px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .restart-btn:hover { background: var(--navy); color: #fff; }
+
+  @media (max-width: 480px) {
+    .card { padding: 26px 20px 24px; }
+    .headline { font-size: 23px; }
+    .question-text { font-size: 18px; }
+    .score-num { font-size: 42px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="quiz-shell">
+  <p class="eyebrow">From the Managing the Room workshop</p>
+  <h1 class="headline">Check your understanding</h1>
+
+  <div class="card">
+
+    <div class="quiz-body" id="quizBody">
+      <div class="progress-row">
+        <span class="progress-label" id="progressLabel">Question 1 of 8</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width: 12.5%;"></div>
+      </div>
+
+      <p class="question-text" id="questionText"></p>
+      <div class="options" id="optionsWrap"></div>
+
+      <div class="hint-row" id="hintRow">
+        <button class="hint-toggle" id="hintToggle">Show hint</button>
+        <p class="hint-text" id="hintText" style="display:none;"></p>
+      </div>
+
+      <div class="feedback" id="feedback">
+        <strong id="feedbackLabel"></strong>
+        <span class="explain" id="feedbackExplain"></span>
+      </div>
+
+      <div class="controls">
+        <button class="next-btn" id="nextBtn">Next question</button>
+      </div>
+    </div>
+
+    <div class="results" id="results">
+      <div class="score-wrap">
+        <div class="score-num" id="scoreNum">0/8</div>
+        <div class="score-of">correct</div>
+        <p class="score-msg" id="scoreMsg"></p>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+      <div class="restart-row">
+        <button class="restart-btn" id="restartBtn">Retake the quiz</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+const QUESTIONS = [
+  {
+    prompt: "What is social loafing?",
+    options: [
+      "People exert more effort in groups than they would alone",
+      "People exert less individual effort in a group, especially when contributions aren't identifiable",
+      "People always work harder when they know they're being watched",
+      "Groups always outperform individuals working alone"
+    ],
+    correct: 1,
+    hint: "Think about accountability and identifiability of individual effort.",
+    explain: "Social loafing is the tendency to exert less individual effort in a group than working alone, especially when individual contributions aren't identifiable or accountable — the opposite of the 'more hands, more output' assumption."
+  },
+  {
+    prompt: "In the hidden-profile problem, what do groups typically fail to do?",
+    options: [
+      "Discuss information that everyone already shares",
+      "Surface and use information that only one member holds",
+      "Reach any decision at all",
+      "Agree on who should lead the discussion"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "Groups tend to spend most of their discussion time on shared information and fail to surface facts only one person holds — even when that unique information would change the decision."
+  },
+  {
+    prompt: "Which of these is a hallmark of groupthink?",
+    options: [
+      "Vigorous, welcomed dissent",
+      "Actively seeking diverse outside input",
+      "Self-censorship and an illusion of unanimity",
+      "Extensive independent research before deciding"
+    ],
+    correct: 2,
+    hint: null,
+    explain: "Groupthink involves highly cohesive groups under pressure to agree suppressing dissent through self-censorship, producing an illusion of unanimity and confident but poorly examined decisions."
+  },
+  {
+    prompt: "According to group polarization research, what tends to happen after a group discusses a decision?",
+    options: [
+      "The group's view settles at the average of the individuals' starting positions",
+      "The group's decision becomes more extreme in the direction it was already leaning",
+      "The group becomes more cautious than any individual, regardless of the initial lean",
+      "Discussion has no measurable effect on the final decision"
+    ],
+    correct: 1,
+    hint: "Think about amplification, not averaging.",
+    explain: "Group polarization means discussion strengthens the group's average initial leaning rather than moderating it — a group already leaning cautious becomes more cautious, one leaning risky becomes riskier."
+  },
+  {
+    prompt: "Which of the following is one of the two mechanisms the course identifies as driving group polarization?",
+    options: [
+      "Social loafing",
+      "Social comparison — shifting to match where the group's values seem to be heading",
+      "The bystander effect",
+      "The fundamental attribution error"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "Group polarization is driven partly by persuasive arguments (hearing new supporting points) and partly by social comparison (shifting to align with the group's apparent values once you see where opinion is heading)."
+  },
+  {
+    prompt: "According to the course, what determines whether a task-oriented or relationship-oriented leadership style works better?",
+    options: [
+      "The leader's personality type alone",
+      "Situational favorability — task clarity, leader power, and team relationships",
+      "The size of the team, regardless of the task",
+      "Whether the leader identifies as an introvert or extrovert"
+    ],
+    correct: 1,
+    hint: "Think about the contingency approach to leadership.",
+    explain: "Situational favorability — how clear the task is, how much power the leader holds, and how strong leader-team relationships already are — determines which orientation fits best. Personality traits alone predict leadership success surprisingly poorly."
+  },
+  {
+    prompt: "The fundamental attribution error describes our tendency to:",
+    options: [
+      "Credit our own successes to luck rather than skill",
+      "Overweight character-based explanations and underweight situational factors when explaining others' behavior",
+      "Blame situational factors too generously when others fail",
+      "Avoid forming any judgment about other people's behavior"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "The fundamental attribution error is the tendency to default to character-based explanations ('they're careless') for others' behavior and underweight situational factors ('the priorities were unclear') — especially for behavior we don't like."
+  },
+  {
+    prompt: "Self-serving bias describes the tendency to:",
+    options: [
+      "Credit our successes to our own skill and blame our failures on circumstances",
+      "Blame ourselves more harshly than we blame others",
+      "Ignore all feedback about our own performance",
+      "Attribute every outcome, good or bad, to luck"
+    ],
+    correct: 0,
+    hint: "Think about which direction the bias runs for our own outcomes, versus others'.",
+    explain: "Self-serving bias runs the opposite direction from the fundamental attribution error when it comes to our own outcomes: we credit our successes to skill and blame our failures on circumstances."
+  }
+];
+
+let current = 0;
+let answered = false;
+const userAnswers = new Array(QUESTIONS.length).fill(null);
+
+const questionText = document.getElementById('questionText');
+const optionsWrap = document.getElementById('optionsWrap');
+const progressLabel = document.getElementById('progressLabel');
+const progressFill = document.getElementById('progressFill');
+const feedback = document.getElementById('feedback');
+const feedbackLabel = document.getElementById('feedbackLabel');
+const feedbackExplain = document.getElementById('feedbackExplain');
+const nextBtn = document.getElementById('nextBtn');
+const hintRow = document.getElementById('hintRow');
+const hintToggle = document.getElementById('hintToggle');
+const hintText = document.getElementById('hintText');
+const quizBody = document.getElementById('quizBody');
+const results = document.getElementById('results');
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  answered = false;
+  questionText.textContent = q.prompt;
+  progressLabel.textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+  progressFill.style.width = `${((current) / QUESTIONS.length) * 100 + (100 / QUESTIONS.length)}%`;
+
+  optionsWrap.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => selectOption(i));
+    optionsWrap.appendChild(btn);
+  });
+
+  feedback.classList.remove('show', 'correct-fb', 'incorrect-fb');
+  nextBtn.classList.remove('show');
+
+  if (q.hint) {
+    hintRow.style.display = 'block';
+    hintToggle.style.display = 'inline';
+    hintText.style.display = 'none';
+    hintToggle.textContent = 'Show hint';
+  } else {
+    hintRow.style.display = 'none';
+  }
+}
+
+hintToggle.addEventListener('click', () => {
+  const visible = hintText.style.display === 'block';
+  hintText.style.display = visible ? 'none' : 'block';
+  hintText.textContent = QUESTIONS[current].hint;
+  hintToggle.textContent = visible ? 'Show hint' : 'Hide hint';
+});
+
+function selectOption(i) {
+  if (answered) return;
+  answered = true;
+  const q = QUESTIONS[current];
+  userAnswers[current] = i;
+  const buttons = optionsWrap.querySelectorAll('.option');
+  Array.prototype.forEach.call(buttons, function (b, idx) {
+    b.disabled = true;
+    if (idx === q.correct) b.classList.add('correct');
+    if (idx === i && i !== q.correct) b.classList.add('incorrect');
+  });
+
+  feedback.classList.add('show');
+  if (i === q.correct) {
+    feedback.classList.add('correct-fb');
+    feedbackLabel.textContent = 'Correct.';
+  } else {
+    feedback.classList.add('incorrect-fb');
+    feedbackLabel.textContent = 'Not quite.';
+  }
+  feedbackExplain.textContent = q.explain;
+
+  nextBtn.classList.add('show');
+  nextBtn.textContent = current === QUESTIONS.length - 1 ? 'See your results' : 'Next question';
+}
+
+nextBtn.addEventListener('click', () => {
+  if (current < QUESTIONS.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+});
+
+function showResults() {
+  quizBody.classList.add('hide');
+  results.classList.add('show');
+
+  let score = 0;
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = '';
+
+  QUESTIONS.forEach((q, i) => {
+    const isRight = userAnswers[i] === q.correct;
+    if (isRight) score++;
+    const item = document.createElement('div');
+    item.className = 'review-item';
+    item.innerHTML = `
+      <div class="review-mark ${isRight ? 'right' : 'wrong'}">${isRight ? '✓' : '✕'}</div>
+      <div class="review-q">
+        <span class="rq-prompt">${q.prompt}</span>
+        ${isRight ? '' : `Correct answer: ${q.options[q.correct]}`}
+      </div>
+    `;
+    reviewList.appendChild(item);
+  });
+
+  document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+  const msg = document.getElementById('scoreMsg');
+  if (score === QUESTIONS.length) {
+    msg.textContent = "Perfect score — you've got the mechanics of group decisions down.";
+  } else if (score >= QUESTIONS.length - 2) {
+    msg.textContent = "Strong grasp of the material, with a couple of spots worth a second look.";
+  } else if (score >= QUESTIONS.length / 2) {
+    msg.textContent = "A solid start — revisit the modules above for the ones you missed.";
+  } else {
+    msg.textContent = "Worth another pass through the workshop material before moving on.";
+  }
+}
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  current = 0;
+  userAnswers.fill(null);
+  results.classList.remove('show');
+  quizBody.classList.remove('hide');
+  renderQuestion();
+});
+
+renderQuestion();
+})();
+</script>
+
+</body>
+</html>

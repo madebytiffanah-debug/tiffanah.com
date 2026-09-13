@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bias-Aware Decisions — Slide Deck</title>
+<style>
+  :root {
+    --navy: #1E2761;
+    --navy-deep: #12173F;
+    --ice: #CADCFC;
+    --gold: #C9A227;
+    --gold-tint: #FBF3DC;
+    --berry: #6D2E46;
+    --berry-tint: #F6ECEF;
+    --paper: #FDFDFC;
+    --ink: #23263B;
+    --muted: #666A82;
+    --line: #E4E5EF;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--navy-deep);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 16px 28px;
+  }
+
+  /* Top bar */
+  .deck-top {
+    width: 100%;
+    max-width: 1040px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .deck-back {
+    color: var(--ice);
+    font-size: 13.5px;
+    text-decoration: none;
+  }
+  .deck-back:hover { text-decoration: underline; }
+  .deck-title {
+    color: #fff;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+    flex: 1;
+  }
+  .deck-title span { color: var(--ice); font-weight: 400; font-family: inherit; }
+  .deck-actions { display: flex; align-items: center; gap: 10px; }
+  .icon-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 34px;
+    height: 34px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .icon-btn:hover { background: rgba(255,255,255,0.16); }
+  .icon-btn svg { width: 17px; height: 17px; }
+
+  /* Stage */
+  .stage-wrap {
+    width: 100%;
+    max-width: 1040px;
+  }
+  .stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(6, 10, 34, 0.45);
+    container-type: inline-size;
+    background: #fff;
+  }
+  .stage:fullscreen { border-radius: 0; max-width: none; }
+  .stage:fullscreen .slide { border-radius: 0; }
+
+  /* Font scale relative to stage width (design width 1280px) */
+  .stage {
+    --fs-tiny: 1.05cqw;
+    --fs-small: 1.22cqw;
+    --fs-body: 1.5cqw;
+    --fs-body-lg: 1.72cqw;
+    --fs-h3: 1.95cqw;
+    --fs-h2: 2.62cqw;
+    --fs-h1: 3.4cqw;
+    --fs-hero: 4.3cqw;
+    --fs-quote: 2.34cqw;
+    --pad: 5cqw;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    padding: var(--pad);
+  }
+  .slide.active { display: flex; }
+  .slide-navy { background: var(--navy); color: #fff; }
+  .slide-white { background: #fff; color: var(--ink); }
+
+  .pagenum {
+    position: absolute;
+    right: 2.4cqw;
+    bottom: 2cqw;
+    font-size: var(--fs-tiny);
+    color: var(--muted);
+  }
+  .slide-navy .pagenum { color: rgba(255,255,255,0.45); }
+
+  .icon-badge svg { display: block; }
+
+  /* ---------- Title slide ---------- */
+  .tpl-title { justify-content: center; }
+  .tpl-title .icon-badge { width: 5.6cqw; height: 5.6cqw; color: #fff; margin-bottom: 2.6cqw; }
+  .tpl-title .eyebrow {
+    font-size: var(--fs-small);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ice);
+    margin: 0 0 1.1cqw;
+  }
+  .tpl-title h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: var(--fs-hero);
+    font-weight: 700;
+    margin: 0 0 1.4cqw;
+    line-height: 1.1;
+  }
+  .tpl-title .sub {
+    font-size: var(--fs-h3);
+    color: var(--ice);
+    margin: 0 0 2.6cqw;
+    font-weight: 400;
+  }
+  .tpl-title .divider {
+    width: 15%;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin-bottom: 2.2cqw;
+  }
+  .tpl-title .caption {
+    font-size: var(--fs-body);
+    color: #AAB4E0;
+  }
+
+  /* ---------- Agenda ---------- */
+  .tpl-agenda h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.2cqw; }
+  .agenda-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.6cqw;
+    padding: 1.35cqw 0;
+    border-top: 1px solid var(--line);
+  }
+  .agenda-row:last-of-type { border-bottom: 1px solid var(--line); }
+  .agenda-num {
+    flex: 0 0 auto;
+    width: 3.2cqw;
+    height: 3.2cqw;
+    border-radius: 8px;
+    background: var(--navy);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia, serif;
+    font-weight: 700;
+    font-size: var(--fs-h3);
+  }
+  .agenda-body .a-title { font-size: var(--fs-body-lg); font-weight: 700; color: var(--navy-deep); margin-bottom: 0.3cqw; }
+  .agenda-body .a-desc { font-size: var(--fs-small); color: var(--muted); }
+  .agenda-extra { font-size: var(--fs-small); color: var(--muted); margin-top: 1.4cqw; }
+
+  /* ---------- Why matters (split) ---------- */
+  .tpl-split { flex-direction: row; padding: 0; }
+  .split-left {
+    flex: 0 0 36%;
+    background: var(--navy);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 2cqw;
+  }
+  .split-left .icon-badge { width: 5cqw; height: 5cqw; margin-bottom: 1.6cqw; }
+  .split-left h2 { font-family: Georgia, serif; font-size: var(--fs-h1); margin: 0; }
+  .split-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.7cqw;
+    padding: var(--pad);
+  }
+  .why-item { display: flex; gap: 1.3cqw; align-items: flex-start; }
+  .why-num {
+    flex: 0 0 auto;
+    width: 2.6cqw;
+    height: 2.6cqw;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--navy-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: var(--fs-body);
+  }
+  .why-text { font-size: var(--fs-body-lg); line-height: 1.55; padding-top: 0.2cqw; }
+
+  /* ---------- Module divider ---------- */
+  .tpl-module { justify-content: center; }
+  .tpl-module .icon-badge {
+    position: absolute;
+    top: var(--pad);
+    right: var(--pad);
+    width: 4.6cqw;
+    height: 4.6cqw;
+    color: #fff;
+    opacity: 0.9;
+  }
+  .tpl-module .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); margin: 0 0 1cqw; letter-spacing: 0.03em; }
+  .tpl-module h1 { font-family: Georgia, serif; font-size: 3.15cqw; font-weight: 700; margin: 0 0 1.2cqw; max-width: 85%; line-height: 1.18; }
+  .tpl-module .source { font-size: var(--fs-body); color: var(--ice); }
+
+  /* ---------- 3-row content ---------- */
+  .tpl-rows h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.4cqw; }
+  .row-list { display: flex; flex-direction: column; gap: 1.7cqw; }
+  .row-item { display: flex; gap: 1.4cqw; align-items: flex-start; }
+  .row-num-circle {
+    flex: 0 0 auto;
+    width: 3cqw; height: 3cqw;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: var(--fs-h3);
+    background: var(--gold); color: var(--navy-deep);
+  }
+  .row-heading { flex: 0 0 26%; font-size: var(--fs-body-lg); font-weight: 700; color: var(--navy); padding-top: 0.3cqw; }
+  .row-text { flex: 1; font-size: var(--fs-body); line-height: 1.55; padding-top: 0.3cqw; }
+
+  /* ---------- Exercise / case study / discussion ---------- */
+  .badge-pill {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 0.55cqw 1.4cqw;
+    border-radius: 20px;
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.4cqw;
+  }
+  .badge-navy { background: var(--navy); }
+  .badge-berry { background: var(--berry); }
+  .tpl-exercise h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.1cqw; }
+  .ex-list { display: flex; flex-direction: column; gap: 1.35cqw; }
+  .ex-item { display: flex; gap: 1.3cqw; align-items: center; }
+  .ex-num {
+    flex: 0 0 auto; width: 2.8cqw; height: 2.8cqw; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: var(--fs-body-lg);
+  }
+  .ex-text { font-size: var(--fs-body); line-height: 1.5; }
+
+  /* ---------- Key takeaway ---------- */
+  .tpl-takeaway { justify-content: center; align-items: center; text-align: center; }
+  .tpl-takeaway .icon-badge { width: 4.4cqw; height: 4.4cqw; color: #fff; margin-bottom: 1.6cqw; }
+  .tpl-takeaway .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); letter-spacing: 0.05em; margin: 0 0 1.1cqw; }
+  .tpl-takeaway .quote { max-width: 78%; font-size: var(--fs-quote); line-height: 1.5; margin: 0; }
+
+  /* ---------- Comparison (halo vs confirmation) ---------- */
+  .tpl-compare h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  .tpl-compare .compare-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.8cqw; }
+  .compare-row { display: flex; gap: 1.6cqw; flex: 1; }
+  .compare-card { flex: 1; border-radius: 10px; padding: 1.8cqw 1.9cqw; display: flex; flex-direction: column; gap: 0.9cqw; }
+  .compare-card.tint-blue { background: #F2F4FC; }
+  .compare-card.tint-berry { background: var(--berry-tint); }
+  .compare-head { font-size: var(--fs-h3); font-weight: 700; letter-spacing: 0.02em; }
+  .compare-head.c-navy { color: var(--navy); }
+  .compare-head.c-berry { color: var(--berry); }
+  .compare-card ul { margin: 0; padding-left: 1.3cqw; font-size: var(--fs-body); line-height: 1.65; color: var(--ink); }
+  .compare-card li { margin-bottom: 0.3cqw; }
+  .compare-foot { font-size: var(--fs-body); color: var(--muted); margin-top: 1.6cqw; line-height: 1.5; }
+
+  /* ---------- Action plan ---------- */
+  .tpl-action h2 { font-family: Georgia, serif; font-size: 2.9cqw; color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  .tpl-action .action-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.9cqw; }
+  .action-row { display: flex; gap: 1.4cqw; align-items: center; margin-bottom: 1.15cqw; }
+  .action-icon {
+    flex: 0 0 auto; width: 3cqw; height: 3cqw; border-radius: 8px;
+    background: var(--navy); display: flex; align-items: center; justify-content: center;
+  }
+  .action-icon svg { width: 55%; height: 55%; color: #fff; }
+  .action-text { font-size: var(--fs-body-lg); line-height: 1.45; }
+
+  /* ---------- Closing ---------- */
+  .tpl-closing { justify-content: center; }
+  .tpl-closing h1 { font-family: Georgia, serif; font-size: 3.3cqw; font-weight: 700; margin: 0 0 1cqw; }
+  .tpl-closing .sub { font-size: var(--fs-h3); color: var(--ice); margin: 0 0 2.2cqw; font-weight: 400; }
+  .tpl-closing .divider { width: 15%; height: 3px; background: var(--gold); border-radius: 2px; margin-bottom: 2cqw; }
+  .tpl-closing .caption { font-size: var(--fs-body); color: #AAB4E0; }
+
+  /* ---------- Controls ---------- */
+  .deck-controls {
+    width: 100%;
+    max-width: 1040px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 18px;
+  }
+  .nav-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.22);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .nav-btn:hover:not(:disabled) { background: rgba(255,255,255,0.18); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .nav-btn svg { width: 18px; height: 18px; }
+  .progress-wrap { flex: 1; max-width: 480px; }
+  .progress-track {
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.25s ease; }
+  .slide-counter {
+    color: #C9D2EE;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 700px) {
+    .stage { --fs-tiny: 1.6cqw; --fs-small: 1.9cqw; --fs-body: 2.3cqw; --fs-body-lg: 2.6cqw; --fs-h3: 3cqw; --fs-h2: 3.9cqw; --fs-h1: 4.6cqw; --fs-hero: 5.6cqw; --fs-quote: 3.2cqw; }
+    .deck-title { font-size: 14px; }
+    .row-heading { flex-basis: 32%; }
+  }
+  @media (max-width: 460px) {
+    .tpl-split { flex-direction: column; }
+    .split-left { flex: 0 0 auto; padding: 3cqw 4cqw; }
+    .row-item, .compare-row { flex-direction: column; }
+    .row-heading { flex-basis: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck-top">
+  <a class="deck-back" href="index.html">&larr; Bias-Aware Decisions</a>
+  <div class="deck-title">Slide Deck <span>&mdash; Manager Workshop</span></div>
+  <div class="deck-actions">
+    <button class="icon-btn" id="fsBtn" type="button" title="Fullscreen" aria-label="Toggle fullscreen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="stage-wrap">
+  <div class="stage" id="stage">
+
+    <!-- Slide 1 -->
+    <section class="slide slide-navy tpl-title active" data-slide="1">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+      <p class="eyebrow">MANAGER &amp; LEADERSHIP TRAINING SERIES</p>
+      <h1>Bias-Aware Decisions</h1>
+      <p class="sub">Inclusive Hiring, Reviews &amp; Promotion for Managers</p>
+      <div class="divider"></div>
+      <p class="caption">Half-day workshop&nbsp; &bull; &nbsp;Grounded in Social Psychology research&nbsp; &bull; &nbsp;For people managers &amp; team leads</p>
+      <span class="pagenum">1</span>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide slide-white tpl-agenda" data-slide="2">
+      <h2>Today&rsquo;s Agenda</h2>
+      <div class="agenda-row">
+        <div class="agenda-num">01</div>
+        <div class="agenda-body">
+          <div class="a-title">Mental Shortcuts in Hiring &amp; Reviews</div>
+          <div class="a-desc">Schemas, priming &amp; heuristics</div>
+        </div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-num">02</div>
+        <div class="agenda-body">
+          <div class="a-title">The Halo Effect &amp; Confirmation Bias</div>
+          <div class="a-desc">How first impressions lock in</div>
+        </div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-num">03</div>
+        <div class="agenda-body">
+          <div class="a-title">Where Prejudice Comes From</div>
+          <div class="a-desc">In-group / out-group mechanics</div>
+        </div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-num">04</div>
+        <div class="agenda-body">
+          <div class="a-title">Structural Fixes That Don&rsquo;t Rely on Willpower</div>
+          <div class="a-desc">Process redesign that works</div>
+        </div>
+      </div>
+      <p class="agenda-extra">+ Personal action planning and wrap-up</p>
+      <span class="pagenum">2</span>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide slide-white tpl-split" data-slide="3">
+      <div class="split-left">
+        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+        <h2>Why This Matters</h2>
+      </div>
+      <div class="split-right">
+        <div class="why-item">
+          <div class="why-num">1</div>
+          <div class="why-text">Bias in hiring and reviews rarely looks like open prejudice &mdash; it looks like a fast, confident, well-intentioned judgment.</div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">2</div>
+          <div class="why-text">The fix isn&rsquo;t trying harder to &ldquo;be objective&rdquo; in the moment &mdash; it&rsquo;s understanding the mechanics and structuring the process.</div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">3</div>
+          <div class="why-text">This course gives you the specific cognitive patterns behind biased decisions, and the structural fixes that actually work.</div>
+        </div>
+      </div>
+      <span class="pagenum">3</span>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide slide-navy tpl-module" data-slide="4">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+      <p class="eyebrow">MODULE 1</p>
+      <h1>Mental Shortcuts in Hiring &amp; Reviews</h1>
+      <p class="source">Source: Ch. 3 &mdash; Social Cognition</p>
+      <span class="pagenum">4</span>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide slide-white tpl-rows" data-slide="5">
+      <h2>The Shortcuts Behind a Snap Judgment</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">Schemas &amp; priming</div>
+          <div class="row-text">Mental shortcuts built from past experience fill gaps with assumption, not fact &mdash; and whichever schema was activated most recently shapes how new information gets read.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Judgmental heuristics</div>
+          <div class="row-text">The availability heuristic (what comes easily to mind) and representativeness heuristic (how well someone matches a mental prototype) substitute a fast guess for a full evaluation.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Self-fulfilling prophecy</div>
+          <div class="row-text">An early expectation about someone can shape how a manager behaves toward them &mdash; which can shape the person&rsquo;s actual performance, turning a guess into &lsquo;confirmed&rsquo; evidence.</div>
+        </div>
+      </div>
+      <span class="pagenum">5</span>
+    </section>
+
+    <!-- Slide 6 -->
+    <section class="slide slide-white tpl-exercise" data-slide="6">
+      <span class="badge-pill badge-navy">EXERCISE &bull; 20 MIN</span>
+      <h2>The Snap Judgment Exercise</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">1</div><div class="ex-text">Review a short candidate profile and give a quick gut rating before any discussion.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">2</div><div class="ex-text">See a fuller version of the same profile with added context that changes the picture.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">3</div><div class="ex-text">Compare initial ratings to the fuller picture &mdash; discuss which detail anchored the first impression.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">4</div><div class="ex-text">Debrief: which heuristic most shaped the initial read?</div></div>
+      </div>
+      <span class="pagenum">6</span>
+    </section>
+
+    <!-- Slide 7 -->
+    <section class="slide slide-navy tpl-takeaway" data-slide="7">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">A snap judgment isn&rsquo;t a personal failing &mdash; it&rsquo;s a mental shortcut doing exactly what it&rsquo;s built to do. The fix is catching it before it hardens into a decision.</p>
+      <span class="pagenum">7</span>
+    </section>
+
+    <!-- Slide 8 -->
+    <section class="slide slide-navy tpl-module" data-slide="8">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></div>
+      <p class="eyebrow">MODULE 2</p>
+      <h1>The Halo Effect &amp; Confirmation Bias</h1>
+      <p class="source">Source: Ch. 3 &amp; 4 &mdash; Social Cognition and Social Perception</p>
+      <span class="pagenum">8</span>
+    </section>
+
+    <!-- Slide 9 -->
+    <section class="slide slide-white tpl-compare" data-slide="9">
+      <h2>How a First Impression Locks In</h2>
+      <p class="compare-sub">Two effects that compound in calibration meetings</p>
+      <div class="compare-row">
+        <div class="compare-card tint-blue">
+          <div class="compare-head c-navy">THE HALO EFFECT</div>
+          <ul>
+            <li>One strong trait colors the whole impression</li>
+            <li>Works in both directions &mdash; positive or negative</li>
+            <li>Forms fast, often from a single early data point</li>
+          </ul>
+        </div>
+        <div class="compare-card tint-berry">
+          <div class="compare-head c-berry">CONFIRMATION BIAS</div>
+          <ul>
+            <li>We notice evidence that fits the existing impression</li>
+            <li>We discount or forget evidence that doesn&rsquo;t</li>
+            <li>Happens without any deliberate intent to be unfair</li>
+          </ul>
+        </div>
+      </div>
+      <p class="compare-foot">The fix isn&rsquo;t trying harder to &ldquo;be objective&rdquo; in the moment &mdash; it&rsquo;s reviewing ambiguous evidence before the overall impression locks in.</p>
+      <span class="pagenum">9</span>
+    </section>
+
+    <!-- Slide 10 -->
+    <section class="slide slide-white tpl-exercise" data-slide="10">
+      <span class="badge-pill badge-berry">CASE STUDY &bull; 20 MIN</span>
+      <h2>Calibration Case Study</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">1</div><div class="ex-text">Review a case file with a mix of strong and weak data, framed with an early positive impression.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">2</div><div class="ex-text">In small groups, identify which evidence got &ldquo;read generously&rdquo; because of that framing.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">3</div><div class="ex-text">Re-run with the same data but a negative framing &mdash; compare how differently it&rsquo;s interpreted.</div></div>
+      </div>
+      <span class="pagenum">10</span>
+    </section>
+
+    <!-- Slide 11 -->
+    <section class="slide slide-navy tpl-takeaway" data-slide="11">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">Once an impression forms, evidence stops updating it and starts confirming it. Structure the process so the evidence comes before the story, not after.</p>
+      <span class="pagenum">11</span>
+    </section>
+
+    <!-- Slide 12 -->
+    <section class="slide slide-navy tpl-module" data-slide="12">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <p class="eyebrow">MODULE 3</p>
+      <h1>Where Prejudice Comes From</h1>
+      <p class="source">Source: Ch. 13 &mdash; Prejudice: Causes, Consequences, and Cures</p>
+      <span class="pagenum">12</span>
+    </section>
+
+    <!-- Slide 13 -->
+    <section class="slide slide-white tpl-rows" data-slide="13">
+      <h2>The Mechanics Behind Prejudice</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">In-group / out-group</div>
+          <div class="row-text">People naturally sort others into &lsquo;us&rsquo; and &lsquo;them&rsquo; with minimal provocation, and see their own group as varied but the out-group as &ldquo;all alike.&rdquo;</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Stereotyping as schema</div>
+          <div class="row-text">A mental shortcut applied to a group &mdash; speeds up judgment but fills gaps with assumption and resists updating even when contradicted.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Scarcity intensifies it</div>
+          <div class="row-text">Competition for real or perceived resources (jobs, promotions, status) intensifies in-group favoritism and out-group hostility &mdash; often spiking during restructuring.</div>
+        </div>
+      </div>
+      <span class="pagenum">13</span>
+    </section>
+
+    <!-- Slide 14 -->
+    <section class="slide slide-white tpl-exercise" data-slide="14">
+      <span class="badge-pill badge-navy">DISCUSSION &bull; 20 MIN</span>
+      <h2>Mechanism Mapping Discussion</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">1</div><div class="ex-text">Map where in-group/out-group categorization shows up in ordinary workplace language (&ldquo;culture fit,&rdquo; alumni networks, informal groups).</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">2</div><div class="ex-text">Discuss which groupings are functionally necessary &mdash; and which quietly create in-group advantage.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">3</div><div class="ex-text">Full-group share-out: name one place a stereotype substituted for actual information in a real decision.</div></div>
+      </div>
+      <span class="pagenum">14</span>
+    </section>
+
+    <!-- Slide 15 -->
+    <section class="slide slide-navy tpl-takeaway" data-slide="15">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">Prejudice is not primarily a story about bad individuals &mdash; it&rsquo;s a predictable output of ordinary group psychology under scarcity and category pressure. That makes it interruptible.</p>
+      <span class="pagenum">15</span>
+    </section>
+
+    <!-- Slide 16 -->
+    <section class="slide slide-navy tpl-module" data-slide="16">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
+      <p class="eyebrow">MODULE 4</p>
+      <h1>Structural Fixes That Don&rsquo;t Rely on Willpower</h1>
+      <p class="source">Source: Ch. 13 &mdash; Prejudice (Cures)</p>
+      <span class="pagenum">16</span>
+    </section>
+
+    <!-- Slide 17 -->
+    <section class="slide slide-white tpl-rows" data-slide="17">
+      <h2>Process Changes That Actually Work</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">Structured interviews</div>
+          <div class="row-text">Pre-set questions and scoring, asked identically to every candidate, measurably reduce first-impression halo effects versus unstructured conversation.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Blind or sequenced review</div>
+          <div class="row-text">Reviewing work product before identifying details, or comparing all candidates on one question before moving to the next, limits the compounding of an early impression.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Pre-committed criteria</div>
+          <div class="row-text">Defining what &ldquo;success&rdquo; looks like before reviewing anyone prevents the bar from quietly shifting to match whoever already impressed you.</div>
+        </div>
+      </div>
+      <span class="pagenum">17</span>
+    </section>
+
+    <!-- Slide 18 -->
+    <section class="slide slide-white tpl-exercise" data-slide="18">
+      <span class="badge-pill badge-berry">EXERCISE &bull; 15 MIN</span>
+      <h2>Redesign One Step</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">1</div><div class="ex-text">Pick one real step in your hiring, review, or promotion process.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">2</div><div class="ex-text">In pairs, redesign it to reduce reliance on in-the-moment individual objectivity &mdash; using structure, sequencing, or pre-set criteria.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">3</div><div class="ex-text">Share redesigns with the group; discuss feasibility and expected resistance.</div></div>
+      </div>
+      <span class="pagenum">18</span>
+    </section>
+
+    <!-- Slide 19 -->
+    <section class="slide slide-navy tpl-takeaway" data-slide="19">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">Objectivity is not a mindset you can will yourself into under time pressure &mdash; it&rsquo;s a property of a well-structured process. Fix the process, not just the intention.</p>
+      <span class="pagenum">19</span>
+    </section>
+
+    <!-- Slide 20 -->
+    <section class="slide slide-white tpl-action" data-slide="20">
+      <h2>Your Action Plan</h2>
+      <p class="action-sub">Return to the decision from your pre-work:</p>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Which mental shortcut &mdash; schema, priming, availability, representativeness &mdash; might have shaped my first read of this person?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Did a halo effect or confirmation bias lock in an early impression before I had the full picture?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Was any part of my read shaped by in-group/out-group signals like &ldquo;culture fit&rdquo;?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">What is one structural change I can make to this specific process step in the next month?</div>
+      </div>
+      <span class="pagenum">20</span>
+    </section>
+
+    <!-- Slide 21 -->
+    <section class="slide slide-navy tpl-closing" data-slide="21">
+      <h1>Bias hides in the process.</h1>
+      <p class="sub">Fix the process, not just the intention.</p>
+      <div class="divider"></div>
+      <p class="caption">Thank you&nbsp; &mdash; &nbsp;Questions &amp; Evaluation</p>
+      <span class="pagenum">21</span>
+    </section>
+
+  </div>
+</div>
+
+<div class="deck-controls">
+  <button class="nav-btn" id="prevBtn" type="button" aria-label="Previous slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="slide-counter" id="slideCounter">Slide 1 of 21</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" type="button" aria-label="Next slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var current = 0;
+
+  var stage = document.getElementById('stage');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var progressFill = document.getElementById('progressFill');
+  var slideCounter = document.getElementById('slideCounter');
+  var fsBtn = document.getElementById('fsBtn');
+
+  function render() {
+    slides.forEach(function (s, i) {
+      s.classList.toggle('active', i === current);
+    });
+    progressFill.style.width = (((current + 1) / total) * 100) + '%';
+    slideCounter.textContent = 'Slide ' + (current + 1) + ' of ' + total;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  function goTo(i) {
+    if (i < 0 || i > total - 1) return;
+    current = i;
+    render();
+  }
+
+  prevBtn.addEventListener('click', function () { goTo(current - 1); });
+  nextBtn.addEventListener('click', function () { goTo(current + 1); });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { goTo(current + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { goTo(current - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { goTo(0); }
+    else if (e.key === 'End') { goTo(total - 1); }
+    else if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); }
+  });
+
+  // Touch swipe
+  var touchStartX = null;
+  stage.addEventListener('touchstart', function (e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchend', function (e) {
+    if (touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) { dx < 0 ? goTo(current + 1) : goTo(current - 1); }
+    touchStartX = null;
+  }, { passive: true });
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      if (stage.requestFullscreen) stage.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+    }
+  }
+  fsBtn.addEventListener('click', toggleFullscreen);
+
+  render();
+})();
+</script>
+
+</body>
+</html>
