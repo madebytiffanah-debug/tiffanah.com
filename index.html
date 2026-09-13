@@ -214,18 +214,22 @@
   }
 
   .app-tile {
-    background: rgba(241, 228, 204, 0.05);
-    border: 1px solid rgba(241, 228, 204, 0.14);
+    background: #453A2E;
+    border: 1px solid rgba(241, 228, 204, 0.16);
+    border-top: 3px solid var(--gold);
     border-radius: 10px;
     padding: 30px 26px;
     transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
   }
 
   .app-tile:hover {
-    background: rgba(241, 228, 204, 0.09);
-    border-color: rgba(241, 228, 204, 0.22);
+    background: #4E4234;
+    border-color: rgba(241, 228, 204, 0.28);
     transform: translateY(-4px);
   }
+
+  .app-tile:nth-child(2) { border-top-color: var(--clay); }
+  .app-tile:nth-child(3) { border-top-color: var(--sage); }
 
   .app-icon {
     display: block;
@@ -363,15 +367,18 @@
   }
 
   .course-card {
-    background: var(--paper-soft);
-    border: 1px solid rgba(51, 42, 34, 0.14);
+    background: #E7D4A9;
+    border: 1px solid rgba(51, 42, 34, 0.16);
+    border-top: 3px solid var(--plum);
     border-radius: 10px;
     padding: 30px 26px;
-    transition: transform 0.18s ease, border-color 0.18s ease;
+    box-shadow: 0 1px 3px rgba(51, 42, 34, 0.08);
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
   }
 
   .course-card:hover {
     transform: translateY(-4px);
+    background: #E0CA9B;
     border-color: rgba(51, 42, 34, 0.28);
   }
 
