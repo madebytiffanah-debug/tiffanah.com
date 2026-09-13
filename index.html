@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiffany Schonbach — Mental Health Tools & Psychology-Rooted HR Courses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F1E4CC;
+    --paper-soft: #EAD9B8;
+    --ink: #332A22;
+    --ink-soft: #6B5D4C;
+    --gold: #C68D33;
+    --plum: #6B3F4B;
+    --clay: #B2543A;
+    --sage: #8B9574;
+    --max: 1080px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Karla', sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ---------- NAV ---------- */
+  header.site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(241, 228, 204, 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(51, 42, 34, 0.1);
+  }
+
+  .nav-inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-name {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    transition: color 0.15s ease;
+  }
+
+  .nav-links a:hover { color: var(--plum); }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    padding: 96px 0 80px;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .hero h1 {
+    font-size: 52px;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    max-width: 12ch;
+  }
+
+  .hero-tagline {
+    margin-top: 22px;
+    font-size: 19px;
+    color: var(--ink-soft);
+    max-width: 42ch;
+  }
+
+  .hero-cta {
+    margin-top: 34px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--plum);
+    color: var(--paper);
+    text-decoration: none;
+    padding: 13px 26px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: background 0.15s ease;
+  }
+
+  .btn-primary:hover { background: #56303B; }
+
+  .link-quiet {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+    border-bottom: 1.5px solid var(--gold);
+    padding-bottom: 2px;
+  }
+
+  .hero-art {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section.stack {
+    padding: 72px 0;
+    border-top: 1px solid rgba(51, 42, 34, 0.12);
+  }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .section-head h2 {
+    font-size: 32px;
+  }
+
+  .section-head p {
+    color: var(--ink-soft);
+    max-width: 34ch;
+    margin: 10px 0 0;
+    font-size: 15.5px;
+  }
+
+  /* ---------- APPS & TOOLS (dark section) ---------- */
+  .apps-dark {
+    background: var(--ink);
+    padding: 84px 0 92px;
+  }
+
+  .apps-label {
+    display: inline-block;
+    font-family: 'Caveat', cursive;
+    font-size: 25px;
+    font-weight: 600;
+    color: var(--gold);
+    transform: rotate(-1.5deg);
+    margin-bottom: 6px;
+  }
+
+  .apps-dark h2 {
+    color: var(--paper);
+    font-size: 32px;
+    margin-top: 4px;
+  }
+
+  .apps-dark .section-head p {
+    color: rgba(241, 228, 204, 0.68);
+    max-width: 46ch;
+  }
+
+  .tile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-top: 44px;
+  }
+
+  .app-tile {
+    background: rgba(241, 228, 204, 0.05);
+    border: 1px solid rgba(241, 228, 204, 0.14);
+    border-radius: 10px;
+    padding: 30px 26px;
+    transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  }
+
+  .app-tile:hover {
+    background: rgba(241, 228, 204, 0.09);
+    border-color: rgba(241, 228, 204, 0.22);
+    transform: translateY(-4px);
+  }
+
+  .app-icon {
+    display: block;
+    font-size: 26px;
+    margin-bottom: 18px;
+  }
+
+  .app-tile h3 {
+    color: var(--paper);
+    font-size: 21px;
+    margin-bottom: 10px;
+  }
+
+  .app-quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--gold);
+    opacity: 0.9;
+    margin: 0 0 14px;
+  }
+
+  .app-desc {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: rgba(241, 228, 204, 0.72);
+    margin: 0 0 22px;
+  }
+
+  .app-cta {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--gold);
+    border-bottom: 1.5px solid var(--gold);
+    padding-bottom: 2px;
+  }
+
+  /* ---------- PORTFOLIO ROWS ---------- */
+  .item-row {
+    display: grid;
+    grid-template-columns: 2.4fr 1fr;
+    gap: 24px;
+    padding: 28px 0;
+    border-top: 1px solid rgba(51, 42, 34, 0.14);
+    align-items: start;
+  }
+
+  .item-row:last-child { border-bottom: 1px solid rgba(51, 42, 34, 0.14); }
+
+  .item-title-line {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .item-row h3 {
+    font-size: 23px;
+  }
+
+  .item-tag {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--plum);
+    background: rgba(107, 63, 75, 0.1);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .item-row .desc {
+    margin-top: 10px;
+    color: var(--ink-soft);
+    max-width: 56ch;
+    font-size: 15.5px;
+  }
+
+  .item-meta {
+    text-align: right;
+  }
+
+  .item-meta .stack-tag {
+    display: block;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+
+  .item-link {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--clay);
+    border-bottom: 1.5px solid var(--clay);
+    padding-bottom: 1px;
+  }
+
+  .item-link.course-link {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about-inner {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .about-portrait {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(51,42,34,0.15);
+  }
+
+  .about-copy p {
+    font-size: 16.5px;
+    color: var(--ink);
+    margin: 0 0 20px;
+  }
+
+  .pull-quote {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--plum);
+    margin: 28px 0;
+    padding-left: 22px;
+    border-left: 3px solid var(--gold);
+  }
+
+  .about-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .about-tags span {
+    font-size: 13.5px;
+    font-weight: 600;
+    background: rgba(198, 141, 51, 0.16);
+    color: #7A551F;
+    padding: 6px 13px;
+    border-radius: 20px;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    padding: 52px 0 64px;
+    border-top: 1px solid rgba(51, 42, 34, 0.14);
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-links a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+  }
+
+  .footer-links a:hover { color: var(--plum); }
+
+  footer .copyright {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px) {
+    .tile-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 760px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 38px; max-width: none; }
+    .hero-art { order: -1; }
+    .tile-grid { grid-template-columns: 1fr; }
+    .item-row { grid-template-columns: 1fr; }
+    .item-meta { text-align: left; margin-top: 6px; }
+    .about-inner { grid-template-columns: 1fr; }
+    .about-portrait { max-width: 260px; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .nav-links { gap: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--plum);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-name" href="#top">Tiffany Schonbach</a>
+    <ul class="nav-links">
+      <li><a href="#apps">Apps</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ---------- HERO ---------- -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <h1>Psychology, built into things people actually use.</h1>
+        <p class="hero-tagline">I design mental health apps and HR training grounded in behavioral science — work that sits at the intersection of how people think and how organizations run.</p>
+        <div class="hero-cta">
+          <a class="btn-primary" href="#apps">See the work</a>
+          <a class="link-quiet" href="#about">About me</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M160 40C220 40 270 90 270 155C270 220 215 280 150 280C90 280 45 230 50 165C55 100 100 40 160 40Z" fill="#C68D33" opacity="0.85"/>
+          <path d="M150 70C195 65 235 105 232 155C229 205 185 240 140 235C95 230 65 190 72 148C79 106 115 74 150 70Z" fill="#6B3F4B" opacity="0.65"/>
+          <circle cx="150" cy="155" r="46" fill="#F1E4CC"/>
+          <path d="M150 130C160 130 168 138 168 148C168 158 160 166 150 166C140 166 132 158 132 148C132 138 140 130 150 130Z" fill="#8B9574" opacity="0.9"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- APPS & TOOLS ---------- -->
+  <section class="apps-dark" id="apps">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="apps-label">things I built so I'd stop spiraling</span>
+          <h2>Apps &amp; tools</h2>
+          <p>Built for personal use during hard moments — no credentials, no cure, just practical tools for anxiety, overthinking, and hard days that turned out to help other people too.</p>
+        </div>
+      </div>
+
+      <div class="tile-grid">
+        <div class="app-tile">
+          <span class="app-icon">✳️</span>
+          <h3>Be-ish</h3>
+          <p class="app-quote">"I think, therefore I might."</p>
+          <p class="app-desc">Pick a feeling, get a daily prompt, journal it out. A gift to your future self, not a promise.</p>
+          <a class="app-cta" href="https://tiffanyherndon-alt.github.io/Be-ish/" target="_blank" rel="noopener">Try it free →</a>
+        </div>
+
+        <div class="app-tile">
+          <span class="app-icon">🌙</span>
+          <h3>Pocket Wisdom</h3>
+          <p class="app-quote">"A little perspective when you need it."</p>
+          <p class="app-desc">One calm, thoughtful quote at a time. Browse a 45-day path or by theme, and save the ones that stay with you.</p>
+          <a class="app-cta" href="https://pocket-wisdom.netlify.app/" target="_blank" rel="noopener">Try it free →</a>
+        </div>
+
+        <div class="app-tile">
+          <span class="app-icon">✎</span>
+          <h3>In the Moment</h3>
+          <p class="app-quote">"Sh*t's real. You need a minute. Here it is."</p>
+          <p class="app-desc">A quick reset for whenever things go sideways.</p>
+          <a class="app-cta" href="https://tiffanyherndon-alt.github.io/In-the-Moment/" target="_blank" rel="noopener">Try it free →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- HR COURSES ---------- -->
+  <section class="stack" id="courses">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Courses I've designed</h2>
+          <p>A manager & leadership training series grounded in social psychology research — half-day workshops built for real workplaces, not compliance checkboxes.</p>
+        </div>
+      </div>
+
+      <div class="item-row">
+        <div>
+          <div class="item-title-line">
+            <h3>Influence Without Manipulation</h3>
+            <span class="item-tag">Influence &amp; persuasion</span>
+          </div>
+          <p class="desc">The real mechanics of persuasion, buy-in, and group influence — with a clear, practical line between leading people and pressuring them.</p>
+        </div>
+        <div class="item-meta">
+          <span class="stack-tag">Half-day workshop · Managers</span>
+          <a class="item-link course-link" href="courses/influence.html">View course</a>
+        </div>
+      </div>
+
+      <div class="item-row">
+        <div>
+          <div class="item-title-line">
+            <h3>Managing the Room</h3>
+            <span class="item-tag">Team dynamics</span>
+          </div>
+          <p class="desc">Why effort quietly drops in groups, why decisions swing to extremes, and how to lead and give feedback fairly.</p>
+        </div>
+        <div class="item-meta">
+          <span class="stack-tag">Half-day workshop · Managers</span>
+          <a class="item-link course-link" href="courses/team-dynamics.html">View course</a>
+        </div>
+      </div>
+
+      <div class="item-row">
+        <div>
+          <div class="item-title-line">
+            <h3>Bias-Aware Decisions</h3>
+            <span class="item-tag">Bias-aware decisions</span>
+          </div>
+          <p class="desc">The cognitive mechanics behind biased hiring, reviews, and promotion calls — and the structural fixes that work without relying on willpower.</p>
+        </div>
+        <div class="item-meta">
+          <span class="stack-tag">Half-day workshop · Managers</span>
+          <a class="item-link course-link" href="courses/bias-aware.html">View course</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- ABOUT ---------- -->
+  <section class="stack" id="about">
+    <div class="wrap about-inner">
+      <div class="about-portrait">
+        <img src="portrait.jpg" alt="Tiffany Schonbach" style="width:100%; height:100%; object-fit:cover; border-radius:6px;">
+      </div>
+      <div class="about-copy">
+        <h2 style="font-size: 32px; margin-bottom: 22px;">A bit about me</h2>
+        <p>I've spent over a decade being the person teams turn to when things get complicated — the operator who steps into transitions, untangles the chaos, and keeps people moving forward. What I've come to realize is that the part of that work I care about most was never the P&amp;L or the SOPs. It's the moment someone finally feels safe enough to say what's actually going on.</p>
+
+        <p class="pull-quote">I don't judge, because I've been there.</p>
+
+        <p>My background is in business operations and HR — leading finance, people strategy, and operational scaling for organizations moving through growth, leadership transitions, and uncertainty, from a $100M multi-venue entertainment company to a global software marketplace. I've built HR infrastructure from the ground up, kept the lights on through CEO and CFO transitions, and been the steady hand people count on when things get shaky. Somewhere along the way, the budgets and the SOPs became almost incidental to the real work: helping people feel steady enough to keep going.</p>
+
+        <p>Right now I'm using AI to build the tools I wished existed for myself — apps for anxious, overthinking days, and manager training grounded in real psychology research instead of compliance boxes. It's how I've been teaching myself these skills, one project at a time. What I'm looking for next is a way to bring that operations and HR experience directly into the mental health space — a tech company, or somewhere building experiences for people's wellbeing — work where the rigor and the human part aren't treated as separate things.</p>
+
+        <div class="about-tags">
+          <span>Business operations</span>
+          <span>People strategy</span>
+          <span>Mental health</span>
+          <span>Applied AI</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ---------- FOOTER ---------- -->
+<footer id="contact">
+  <div class="wrap footer-inner">
+    <p class="copyright">© 2026 Tiffany Schonbach</p>
+    <ul class="footer-links">
+      <li><a href="https://linkedin.com/in/tiffany-schonbach">LinkedIn</a></li>
+      <li><a href="https://github.com/tiffanyherndon-alt">GitHub</a></li>
+      <li><a href="mailto:madebytiffanah@gmail.com">Email</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
