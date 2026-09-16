@@ -4,24 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Managing the Room — Slide Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #1E2761;
-    --navy-deep: #12173F;
-    --ice: #CADCFC;
-    --gold: #C9A227;
-    --gold-tint: #FBF3DC;
-    --berry: #6D2E46;
-    --berry-tint: #F6ECEF;
-    --paper: #FDFDFC;
-    --ink: #23263B;
-    --muted: #666A82;
-    --line: #E4E5EF;
+    --navy: #332A22;
+    --navy-deep: #241D18;
+    --ice: #C68D33;
+    --gold: #C68D33;
+    --gold-tint: rgba(198, 141, 51, 0.16);
+    --berry: #B2543A;
+    --berry-tint: rgba(178, 84, 58, 0.14);
+    --paper: #F1E4CC;
+    --paper-soft: #EAD9B8;
+    --ink: #332A22;
+    --muted: #6B5D4C;
+    --line: rgba(51, 42, 34, 0.16);
+    --plum: #6B3F4B;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-family: 'Karla', sans-serif;
     background: var(--navy-deep);
     color: var(--ink);
     min-height: 100vh;
@@ -48,19 +53,19 @@
   }
   .deck-back:hover { text-decoration: underline; }
   .deck-title {
-    color: #fff;
-    font-family: Georgia, "Times New Roman", serif;
+    color: var(--paper);
+    font-family: 'Fraunces', serif;
     font-size: 17px;
-    font-weight: 700;
+    font-weight: 500;
     text-align: center;
     flex: 1;
   }
   .deck-title span { color: var(--ice); font-weight: 400; font-family: inherit; }
   .deck-actions { display: flex; align-items: center; gap: 10px; }
   .icon-btn {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: #fff;
+    background: rgba(241,228,204,0.08);
+    border: 1px solid rgba(241,228,204,0.2);
+    color: var(--paper);
     width: 34px;
     height: 34px;
     border-radius: 7px;
@@ -69,7 +74,7 @@
     justify-content: center;
     cursor: pointer;
   }
-  .icon-btn:hover { background: rgba(255,255,255,0.16); }
+  .icon-btn:hover { background: rgba(241,228,204,0.16); }
   .icon-btn svg { width: 17px; height: 17px; }
 
   /* Stage */
@@ -85,7 +90,7 @@
     overflow: hidden;
     box-shadow: 0 24px 60px rgba(6, 10, 34, 0.45);
     container-type: inline-size;
-    background: #fff;
+    background: var(--paper);
   }
   .stage:fullscreen { border-radius: 0; max-width: none; }
   .stage:fullscreen .slide { border-radius: 0; }
@@ -111,8 +116,8 @@
     padding: var(--pad);
   }
   .slide.active { display: flex; }
-  .slide-navy { background: var(--navy); color: #fff; }
-  .slide-white { background: #fff; color: var(--ink); }
+  .slide-navy { background: var(--navy); color: var(--paper); }
+  .slide-white { background: var(--paper); color: var(--ink); }
 
   .pagenum {
     position: absolute;
@@ -121,13 +126,13 @@
     font-size: var(--fs-tiny);
     color: var(--muted);
   }
-  .slide-navy .pagenum { color: rgba(255,255,255,0.45); }
+  .slide-navy .pagenum { color: rgba(241,228,204,0.45); }
 
   .icon-badge svg { display: block; }
 
   /* ---------- Title slide ---------- */
   .tpl-title { justify-content: center; }
-  .tpl-title .icon-badge { width: 5.6cqw; height: 5.6cqw; color: #fff; margin-bottom: 2.6cqw; }
+  .tpl-title .icon-badge { width: 5.6cqw; height: 5.6cqw; color: var(--paper); margin-bottom: 2.6cqw; }
   .tpl-title .eyebrow {
     font-size: var(--fs-small);
     font-weight: 700;
@@ -136,9 +141,10 @@
     margin: 0 0 1.1cqw;
   }
   .tpl-title h1 {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: 'Fraunces', serif;
     font-size: var(--fs-hero);
-    font-weight: 700;
+    font-weight: 500;
+    letter-spacing: -0.01em;
     margin: 0 0 1.4cqw;
     line-height: 1.1;
   }
@@ -157,11 +163,11 @@
   }
   .tpl-title .caption {
     font-size: var(--fs-body);
-    color: #AAB4E0;
+    color: rgba(241,228,204,0.65);
   }
 
   /* ---------- Agenda ---------- */
-  .tpl-agenda h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.2cqw; }
+  .tpl-agenda h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.2cqw; }
   .agenda-row {
     display: flex;
     align-items: flex-start;
@@ -175,12 +181,12 @@
     width: 3.2cqw;
     height: 3.2cqw;
     border-radius: 8px;
-    background: var(--navy);
-    color: #fff;
+    background: var(--plum);
+    color: var(--paper);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: Georgia, serif;
+    font-family: 'Fraunces', serif;
     font-weight: 700;
     font-size: var(--fs-h3);
   }
@@ -192,8 +198,8 @@
   .tpl-split { flex-direction: row; padding: 0; }
   .split-left {
     flex: 0 0 36%;
-    background: var(--navy);
-    color: #fff;
+    background: var(--plum);
+    color: var(--paper);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -202,7 +208,7 @@
     padding: 0 2cqw;
   }
   .split-left .icon-badge { width: 5cqw; height: 5cqw; margin-bottom: 1.6cqw; }
-  .split-left h2 { font-family: Georgia, serif; font-size: var(--fs-h1); margin: 0; }
+  .split-left h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); margin: 0; }
   .split-right {
     flex: 1;
     display: flex;
@@ -235,15 +241,15 @@
     right: var(--pad);
     width: 4.6cqw;
     height: 4.6cqw;
-    color: #fff;
+    color: var(--paper);
     opacity: 0.9;
   }
   .tpl-module .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); margin: 0 0 1cqw; letter-spacing: 0.03em; }
-  .tpl-module h1 { font-family: Georgia, serif; font-size: 3.1cqw; font-weight: 700; margin: 0 0 1.2cqw; max-width: 88%; line-height: 1.18; }
+  .tpl-module h1 { font-family: 'Fraunces', serif; font-size: 3.1cqw; font-weight: 500; margin: 0 0 1.2cqw; max-width: 88%; line-height: 1.18; }
   .tpl-module .source { font-size: var(--fs-body); color: var(--ice); }
 
   /* ---------- 3-row content ---------- */
-  .tpl-rows h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.4cqw; }
+  .tpl-rows h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.4cqw; }
   .row-list { display: flex; flex-direction: column; gap: 1.7cqw; }
   .row-item { display: flex; gap: 1.4cqw; align-items: flex-start; }
   .row-num-circle {
@@ -254,7 +260,7 @@
     font-weight: 700; font-size: var(--fs-h3);
     background: var(--gold); color: var(--navy-deep);
   }
-  .row-heading { flex: 0 0 26%; font-size: var(--fs-body-lg); font-weight: 700; color: var(--navy); padding-top: 0.3cqw; }
+  .row-heading { flex: 0 0 26%; font-size: var(--fs-body-lg); font-weight: 700; color: var(--plum); padding-top: 0.3cqw; }
   .row-text { flex: 1; font-size: var(--fs-body); line-height: 1.55; padding-top: 0.3cqw; }
   .row-list-foot { font-size: var(--fs-body); color: var(--muted); margin-top: 1.6cqw; line-height: 1.5; }
 
@@ -266,59 +272,59 @@
     border-radius: 20px;
     font-size: var(--fs-small);
     font-weight: 700;
-    color: #fff;
+    color: var(--paper);
     letter-spacing: 0.03em;
     margin-bottom: 1.4cqw;
   }
-  .badge-navy { background: var(--navy); }
+  .badge-navy { background: var(--plum); }
   .badge-berry { background: var(--berry); }
-  .tpl-exercise h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.1cqw; }
+  .tpl-exercise h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.1cqw; }
   .ex-list { display: flex; flex-direction: column; gap: 1.35cqw; }
   .ex-item { display: flex; gap: 1.3cqw; align-items: center; }
   .ex-num {
     flex: 0 0 auto; width: 2.8cqw; height: 2.8cqw; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    color: #fff; font-weight: 700; font-size: var(--fs-body-lg);
+    color: var(--paper); font-weight: 700; font-size: var(--fs-body-lg);
   }
   .ex-text { font-size: var(--fs-body); line-height: 1.5; }
 
   /* ---------- Key takeaway ---------- */
   .tpl-takeaway { justify-content: center; align-items: center; text-align: center; }
-  .tpl-takeaway .icon-badge { width: 4.4cqw; height: 4.4cqw; color: #fff; margin-bottom: 1.6cqw; }
+  .tpl-takeaway .icon-badge { width: 4.4cqw; height: 4.4cqw; color: var(--paper); margin-bottom: 1.6cqw; }
   .tpl-takeaway .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); letter-spacing: 0.05em; margin: 0 0 1.1cqw; }
   .tpl-takeaway .quote { max-width: 78%; font-size: var(--fs-quote); line-height: 1.5; margin: 0; }
 
   /* ---------- Comparison cards ---------- */
-  .tpl-compare h2 { font-family: Georgia, serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  .tpl-compare h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 0.5cqw; }
   .tpl-compare .compare-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.8cqw; }
   .compare-row { display: flex; gap: 1.6cqw; flex: 1; }
   .compare-card { flex: 1; border-radius: 10px; padding: 1.8cqw 1.9cqw; display: flex; flex-direction: column; gap: 0.9cqw; }
-  .compare-card.tint-blue { background: #F2F4FC; }
+  .compare-card.tint-blue { background: rgba(107, 63, 75, 0.12); }
   .compare-card.tint-berry { background: var(--berry-tint); }
   .compare-head { font-size: var(--fs-h3); font-weight: 700; letter-spacing: 0.02em; }
-  .compare-head.c-navy { color: var(--navy); }
+  .compare-head.c-navy { color: var(--plum); }
   .compare-head.c-berry { color: var(--berry); }
   .compare-card ul { margin: 0; padding-left: 1.3cqw; font-size: var(--fs-body); line-height: 1.65; color: var(--ink); }
   .compare-card li { margin-bottom: 0.3cqw; }
   .compare-foot { font-size: var(--fs-body); color: var(--muted); margin-top: 1.6cqw; line-height: 1.5; }
 
   /* ---------- Action plan ---------- */
-  .tpl-action h2 { font-family: Georgia, serif; font-size: 2.9cqw; color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  .tpl-action h2 { font-family: 'Fraunces', serif; font-size: 2.9cqw; color: var(--navy-deep); margin: 0 0 0.5cqw; }
   .tpl-action .action-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.9cqw; }
   .action-row { display: flex; gap: 1.4cqw; align-items: center; margin-bottom: 1.15cqw; }
   .action-icon {
     flex: 0 0 auto; width: 3cqw; height: 3cqw; border-radius: 8px;
-    background: var(--navy); display: flex; align-items: center; justify-content: center;
+    background: var(--plum); display: flex; align-items: center; justify-content: center;
   }
-  .action-icon svg { width: 55%; height: 55%; color: #fff; }
+  .action-icon svg { width: 55%; height: 55%; color: var(--paper); }
   .action-text { font-size: var(--fs-body-lg); line-height: 1.45; }
 
   /* ---------- Closing ---------- */
   .tpl-closing { justify-content: center; }
-  .tpl-closing h1 { font-family: Georgia, serif; font-size: 3.3cqw; font-weight: 700; margin: 0 0 1cqw; }
+  .tpl-closing h1 { font-family: 'Fraunces', serif; font-size: 3.3cqw; font-weight: 500; margin: 0 0 1cqw; }
   .tpl-closing .sub { font-size: var(--fs-h3); color: var(--ice); margin: 0 0 2.2cqw; font-weight: 400; }
   .tpl-closing .divider { width: 15%; height: 3px; background: var(--gold); border-radius: 2px; margin-bottom: 2cqw; }
-  .tpl-closing .caption { font-size: var(--fs-body); color: #AAB4E0; }
+  .tpl-closing .caption { font-size: var(--fs-body); color: rgba(241,228,204,0.65); }
 
   /* ---------- Controls ---------- */
   .deck-controls {
@@ -331,9 +337,9 @@
     margin-top: 18px;
   }
   .nav-btn {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.22);
-    color: #fff;
+    background: rgba(241,228,204,0.08);
+    border: 1px solid rgba(241,228,204,0.22);
+    color: var(--paper);
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -343,19 +349,19 @@
     cursor: pointer;
     flex: 0 0 auto;
   }
-  .nav-btn:hover:not(:disabled) { background: rgba(255,255,255,0.18); }
+  .nav-btn:hover:not(:disabled) { background: rgba(241,228,204,0.18); }
   .nav-btn:disabled { opacity: 0.3; cursor: default; }
   .nav-btn svg { width: 18px; height: 18px; }
   .progress-wrap { flex: 1; max-width: 480px; }
   .progress-track {
     height: 4px;
-    background: rgba(255,255,255,0.15);
+    background: rgba(241,228,204,0.15);
     border-radius: 2px;
     overflow: hidden;
   }
   .progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.25s ease; }
   .slide-counter {
-    color: #C9D2EE;
+    color: rgba(241,228,204,0.55);
     font-size: 13px;
     text-align: center;
     margin-top: 8px;
@@ -498,10 +504,10 @@
       <span class="badge-pill badge-navy">EXERCISE &bull; 20 MIN</span>
       <h2>The Hidden Profile Exercise</h2>
       <div class="ex-list">
-        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">1</div><div class="ex-text">Each group member gets a briefing: some shared facts, some facts only they hold, about a fictional hiring decision.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">2</div><div class="ex-text">Discuss and reach a decision without comparing full briefings.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">3</div><div class="ex-text">Reveal: the correct call required combining everyone&rsquo;s unique facts.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">4</div><div class="ex-text">Debrief: what structural change would have surfaced the missing information?</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">1</div><div class="ex-text">Each group member gets a briefing: some shared facts, some facts only they hold, about a fictional hiring decision.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">2</div><div class="ex-text">Discuss and reach a decision without comparing full briefings.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">3</div><div class="ex-text">Reveal: the correct call required combining everyone&rsquo;s unique facts.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">4</div><div class="ex-text">Debrief: what structural change would have surfaced the missing information?</div></div>
       </div>
       <span class="pagenum">6</span>
     </section>
@@ -607,9 +613,9 @@
       <span class="badge-pill badge-navy">EXERCISE &bull; 20 MIN</span>
       <h2>Style-Situation Matching</h2>
       <div class="ex-list">
-        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">1</div><div class="ex-text">Review four team scenarios that vary in task clarity and team cohesion.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">2</div><div class="ex-text">In small groups, choose a task- or relationship-oriented approach for each, and justify the choice.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--navy);">3</div><div class="ex-text">Full-group share-out: discuss where the &ldquo;right&rdquo; style flips as the situation changes.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">1</div><div class="ex-text">Review four team scenarios that vary in task clarity and team cohesion.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">2</div><div class="ex-text">In small groups, choose a task- or relationship-oriented approach for each, and justify the choice.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">3</div><div class="ex-text">Full-group share-out: discuss where the &ldquo;right&rdquo; style flips as the situation changes.</div></div>
       </div>
       <span class="pagenum">14</span>
     </section>
