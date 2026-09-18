@@ -33,6 +33,7 @@
     --plum: #6B3F4B;
     --clay: #B2543A;
     --sage: #A3AE8A;
+    --teal: #1E5C52;
     --max: 1080px;
   }
 
@@ -123,10 +124,12 @@
   }
 
   .hero h1 {
-    font-size: 52px;
-    line-height: 1.12;
+    font-family: 'Caveat', cursive;
+    font-size: 44px;
+    line-height: 1.22;
     letter-spacing: -0.01em;
-    max-width: 12ch;
+    font-style: italic;
+    color: var(--plum);
   }
 
   .hero-tagline {
@@ -398,6 +401,14 @@
     border-color: rgba(51, 42, 34, 0.28);
   }
 
+  .course-card.finance-series { border-top-color: var(--teal); }
+  .course-card.finance-series .course-num { color: var(--teal); }
+  .course-card.finance-series .course-tag { color: #164740; background: rgba(30, 92, 82, 0.14); }
+
+  .course-card.ops-series { border-top-color: #9C4A2E; }
+  .course-card.ops-series .course-num { color: #9C4A2E; }
+  .course-card.ops-series .course-tag { color: #753722; background: rgba(156, 74, 46, 0.16); }
+
   .course-num {
     font-family: 'Fraunces', serif;
     font-size: 27px;
@@ -548,7 +559,7 @@
 
   @media (max-width: 760px) {
     .hero-inner { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 38px; max-width: none; }
+    .hero h1 { font-size: 30px; max-width: none; }
     .hero-art { order: -1; }
     .tile-grid { grid-template-columns: 1fr; }
     .course-grid { grid-template-columns: 1fr; }
@@ -589,8 +600,8 @@
   <section class="hero">
     <div class="wrap hero-inner">
       <div>
-        <h1>Psychology, built into things people actually use.</h1>
-        <p class="hero-tagline">I design mental health apps and HR training grounded in behavioral science — work that sits at the intersection of how people think and how organizations run.</p>
+        <h1>How we think.<br>How we operate.<br>How the math adds up.</h1>
+        <p class="hero-tagline">I design mental health apps and manager training grounded in behavioral science and real operating experience.</p>
         <div class="hero-cta">
           <a class="btn-primary" href="#apps">See the work</a>
           <a class="link-quiet" href="#about">About me</a>
@@ -653,7 +664,7 @@
         <div>
           <span class="courses-eyebrow">Manager &amp; Leadership Training Series</span>
           <h2>Courses I've designed</h2>
-          <p>Half-day workshops grounded in social psychology research — built for real workplaces, not compliance checkboxes.</p>
+          <p>Half-day workshops and training series grounded in behavioral science and real operating experience — covering HR, operations, and financial acumen for growing teams.</p>
         </div>
       </div>
 
@@ -683,6 +694,60 @@
           <p class="course-desc">The cognitive mechanics behind biased hiring, reviews, and promotions — and the structural fixes that work without relying on willpower.</p>
           <p class="course-meta">Half-day workshop · Managers</p>
           <a class="course-cta" href="courses/bias-aware.html">View course →</a>
+        </div>
+
+        <div class="course-card finance-series">
+          <span class="course-num">04</span>
+          <span class="course-tag">Daily cost control</span>
+          <h3>Running the Numbers</h3>
+          <p class="course-desc">Daily habits that control cost before the numbers ever reach a spreadsheet — ordering, portioning, waste, and the margin number that actually matters.</p>
+          <p class="course-meta">Half-day session · Supervisors</p>
+          <a class="course-cta" href="courses/running-the-numbers.html">View course →</a>
+        </div>
+
+        <div class="course-card finance-series">
+          <span class="course-num">05</span>
+          <span class="course-tag">Reading a P&amp;L</span>
+          <h3>Behind the Bottom Line</h3>
+          <p class="course-desc">Reading a departmental P&amp;L and finding what actually moved it — the difference between selling more and simply charging more.</p>
+          <p class="course-meta">Half-day session · Department heads</p>
+          <a class="course-cta" href="courses/behind-the-bottom-line.html">View course →</a>
+        </div>
+
+        <div class="course-card finance-series">
+          <span class="course-num">06</span>
+          <span class="course-tag">Pricing &amp; controls</span>
+          <h3>Pricing for Profit</h3>
+          <p class="course-desc">Setting prices with real break-even math behind them, and the internal controls that keep a growing operation from quietly losing money.</p>
+          <p class="course-meta">Half-day session · GMs</p>
+          <a class="course-cta" href="courses/pricing-for-profit.html">View course →</a>
+        </div>
+
+        <div class="course-card finance-series">
+          <span class="course-num">07</span>
+          <span class="course-tag">Consolidated P&amp;L</span>
+          <h3>The Whole Show</h3>
+          <p class="course-desc">Consolidating six revenue streams into one bottom line — and why a department can win while the whole show still loses money.</p>
+          <p class="course-meta">Half-day session · Capstone course</p>
+          <a class="course-cta" href="courses/the-whole-show.html">View course →</a>
+        </div>
+
+        <div class="course-card ops-series">
+          <span class="course-num">08</span>
+          <span class="course-tag">Operational continuity</span>
+          <h3>Built to Outlast You</h3>
+          <p class="course-desc">Building the documentation, cross-training, and handoff processes that keep a team running when a key person leaves — so institutional knowledge doesn't walk out the door with them.</p>
+          <p class="course-meta">Half-day workshop · Department heads</p>
+          <a class="course-cta" href="courses/built-to-outlast-you.html">View course →</a>
+        </div>
+
+        <div class="course-card ops-series">
+          <span class="course-num">09</span>
+          <span class="course-tag">Project management</span>
+          <h3>Rolling It Out</h3>
+          <p class="course-desc">Running a system or process rollout like a real project — scoping it, getting buy-in before you need it, and making sure people actually use what you just implemented.</p>
+          <p class="course-meta">Half-day workshop · Project leads</p>
+          <a class="course-cta" href="courses/rolling-it-out.html">View course →</a>
         </div>
       </div>
     </div>
