@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Managing the Room — Slide Deck</title>
+<title>Behind the Bottom Line — Slide Deck</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
     --ink: #332A22;
     --muted: #6B5D4C;
     --line: rgba(51, 42, 34, 0.16);
-    --plum: #6B3F4B;
+    --plum: #1E5C52;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -95,6 +95,7 @@
   .stage:fullscreen { border-radius: 0; max-width: none; }
   .stage:fullscreen .slide { border-radius: 0; }
 
+  /* Font scale relative to stage width (design width 1280px) */
   .stage {
     --fs-tiny: 1.05cqw;
     --fs-small: 1.22cqw;
@@ -167,7 +168,7 @@
   }
 
   /* ---------- Agenda ---------- */
-  .tpl-agenda h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.2cqw; }
+  .tpl-agenda h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.2cqw; }
   .agenda-row {
     display: flex;
     align-items: flex-start;
@@ -187,7 +188,7 @@
     align-items: center;
     justify-content: center;
     font-family: 'Fraunces', serif;
-    font-weight: 700;
+    font-weight: 600;
     font-size: var(--fs-h3);
   }
   .agenda-body .a-title { font-size: var(--fs-body-lg); font-weight: 700; color: var(--navy-deep); margin-bottom: 0.3cqw; }
@@ -208,7 +209,7 @@
     padding: 0 2cqw;
   }
   .split-left .icon-badge { width: 5cqw; height: 5cqw; margin-bottom: 1.6cqw; }
-  .split-left h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); margin: 0; }
+  .split-left h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); margin: 0; }
   .split-right {
     flex: 1;
     display: flex;
@@ -245,11 +246,11 @@
     opacity: 0.9;
   }
   .tpl-module .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); margin: 0 0 1cqw; letter-spacing: 0.03em; }
-  .tpl-module h1 { font-family: 'Fraunces', serif; font-size: 3.1cqw; font-weight: 500; margin: 0 0 1.2cqw; max-width: 88%; line-height: 1.18; }
+  .tpl-module h1 { font-family: 'Fraunces', serif; font-size: 3.15cqw; font-weight: 500; margin: 0 0 1.2cqw; max-width: 85%; line-height: 1.18; }
   .tpl-module .source { font-size: var(--fs-body); color: var(--ice); }
 
   /* ---------- 3-row content ---------- */
-  .tpl-rows h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.4cqw; }
+  .tpl-rows h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.4cqw; }
   .row-list { display: flex; flex-direction: column; gap: 1.7cqw; }
   .row-item { display: flex; gap: 1.4cqw; align-items: flex-start; }
   .row-num-circle {
@@ -262,9 +263,8 @@
   }
   .row-heading { flex: 0 0 26%; font-size: var(--fs-body-lg); font-weight: 700; color: var(--plum); padding-top: 0.3cqw; }
   .row-text { flex: 1; font-size: var(--fs-body); line-height: 1.55; padding-top: 0.3cqw; }
-  .row-list-foot { font-size: var(--fs-body); color: var(--muted); margin-top: 1.6cqw; line-height: 1.5; }
 
-  /* ---------- Exercise / demo / case study ---------- */
+  /* ---------- Exercise / case study / discussion ---------- */
   .badge-pill {
     display: inline-flex;
     align-self: flex-start;
@@ -278,7 +278,7 @@
   }
   .badge-navy { background: var(--plum); }
   .badge-berry { background: var(--berry); }
-  .tpl-exercise h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.1cqw; }
+  .tpl-exercise h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.1cqw; }
   .ex-list { display: flex; flex-direction: column; gap: 1.35cqw; }
   .ex-item { display: flex; gap: 1.3cqw; align-items: center; }
   .ex-num {
@@ -294,12 +294,12 @@
   .tpl-takeaway .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); letter-spacing: 0.05em; margin: 0 0 1.1cqw; }
   .tpl-takeaway .quote { max-width: 78%; font-size: var(--fs-quote); line-height: 1.5; margin: 0; }
 
-  /* ---------- Comparison cards ---------- */
-  .tpl-compare h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  /* ---------- Comparison (contribution margin vs gross profit) ---------- */
+  .tpl-compare h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 0.5cqw; }
   .tpl-compare .compare-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.8cqw; }
   .compare-row { display: flex; gap: 1.6cqw; flex: 1; }
   .compare-card { flex: 1; border-radius: 10px; padding: 1.8cqw 1.9cqw; display: flex; flex-direction: column; gap: 0.9cqw; }
-  .compare-card.tint-blue { background: rgba(107, 63, 75, 0.12); }
+  .compare-card.tint-blue { background: rgba(30, 92, 82, 0.12); }
   .compare-card.tint-berry { background: var(--berry-tint); }
   .compare-head { font-size: var(--fs-h3); font-weight: 700; letter-spacing: 0.02em; }
   .compare-head.c-navy { color: var(--plum); }
@@ -309,7 +309,7 @@
   .compare-foot { font-size: var(--fs-body); color: var(--muted); margin-top: 1.6cqw; line-height: 1.5; }
 
   /* ---------- Action plan ---------- */
-  .tpl-action h2 { font-family: 'Fraunces', serif; font-size: 2.9cqw; color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  .tpl-action h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 2.9cqw; color: var(--navy-deep); margin: 0 0 0.5cqw; }
   .tpl-action .action-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.9cqw; }
   .action-row { display: flex; gap: 1.4cqw; align-items: center; margin-bottom: 1.15cqw; }
   .action-icon {
@@ -383,8 +383,8 @@
 <body>
 
 <div class="deck-top">
-  <a class="deck-back" href="team-dynamics.html">&larr; Managing the Room</a>
-  <div class="deck-title">Slide Deck <span>&mdash; Manager Workshop</span></div>
+  <a class="deck-back" href="behind-the-bottom-line.html">&larr; Behind the Bottom Line</a>
+  <div class="deck-title">Slide Deck <span>&mdash; Financial Acumen Training</span></div>
   <div class="deck-actions">
     <button class="icon-btn" id="fsBtn" type="button" title="Fullscreen" aria-label="Toggle fullscreen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
@@ -397,12 +397,12 @@
 
     <!-- Slide 1 -->
     <section class="slide slide-navy tpl-title active" data-slide="1">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-      <p class="eyebrow">MANAGER &amp; LEADERSHIP TRAINING SERIES</p>
-      <h1>Managing the Room</h1>
-      <p class="sub">Group Dynamics &amp; Team Leadership for Managers</p>
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+      <p class="eyebrow">FINANCIAL ACUMEN TRAINING SERIES &mdash; COURSE 2 OF 4</p>
+      <h1>Behind the Bottom Line</h1>
+      <p class="sub">Reading a P&amp;L and Finding What Actually Moved It</p>
       <div class="divider"></div>
-      <p class="caption">Half-day workshop&nbsp; &bull; &nbsp;Grounded in Social Psychology research&nbsp; &bull; &nbsp;For people managers &amp; team leads</p>
+      <p class="caption">Half-day session&nbsp; &bull; &nbsp;Includes three working tools&nbsp; &bull; &nbsp;For department heads &amp; assistant GMs</p>
       <span class="pagenum">1</span>
     </section>
 
@@ -412,53 +412,46 @@
       <div class="agenda-row">
         <div class="agenda-num">01</div>
         <div class="agenda-body">
-          <div class="a-title">Why Groups Underperform</div>
-          <div class="a-desc">Social loafing, process loss &amp; groupthink</div>
+          <div class="a-title">Reading a Departmental P&amp;L</div>
+          <div class="a-desc">Revenue to Gross Operating Profit, and Prime Cost</div>
         </div>
       </div>
       <div class="agenda-row">
         <div class="agenda-num">02</div>
         <div class="agenda-body">
-          <div class="a-title">Group Polarization &amp; Decision-Making</div>
-          <div class="a-desc">Why teams land on extremes</div>
+          <div class="a-title">Cause-and-Effect Variance Analysis</div>
+          <div class="a-desc">Volume vs. rate, and this month vs. year-to-date</div>
         </div>
       </div>
       <div class="agenda-row">
         <div class="agenda-num">03</div>
         <div class="agenda-body">
-          <div class="a-title">Leadership Styles &amp; Fit</div>
-          <div class="a-desc">Matching style to the situation</div>
+          <div class="a-title">EBITDA &amp; the Secret Link to the Balance Sheet</div>
+          <div class="a-desc">What EBITDA measures, and where profit actually goes</div>
         </div>
       </div>
-      <div class="agenda-row">
-        <div class="agenda-num">04</div>
-        <div class="agenda-body">
-          <div class="a-title">First Impressions &amp; Attribution Errors</div>
-          <div class="a-desc">Fairer, more accurate feedback</div>
-        </div>
-      </div>
-      <p class="agenda-extra">+ Personal action planning and wrap-up</p>
+      <p class="agenda-extra">+ Three working tools you'll leave with, built around your own department's numbers</p>
       <span class="pagenum">2</span>
     </section>
 
     <!-- Slide 3 -->
     <section class="slide slide-white tpl-split" data-slide="3">
       <div class="split-left">
-        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
         <h2>Why This Matters</h2>
       </div>
       <div class="split-right">
         <div class="why-item">
           <div class="why-num">1</div>
-          <div class="why-text">Managers run meetings and make group calls constantly, but rarely learn how groups actually behave.</div>
+          <div class="why-text">You cannot manage a financial statement &mdash; you can only manage the operation that produces it. The P&amp;L is a mirror, not a cause.</div>
         </div>
         <div class="why-item">
           <div class="why-num">2</div>
-          <div class="why-text">More people in the room doesn&rsquo;t mean a better decision &mdash; the structure of the discussion decides that.</div>
+          <div class="why-text">A department head who reads a P&amp;L as a report card misses the point. The real skill is tracing every variance back to the decision that caused it.</div>
         </div>
         <div class="why-item">
           <div class="why-num">3</div>
-          <div class="why-text">This course gives you the mechanics behind team decisions, leadership fit, and fair feedback.</div>
+          <div class="why-text">This course teaches you to read the statement, diagnose why a number moved, and see how it all connects to EBITDA and company value.</div>
         </div>
       </div>
       <span class="pagenum">3</span>
@@ -466,48 +459,44 @@
 
     <!-- Slide 4 -->
     <section class="slide slide-navy tpl-module" data-slide="4">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
       <p class="eyebrow">MODULE 1</p>
-      <h1>Why Groups Underperform</h1>
-      <p class="source">Source: Ch. 9 &mdash; Group Processes</p>
+      <h1>Reading a Departmental P&amp;L</h1>
+      <p class="source">Tool: Prime Cost Benchmark Tracker</p>
       <span class="pagenum">4</span>
     </section>
 
     <!-- Slide 5 -->
-    <section class="slide slide-white tpl-compare" data-slide="5">
-      <h2>What Groups Discuss &mdash; and What They Miss</h2>
-      <p class="compare-sub">The hidden profile problem</p>
-      <div class="compare-row">
-        <div class="compare-card tint-blue">
-          <div class="compare-head c-navy">SHARED INFORMATION</div>
-          <ul>
-            <li>Facts everyone in the group already has</li>
-            <li>Comfortable to repeat &mdash; feels productive</li>
-            <li>Reinforces the group&rsquo;s existing lean</li>
-          </ul>
+    <section class="slide slide-white tpl-rows" data-slide="5">
+      <h2>Reading Down the Statement</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">Revenue</div>
+          <div class="row-text">The top line. Every other line on the page is measured as a percentage of this number, so it's the first thing to understand, not just the first thing to read.</div>
         </div>
-        <div class="compare-card tint-berry">
-          <div class="compare-head c-berry">UNIQUE INFORMATION</div>
-          <ul>
-            <li>Facts only one person holds</li>
-            <li>Feels riskier to bring up</li>
-            <li>Often the fact that would change the decision</li>
-          </ul>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Prime Cost (COGS + Labor)</div>
+          <div class="row-text">The two costs a department head actually controls day to day through ordering, scheduling, and portioning. This is the number to watch above all others.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Gross Operating Profit (GOP)</div>
+          <div class="row-text">What's left after operating expenses, before fixed costs like rent, insurance, and corporate overhead. The cleanest read on how well the department itself is run.</div>
         </div>
       </div>
-      <p class="compare-foot">Social loafing compounds this: when contributions aren&rsquo;t identifiable, individual effort quietly drops too.</p>
       <span class="pagenum">5</span>
     </section>
 
     <!-- Slide 6 -->
     <section class="slide slide-white tpl-exercise" data-slide="6">
-      <span class="badge-pill badge-navy">EXERCISE &bull; 20 MIN</span>
-      <h2>The Hidden Profile Exercise</h2>
+      <span class="badge-pill badge-navy">EXERCISE &bull; 15 MIN</span>
+      <h2>The Prime Cost Benchmark Drill</h2>
       <div class="ex-list">
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">1</div><div class="ex-text">Each group member gets a briefing: some shared facts, some facts only they hold, about a fictional hiring decision.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">2</div><div class="ex-text">Discuss and reach a decision without comparing full briefings.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">3</div><div class="ex-text">Reveal: the correct call required combining everyone&rsquo;s unique facts.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">4</div><div class="ex-text">Debrief: what structural change would have surfaced the missing information?</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">1</div><div class="ex-text">Using the Prime Cost Benchmark Tracker, enter last month's revenue, COGS, and labor for your department.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">2</div><div class="ex-text">Compare your Prime Cost % to the target range for your type of operation.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">3</div><div class="ex-text">Discuss: if Prime Cost is above target, which side moved &mdash; COGS or labor &mdash; and why?</div></div>
       </div>
       <span class="pagenum">6</span>
     </section>
@@ -516,200 +505,170 @@
     <section class="slide slide-navy tpl-takeaway" data-slide="7">
       <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
       <p class="eyebrow">KEY TAKEAWAY</p>
-      <p class="quote">If a meeting only confirms what everyone already agreed on, it isn&rsquo;t a discussion &mdash; it&rsquo;s a rehearsal. Structure meetings to force unique information into the open.</p>
+      <p class="quote">Revenue tells you how business was. Prime Cost tells you how well it was run. Watch the second one at least as closely as the first.</p>
       <span class="pagenum">7</span>
     </section>
 
     <!-- Slide 8 -->
     <section class="slide slide-navy tpl-module" data-slide="8">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       <p class="eyebrow">MODULE 2</p>
-      <h1>Group Polarization &amp; Decision-Making</h1>
-      <p class="source">Source: Ch. 9 &mdash; Group Processes</p>
+      <h1>Cause-and-Effect Variance Analysis</h1>
+      <p class="source">Tool: P&amp;L Variance Diagnostic</p>
       <span class="pagenum">8</span>
     </section>
 
     <!-- Slide 9 -->
-    <section class="slide slide-white tpl-rows" data-slide="9">
-      <h2>Why Groups Land on Extremes</h2>
-      <div class="row-list">
-        <div class="row-item">
-          <div class="row-num-circle">1</div>
-          <div class="row-heading">Group polarization</div>
-          <div class="row-text">Discussion strengthens the group&rsquo;s average initial lean &mdash; it doesn&rsquo;t moderate it. Cautious groups get more cautious; risk-tolerant groups get riskier.</div>
+    <section class="slide slide-white tpl-compare" data-slide="9">
+      <h2>Which Story Is True?</h2>
+      <p class="compare-sub">The same revenue change can mean two very different things</p>
+      <div class="compare-row">
+        <div class="compare-card tint-blue">
+          <div class="compare-head c-navy">VOLUME STORY</div>
+          <ul>
+            <li>Covers or traffic actually changed</li>
+            <li>Shows up as revenue and volume moving the same direction</li>
+            <li>Fix: marketing, hours, capacity, demand generation</li>
+          </ul>
         </div>
-        <div class="row-item">
-          <div class="row-num-circle">2</div>
-          <div class="row-heading">Two driving forces</div>
-          <div class="row-text">New supporting arguments surface (persuasive arguments), and people shift to match where the group&rsquo;s values seem to be heading (social comparison).</div>
-        </div>
-        <div class="row-item">
-          <div class="row-num-circle">3</div>
-          <div class="row-heading">Practical translation</div>
-          <div class="row-text">Capture individual positions privately before group discussion starts. The gap between that average and the final group call is worth examining.</div>
+        <div class="compare-card tint-berry">
+          <div class="compare-head c-berry">RATE STORY</div>
+          <ul>
+            <li>Price or sales mix changed, not traffic</li>
+            <li>Can mask a real decline in volume underneath it</li>
+            <li>Fix: menu engineering, pricing, upsell training</li>
+          </ul>
         </div>
       </div>
+      <p class="compare-foot">You cannot tell which story is true from the top-line number alone &mdash; you have to break volume and rate apart first.</p>
       <span class="pagenum">9</span>
     </section>
 
     <!-- Slide 10 -->
-    <section class="slide slide-white tpl-exercise" data-slide="10">
-      <span class="badge-pill badge-berry">LIVE DEMO &bull; 20 MIN</span>
-      <h2>Live Polarization Demo</h2>
-      <div class="ex-list">
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">1</div><div class="ex-text">Present a moderately risky business scenario. Everyone privately rates their risk tolerance 1&ndash;10 before any discussion.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">2</div><div class="ex-text">Average the private scores and set them aside without revealing them yet.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">3</div><div class="ex-text">Small groups discuss and agree on one group score.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">4</div><div class="ex-text">Compare each group&rsquo;s score to its own pre-discussion average &mdash; groups usually land further from the middle.</div></div>
+    <section class="slide slide-white tpl-rows" data-slide="10">
+      <h2>Diagnosing a Variance, Step by Step</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">Isolate volume</div>
+          <div class="row-text">Multiply last period's rate by this period's volume. That isolates how much of the change is due to volume alone, holding price constant.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Isolate rate</div>
+          <div class="row-text">Multiply this period's volume by the change in rate. That isolates how much is due to price or mix alone, holding volume constant.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Check that they add up</div>
+          <div class="row-text">Volume effect plus rate effect should equal the total variance. If covers fell but revenue rose, the rate effect is doing all the work &mdash; and may be masking a traffic problem.</div>
+        </div>
       </div>
       <span class="pagenum">10</span>
     </section>
 
     <!-- Slide 11 -->
-    <section class="slide slide-navy tpl-takeaway" data-slide="11">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-      <p class="eyebrow">KEY TAKEAWAY</p>
-      <p class="quote">Group discussion doesn&rsquo;t average opinions &mdash; it tends to amplify the room&rsquo;s initial lean. Capture individual views before the discussion, not just after.</p>
+    <section class="slide slide-white tpl-exercise" data-slide="11">
+      <span class="badge-pill badge-berry">EXERCISE &bull; 20 MIN</span>
+      <h2>Run the Diagnostic</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">1</div><div class="ex-text">Use the P&amp;L Variance Diagnostic with your own last-two-periods numbers.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">2</div><div class="ex-text">Identify whether your variance is volume-driven, rate-driven, or a mix of both.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">3</div><div class="ex-text">Debrief: does the cause match what you assumed before running the numbers?</div></div>
+      </div>
       <span class="pagenum">11</span>
     </section>
 
     <!-- Slide 12 -->
-    <section class="slide slide-navy tpl-module" data-slide="12">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
-      <p class="eyebrow">MODULE 3</p>
-      <h1>Leadership Styles &amp; Fit</h1>
-      <p class="source">Source: Ch. 9 &mdash; Group Processes (Leadership in Groups)</p>
+    <section class="slide slide-navy tpl-takeaway" data-slide="12">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">A rising number isn't automatically good news, and a falling one isn't automatically bad. Break it into volume and rate before you decide which.</p>
       <span class="pagenum">12</span>
     </section>
 
     <!-- Slide 13 -->
-    <section class="slide slide-white tpl-compare" data-slide="13">
-      <h2>Two Leadership Orientations</h2>
-      <p class="compare-sub">Neither style is universally &ldquo;better&rdquo;</p>
-      <div class="compare-row">
-        <div class="compare-card tint-blue">
-          <div class="compare-head c-navy">TASK-ORIENTED</div>
-          <ul>
-            <li>Clear direction, structure, standards</li>
-            <li>Fits highly favorable or highly unfavorable situations</li>
-            <li>Best when the task is ambiguous or urgency is high</li>
-          </ul>
-        </div>
-        <div class="compare-card tint-berry">
-          <div class="compare-head c-berry">RELATIONSHIP-ORIENTED</div>
-          <ul>
-            <li>Support, morale, interpersonal trust</li>
-            <li>Fits moderately favorable situations</li>
-            <li>Best when the team is established but needs cohesion</li>
-          </ul>
-        </div>
-      </div>
-      <p class="compare-foot">Situational favorability &mdash; task clarity, leader power, team relationships &mdash; decides which orientation fits. Personality alone predicts leadership success surprisingly poorly.</p>
+    <section class="slide slide-navy tpl-module" data-slide="13">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+      <p class="eyebrow">MODULE 3</p>
+      <h1>EBITDA &amp; the Secret Link to the Balance Sheet</h1>
+      <p class="source">Tool: EBITDA Builder &amp; Balance Sheet Link</p>
       <span class="pagenum">13</span>
     </section>
 
     <!-- Slide 14 -->
-    <section class="slide slide-white tpl-exercise" data-slide="14">
-      <span class="badge-pill badge-navy">EXERCISE &bull; 20 MIN</span>
-      <h2>Style-Situation Matching</h2>
-      <div class="ex-list">
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">1</div><div class="ex-text">Review four team scenarios that vary in task clarity and team cohesion.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">2</div><div class="ex-text">In small groups, choose a task- or relationship-oriented approach for each, and justify the choice.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">3</div><div class="ex-text">Full-group share-out: discuss where the &ldquo;right&rdquo; style flips as the situation changes.</div></div>
+    <section class="slide slide-white tpl-rows" data-slide="14">
+      <h2>From Revenue to EBITDA, and Beyond</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">Start at Gross Operating Profit</div>
+          <div class="row-text">Subtract the fixed costs not yet accounted for &mdash; rent, insurance, corporate overhead &mdash; to get to operating income.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Add back interest, taxes, depreciation &amp; amortization</div>
+          <div class="row-text">That's EBITDA &mdash; a clean read on operating performance regardless of how the company is financed or taxed, which is exactly why it's the benchmark investors use.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Follow profit to the balance sheet</div>
+          <div class="row-text">Net profit for the period doesn't just disappear &mdash; it flows into Retained Earnings under Equity, literally becoming part of what the company is worth.</div>
+        </div>
       </div>
       <span class="pagenum">14</span>
     </section>
 
     <!-- Slide 15 -->
-    <section class="slide slide-navy tpl-takeaway" data-slide="15">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-      <p class="eyebrow">KEY TAKEAWAY</p>
-      <p class="quote">There is no universally &ldquo;best&rdquo; leadership style &mdash; only the style that fits this team, this task, and this moment.</p>
+    <section class="slide slide-white tpl-exercise" data-slide="15">
+      <span class="badge-pill badge-navy">EXERCISE &bull; 15 MIN</span>
+      <h2>Build It Yourself</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">1</div><div class="ex-text">Use the EBITDA Builder to walk from your department's revenue down to EBITDA.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">2</div><div class="ex-text">Watch how the number changes as interest, taxes, depreciation, and amortization are added back.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">3</div><div class="ex-text">Discuss: why might two departments with identical net profit have very different EBITDA?</div></div>
+      </div>
       <span class="pagenum">15</span>
     </section>
 
     <!-- Slide 16 -->
-    <section class="slide slide-navy tpl-module" data-slide="16">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
-      <p class="eyebrow">MODULE 4</p>
-      <h1>First Impressions &amp; Attribution Errors</h1>
-      <p class="source">Source: Ch. 4 &mdash; Social Perception</p>
+    <section class="slide slide-navy tpl-takeaway" data-slide="16">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">EBITDA is the business's engine, measured without the noise of financing or taxes. It's also next month's starting equity, one retained-earnings entry at a time.</p>
       <span class="pagenum">16</span>
     </section>
 
     <!-- Slide 17 -->
-    <section class="slide slide-white tpl-rows" data-slide="17">
-      <h2>Why We Misjudge Other People&rsquo;s Setbacks</h2>
-      <div class="row-list">
-        <div class="row-item">
-          <div class="row-num-circle">1</div>
-          <div class="row-heading">First impressions</div>
-          <div class="row-text">They form fast and linger, coloring how a person&rsquo;s later behavior gets read &mdash; long after their actual performance has changed.</div>
-        </div>
-        <div class="row-item">
-          <div class="row-num-circle">2</div>
-          <div class="row-heading">Fundamental attribution error</div>
-          <div class="row-text">When explaining someone else&rsquo;s behavior, we default to character (&ldquo;they&rsquo;re careless&rdquo;) and underweight situational factors (&ldquo;priorities were unclear&rdquo;).</div>
-        </div>
-        <div class="row-item">
-          <div class="row-num-circle">3</div>
-          <div class="row-heading">Self-serving bias</div>
-          <div class="row-text">The opposite direction for our own outcomes: we credit our successes to skill and blame our failures on circumstances.</div>
-        </div>
+    <section class="slide slide-white tpl-action" data-slide="17">
+      <h2>Your Action Plan</h2>
+      <p class="action-sub">Before your next department meeting, answer these:</p>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Do I know my department's actual Prime Cost % from last month, or am I estimating?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">The last time a number moved, did I check volume vs. rate before reacting to it?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Could I explain what EBITDA measures to someone with zero finance background?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">What's one number on my P&amp;L I've never actually investigated the cause of?</div>
       </div>
       <span class="pagenum">17</span>
     </section>
 
     <!-- Slide 18 -->
-    <section class="slide slide-white tpl-exercise" data-slide="18">
-      <span class="badge-pill badge-berry">EXERCISE &bull; 15 MIN</span>
-      <h2>Attribution Rewrite</h2>
-      <div class="ex-list">
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">1</div><div class="ex-text">Read three scenarios of employee &ldquo;failures&rdquo; written in character-based language.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">2</div><div class="ex-text">In pairs, rewrite each with a plausible situational factor &mdash; without dropping accountability.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">3</div><div class="ex-text">Draft one line of feedback that names the factor and still holds the person accountable.</div></div>
-      </div>
-      <span class="pagenum">18</span>
-    </section>
-
-    <!-- Slide 19 -->
-    <section class="slide slide-navy tpl-takeaway" data-slide="19">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-      <p class="eyebrow">KEY TAKEAWAY</p>
-      <p class="quote">The story you tell about someone&rsquo;s failure &mdash; character flaw or bad circumstances &mdash; determines whether feedback helps them improve or just makes them defensive.</p>
-      <span class="pagenum">19</span>
-    </section>
-
-    <!-- Slide 20 -->
-    <section class="slide slide-white tpl-action" data-slide="20">
-      <h2>Your Action Plan</h2>
-      <p class="action-sub">Return to the decision or feedback moment from your pre-work:</p>
-      <div class="action-row">
-        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-        <div class="action-text">Where might process loss or groupthink have shaped this decision &mdash; what unique information didn&rsquo;t surface?</div>
-      </div>
-      <div class="action-row">
-        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-        <div class="action-text">Did the outcome look more extreme than the individual views going in?</div>
-      </div>
-      <div class="action-row">
-        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-        <div class="action-text">Did the leadership style I used fit this team and task, or was it just habit?</div>
-      </div>
-      <div class="action-row">
-        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-        <div class="action-text">Is there a dispositional assumption in this feedback? What situational factor would a fair observer add?</div>
-      </div>
-      <span class="pagenum">20</span>
-    </section>
-
-    <!-- Slide 21 -->
-    <section class="slide slide-navy tpl-closing" data-slide="21">
-      <h1>The room shapes the decision.</h1>
-      <p class="sub">Structure it on purpose.</p>
+    <section class="slide slide-navy tpl-closing" data-slide="18">
+      <h1>The story is in the variance, not the headline.</h1>
+      <p class="sub">Read backward to the decision, not forward to the excuse.</p>
       <div class="divider"></div>
       <p class="caption">Thank you&nbsp; &mdash; &nbsp;Questions &amp; Evaluation</p>
-      <span class="pagenum">21</span>
+      <span class="pagenum">18</span>
     </section>
 
   </div>
@@ -721,7 +680,7 @@
   </button>
   <div class="progress-wrap">
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="slide-counter" id="slideCounter">Slide 1 of 21</div>
+    <div class="slide-counter" id="slideCounter">Slide 1 of 18</div>
   </div>
   <button class="nav-btn" id="nextBtn" type="button" aria-label="Next slide">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -768,6 +727,7 @@
     else if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); }
   });
 
+  // Touch swipe
   var touchStartX = null;
   stage.addEventListener('touchstart', function (e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
   stage.addEventListener('touchend', function (e) {

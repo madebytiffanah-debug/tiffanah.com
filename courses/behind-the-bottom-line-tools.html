@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Behind the Bottom Line — Working Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #332A22;
+    --navy-deep: #241D18;
+    --ice: #C68D33;
+    --gold: #C68D33;
+    --gold-tint: rgba(198, 141, 51, 0.16);
+    --berry: #B2543A;
+    --berry-tint: rgba(178, 84, 58, 0.14);
+    --paper: #F1E4CC;
+    --paper-soft: #EAD9B8;
+    --ink: #332A22;
+    --muted: #6B5D4C;
+    --line: rgba(51, 42, 34, 0.16);
+    --teal: #1E5C52;
+    --teal-tint: rgba(30, 92, 82, 0.14);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Karla', sans-serif;
+    background: var(--navy);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 40px 16px 60px;
+  }
+  h1, h2, h3 { font-family: 'Fraunces', serif; font-weight: 500; margin: 0; }
+  .shell { width: 100%; max-width: 860px; margin: 0 auto; }
+  .eyebrow { color: var(--ice); font-size: 13px; margin: 0 0 6px; text-align: center; }
+  .headline {
+    color: var(--paper);
+    font-size: 28px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+    text-align: center;
+  }
+  .sub-lede { color: rgba(241,228,204,0.68); font-size: 14.5px; text-align: center; margin: 0 0 28px; }
+  .back-link { display: block; text-align: center; color: var(--ice); font-size: 13px; text-decoration: none; margin-bottom: 18px; }
+  .back-link:hover { text-decoration: underline; }
+
+  .tabs { display: flex; background: rgba(241,228,204,0.08); border-radius: 10px; padding: 5px; margin-bottom: 22px; gap: 4px; }
+  .tabs button {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 6px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 7px;
+    color: rgba(241,228,204,0.65);
+    cursor: pointer;
+    font-family: 'Karla', sans-serif;
+  }
+  .tabs button.active { background: var(--teal); color: var(--paper); }
+
+  .card { background: var(--paper); border-radius: 12px; padding: 32px 34px; box-shadow: 0 20px 50px rgba(10, 14, 40, 0.35); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .panel h2 { font-size: 21px; color: var(--navy-deep); margin-bottom: 6px; }
+  .panel .panel-desc { font-size: 14px; color: var(--muted); margin-bottom: 24px; line-height: 1.55; }
+
+  .field-row { display: flex; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+  .field { flex: 1 1 150px; }
+  .field label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px; }
+  .field input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-family: inherit;
+    background: var(--paper-soft);
+    color: var(--ink);
+  }
+  .field input:focus { outline: none; border-color: var(--teal); }
+
+  .btn {
+    display: inline-block;
+    border: none;
+    border-radius: 7px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 11px 20px;
+    font-size: 14px;
+  }
+  .btn-teal { background: var(--teal); color: var(--paper); }
+  .btn-teal:hover { background: #164740; }
+  .btn-ghost { background: none; border: 1.5px solid var(--line); color: var(--ink); }
+  .btn-ghost:hover { border-color: var(--teal); }
+  .btn-row { display: flex; gap: 10px; margin: 6px 0 24px; flex-wrap: wrap; }
+
+  .result-box { background: var(--teal-tint); border-radius: 9px; padding: 20px 22px; margin-top: 8px; }
+  .result-row { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; font-size: 14.5px; }
+  .result-row.big { border-top: 1px solid rgba(30,92,82,0.25); margin-top: 6px; padding-top: 14px; }
+  .result-row.big .val { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 600; color: var(--navy-deep); }
+  .result-row .lbl { color: var(--ink); }
+  .result-row .val { font-weight: 700; color: var(--navy-deep); }
+  .result-note { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.5; font-style: italic; }
+  .verdict-banner { border-radius: 8px; padding: 12px 16px; font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+  .verdict-volume { background: var(--teal-tint); color: var(--teal); }
+  .verdict-rate { background: var(--berry-tint); color: var(--berry); }
+  .verdict-mixed { background: var(--gold-tint); color: #7A551F; }
+
+  .table-wrap { overflow-x: auto; margin-top: 18px; }
+  table.order-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.order-table th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); padding: 8px 10px; border-bottom: 1.5px solid var(--line); }
+  table.order-table td { padding: 9px 10px; border-bottom: 1px solid var(--line); }
+  table.order-table td.num { text-align: right; }
+  table.order-table tr.flag-high td { color: var(--berry); font-weight: 700; }
+  table.order-table tr.flag-low td { color: var(--teal); font-weight: 700; }
+  .remove-btn { background: none; border: none; color: var(--berry); cursor: pointer; font-size: 18px; line-height: 1; padding: 6px 8px; }
+  .empty-state { color: var(--muted); font-size: 13.5px; font-style: italic; padding: 14px 0; }
+
+  .ladder { margin-top: 8px; }
+  .ladder-row { display: flex; justify-content: space-between; padding: 9px 0; font-size: 14px; border-bottom: 1px dashed var(--line); }
+  .ladder-row.total { font-weight: 700; color: var(--navy-deep); border-bottom: none; border-top: 1.5px solid var(--line); margin-top: 4px; padding-top: 12px; }
+  .ladder-row .val { font-weight: 600; }
+  .ladder-row.subtract .val::before { content: "\2212 "; color: var(--berry); }
+  .ladder-row.add .val::before { content: "+ "; color: var(--teal); }
+
+  @media (max-width: 560px) {
+    .card { padding: 22px 18px; }
+    .headline { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <a class="back-link" href="behind-the-bottom-line.html">&larr; Behind the Bottom Line</a>
+  <p class="eyebrow">Financial Acumen Training Series</p>
+  <h1 class="headline">Working Tools</h1>
+  <p class="sub-lede">Use these with your own numbers &mdash; nothing here is saved or sent anywhere, so feel free to experiment.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-panel="prime">Prime Cost Tracker</button>
+    <button class="tab-btn" data-panel="variance">Variance Diagnostic</button>
+    <button class="tab-btn" data-panel="ebitda">EBITDA Builder</button>
+  </div>
+
+  <div class="card">
+
+    <!-- PANEL 1: Prime Cost Benchmark Tracker -->
+    <div class="panel active" id="panel-prime">
+      <h2>Prime Cost Benchmark Tracker</h2>
+      <p class="panel-desc">From Module 1: Prime Cost = COGS + Labor. Log a period at a time to see whether you're tracking inside your target range.</p>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="pcPeriod">Period label</label>
+          <input type="text" id="pcPeriod" placeholder="e.g. March">
+        </div>
+        <div class="field">
+          <label for="pcRevenue">Revenue ($)</label>
+          <input type="number" id="pcRevenue" min="0" step="0.01" placeholder="e.g. 80000">
+        </div>
+        <div class="field">
+          <label for="pcCogs">COGS ($)</label>
+          <input type="number" id="pcCogs" min="0" step="0.01" placeholder="e.g. 24000">
+        </div>
+        <div class="field">
+          <label for="pcLabor">Labor ($)</label>
+          <input type="number" id="pcLabor" min="0" step="0.01" placeholder="e.g. 25600">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="pcTargetLow">Target range low (%)</label>
+          <input type="number" id="pcTargetLow" min="0" step="0.5" value="55">
+        </div>
+        <div class="field">
+          <label for="pcTargetHigh">Target range high (%)</label>
+          <input type="number" id="pcTargetHigh" min="0" step="0.5" value="60">
+        </div>
+        <div class="field" style="display:flex; align-items:flex-end;">
+          <button class="btn btn-teal" id="pcAddBtn" style="width:100%;">+ Add period</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="order-table" id="pcTable">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th class="num">COGS %</th>
+              <th class="num">Labor %</th>
+              <th class="num">Prime Cost %</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="pcTableBody"></tbody>
+        </table>
+        <div class="empty-state" id="pcEmptyState">No periods logged yet &mdash; add your first one above.</div>
+      </div>
+      <p class="result-note">Prime Cost % = (COGS + Labor) &divide; Revenue &times; 100. Rows above your target range are flagged in clay; rows below it (which usually means you're running efficiently, or possibly understaffed) are flagged in teal.</p>
+    </div>
+
+    <!-- PANEL 2: P&L Variance Diagnostic -->
+    <div class="panel" id="panel-variance">
+      <h2>P&amp;L Variance Diagnostic</h2>
+      <p class="panel-desc">From Module 2: break a revenue change into a volume effect and a rate effect, so you know which story is actually true.</p>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="vPriorRevenue">Prior period revenue ($)</label>
+          <input type="number" id="vPriorRevenue" min="0" step="0.01" placeholder="e.g. 80000">
+        </div>
+        <div class="field">
+          <label for="vPriorVolume">Prior period covers</label>
+          <input type="number" id="vPriorVolume" min="0" step="1" placeholder="e.g. 4000">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="vCurrentRevenue">Current period revenue ($)</label>
+          <input type="number" id="vCurrentRevenue" min="0" step="0.01" placeholder="e.g. 86400">
+        </div>
+        <div class="field">
+          <label for="vCurrentVolume">Current period covers</label>
+          <input type="number" id="vCurrentVolume" min="0" step="1" placeholder="e.g. 3600">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-teal" id="vCalcBtn">Diagnose the variance</button>
+      </div>
+
+      <div id="vVerdict"></div>
+
+      <div class="result-box" id="vResults" style="display:none;">
+        <div class="result-row"><span class="lbl">Prior average check</span><span class="val" id="vPriorRate">&mdash;</span></div>
+        <div class="result-row"><span class="lbl">Current average check</span><span class="val" id="vCurrentRate">&mdash;</span></div>
+        <div class="result-row big"><span class="lbl">Volume effect</span><span class="val" id="vVolumeEffect">&mdash;</span></div>
+        <div class="result-row big"><span class="lbl">Rate effect</span><span class="val" id="vRateEffect">&mdash;</span></div>
+        <div class="result-row"><span class="lbl">Total variance (should match both effects combined)</span><span class="val" id="vTotal">&mdash;</span></div>
+      </div>
+      <p class="result-note">Volume effect = (current covers &minus; prior covers) &times; prior average check. Rate effect = current covers &times; (current average check &minus; prior average check). The two effects always add up to the total change in revenue.</p>
+    </div>
+
+    <!-- PANEL 3: EBITDA Builder -->
+    <div class="panel" id="panel-ebitda">
+      <h2>EBITDA Builder &amp; Balance Sheet Link</h2>
+      <p class="panel-desc">From Module 3: walk from revenue down to net income, then back up to EBITDA, then see it flow into retained earnings.</p>
+
+      <div class="field-row">
+        <div class="field"><label for="eRevenue">Revenue ($)</label><input type="number" id="eRevenue" min="0" step="0.01" placeholder="e.g. 80000"></div>
+        <div class="field"><label for="eCogs">COGS ($)</label><input type="number" id="eCogs" min="0" step="0.01" placeholder="e.g. 24000"></div>
+        <div class="field"><label for="eLabor">Labor ($)</label><input type="number" id="eLabor" min="0" step="0.01" placeholder="e.g. 25600"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="eOpEx">Other operating expenses ($)</label><input type="number" id="eOpEx" min="0" step="0.01" placeholder="e.g. 8000"></div>
+        <div class="field"><label for="eDA">Depreciation &amp; amortization ($)</label><input type="number" id="eDA" min="0" step="0.01" placeholder="e.g. 3000"></div>
+        <div class="field"><label for="eInterest">Interest expense ($)</label><input type="number" id="eInterest" min="0" step="0.01" placeholder="e.g. 1500"></div>
+        <div class="field"><label for="eTaxes">Taxes ($)</label><input type="number" id="eTaxes" min="0" step="0.01" placeholder="e.g. 2200"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="eBeginRE">Beginning retained earnings ($, optional)</label><input type="number" id="eBeginRE" step="0.01" placeholder="e.g. 150000"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-teal" id="eCalcBtn">Build the ladder</button>
+      </div>
+
+      <div id="eLadderWrap" style="display:none;">
+        <div class="ladder">
+          <div class="ladder-row"><span>Revenue</span><span class="val" id="eOutRevenue">&mdash;</span></div>
+          <div class="ladder-row subtract"><span>Prime Cost (COGS + Labor)</span><span class="val" id="eOutPrime">&mdash;</span></div>
+          <div class="ladder-row total"><span>Gross Operating Profit</span><span class="val" id="eOutGOP">&mdash;</span></div>
+          <div class="ladder-row subtract"><span>Other operating expenses</span><span class="val" id="eOutOpEx">&mdash;</span></div>
+          <div class="ladder-row subtract"><span>Depreciation &amp; amortization</span><span class="val" id="eOutDA">&mdash;</span></div>
+          <div class="ladder-row total"><span>Operating Income</span><span class="val" id="eOutOI">&mdash;</span></div>
+          <div class="ladder-row subtract"><span>Interest</span><span class="val" id="eOutInterest">&mdash;</span></div>
+          <div class="ladder-row subtract"><span>Taxes</span><span class="val" id="eOutTaxes">&mdash;</span></div>
+          <div class="ladder-row total"><span>Net Income</span><span class="val" id="eOutNI">&mdash;</span></div>
+        </div>
+        <div class="result-box" style="margin-top:18px;">
+          <div class="result-row big"><span class="lbl">EBITDA <span style="display:block; font-size:11px; font-weight:400; text-transform:uppercase; letter-spacing:0.03em; margin-top:2px;">Earnings Before Interest, Taxes, Depreciation &amp; Amortization</span></span><span class="val" id="eOutEBITDA">&mdash;</span></div>
+        </div>
+        <div class="result-box" style="margin-top:12px;" id="eREBlock">
+          <div class="result-row"><span class="lbl">Beginning retained earnings</span><span class="val" id="eOutBeginRE">&mdash;</span></div>
+          <div class="result-row"><span class="lbl">+ Net income this period</span><span class="val" id="eOutNIAgain">&mdash;</span></div>
+          <div class="result-row big"><span class="lbl">Ending retained earnings (Equity)</span><span class="val" id="eOutEndRE">&mdash;</span></div>
+        </div>
+      </div>
+      <p class="result-note">EBITDA = Earnings Before Interest, Taxes, Depreciation &amp; Amortization &mdash; the operating profit left if you strip out how the company is financed (interest), taxed, and how its assets are expensed over time (D&amp;A). This tool gets there by starting at Net Income and adding those items back, which is mathematically identical to stopping the ladder before they were ever subtracted. This is the &ldquo;Secret Link&rdquo; from Module 3: net income doesn't disappear at the bottom of the income statement &mdash; it becomes part of Equity on the balance sheet as retained earnings.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      tabBtns.forEach(function (b) { b.classList.remove('active'); });
+      panels.forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.getAttribute('data-panel')).classList.add('active');
+    });
+  });
+
+  function money(n) {
+    if (isNaN(n) || n === null) return '$0.00';
+    var sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function num(v) {
+    var n = parseFloat(v);
+    return isNaN(n) ? 0 : n;
+  }
+
+  // ---------- PANEL 1: Prime Cost Tracker ----------
+  var pcRows = [];
+  var pcTableBody = document.getElementById('pcTableBody');
+  var pcEmptyState = document.getElementById('pcEmptyState');
+
+  function renderPcTable() {
+    pcTableBody.innerHTML = '';
+    pcEmptyState.style.display = pcRows.length ? 'none' : 'block';
+    pcRows.forEach(function (row, i) {
+      var tr = document.createElement('tr');
+      if (row.status === 'above') tr.className = 'flag-high';
+      if (row.status === 'below') tr.className = 'flag-low';
+      var statusLabel = row.status === 'above' ? 'Above target' : (row.status === 'below' ? 'Below target' : 'Within target');
+      tr.innerHTML =
+        '<td>' + row.period + '</td>' +
+        '<td class="num">' + row.cogsPct.toFixed(1) + '%</td>' +
+        '<td class="num">' + row.laborPct.toFixed(1) + '%</td>' +
+        '<td class="num">' + row.primePct.toFixed(1) + '%</td>' +
+        '<td>' + statusLabel + '</td>' +
+        '<td><button class="remove-btn" data-i="' + i + '">&times;</button></td>';
+      pcTableBody.appendChild(tr);
+    });
+    pcTableBody.querySelectorAll('.remove-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        pcRows.splice(parseInt(b.getAttribute('data-i'), 10), 1);
+        renderPcTable();
+      });
+    });
+  }
+
+  document.getElementById('pcAddBtn').addEventListener('click', function () {
+    var period = document.getElementById('pcPeriod').value.trim() || 'Unnamed period';
+    var revenue = num(document.getElementById('pcRevenue').value);
+    var cogs = num(document.getElementById('pcCogs').value);
+    var labor = num(document.getElementById('pcLabor').value);
+    var targetLow = num(document.getElementById('pcTargetLow').value);
+    var targetHigh = num(document.getElementById('pcTargetHigh').value);
+
+    var cogsPct = revenue > 0 ? (cogs / revenue) * 100 : 0;
+    var laborPct = revenue > 0 ? (labor / revenue) * 100 : 0;
+    var primePct = cogsPct + laborPct;
+    var status = primePct > targetHigh ? 'above' : (primePct < targetLow ? 'below' : 'within');
+
+    pcRows.push({ period: period, cogsPct: cogsPct, laborPct: laborPct, primePct: primePct, status: status });
+    renderPcTable();
+
+    document.getElementById('pcPeriod').value = '';
+    document.getElementById('pcRevenue').value = '';
+    document.getElementById('pcCogs').value = '';
+    document.getElementById('pcLabor').value = '';
+    document.getElementById('pcPeriod').focus();
+  });
+
+  renderPcTable();
+
+  // ---------- PANEL 2: Variance Diagnostic ----------
+  document.getElementById('vCalcBtn').addEventListener('click', function () {
+    var priorRevenue = num(document.getElementById('vPriorRevenue').value);
+    var priorVolume = num(document.getElementById('vPriorVolume').value);
+    var currentRevenue = num(document.getElementById('vCurrentRevenue').value);
+    var currentVolume = num(document.getElementById('vCurrentVolume').value);
+
+    var priorRate = priorVolume > 0 ? priorRevenue / priorVolume : 0;
+    var currentRate = currentVolume > 0 ? currentRevenue / currentVolume : 0;
+
+    var volumeEffect = (currentVolume - priorVolume) * priorRate;
+    var rateEffect = currentVolume * (currentRate - priorRate);
+    var total = currentRevenue - priorRevenue;
+
+    document.getElementById('vPriorRate').textContent = money(priorRate);
+    document.getElementById('vCurrentRate').textContent = money(currentRate);
+    document.getElementById('vVolumeEffect').textContent = money(volumeEffect);
+    document.getElementById('vRateEffect').textContent = money(rateEffect);
+    document.getElementById('vTotal').textContent = money(total);
+    document.getElementById('vResults').style.display = 'block';
+
+    var verdictEl = document.getElementById('vVerdict');
+    var absVol = Math.abs(volumeEffect);
+    var absRate = Math.abs(rateEffect);
+    var verdictClass, verdictText;
+    if (absVol > absRate * 1.5) {
+      verdictClass = 'verdict-volume';
+      verdictText = 'Mostly a volume story \u2014 the change is driven by covers, not price or mix.';
+    } else if (absRate > absVol * 1.5) {
+      verdictClass = 'verdict-rate';
+      verdictText = 'Mostly a rate story \u2014 the change is driven by price or mix, not traffic. Check what\u2019s happening to covers underneath it.';
+    } else {
+      verdictClass = 'verdict-mixed';
+      verdictText = 'A mixed story \u2014 both volume and rate are contributing meaningfully to the change.';
+    }
+    verdictEl.innerHTML = '<div class="verdict-banner ' + verdictClass + '">' + verdictText + '</div>';
+  });
+
+  // ---------- PANEL 3: EBITDA Builder ----------
+  document.getElementById('eCalcBtn').addEventListener('click', function () {
+    var revenue = num(document.getElementById('eRevenue').value);
+    var cogs = num(document.getElementById('eCogs').value);
+    var labor = num(document.getElementById('eLabor').value);
+    var opEx = num(document.getElementById('eOpEx').value);
+    var da = num(document.getElementById('eDA').value);
+    var interest = num(document.getElementById('eInterest').value);
+    var taxes = num(document.getElementById('eTaxes').value);
+    var beginRE = num(document.getElementById('eBeginRE').value);
+
+    var primeCost = cogs + labor;
+    var gop = revenue - primeCost;
+    var operatingIncome = gop - opEx - da;
+    var netIncome = operatingIncome - interest - taxes;
+    var ebitda = netIncome + interest + taxes + da;
+    var endRE = beginRE + netIncome;
+
+    document.getElementById('eOutRevenue').textContent = money(revenue);
+    document.getElementById('eOutPrime').textContent = money(primeCost);
+    document.getElementById('eOutGOP').textContent = money(gop);
+    document.getElementById('eOutOpEx').textContent = money(opEx);
+    document.getElementById('eOutDA').textContent = money(da);
+    document.getElementById('eOutOI').textContent = money(operatingIncome);
+    document.getElementById('eOutInterest').textContent = money(interest);
+    document.getElementById('eOutTaxes').textContent = money(taxes);
+    document.getElementById('eOutNI').textContent = money(netIncome);
+    document.getElementById('eOutEBITDA').textContent = money(ebitda);
+    document.getElementById('eOutBeginRE').textContent = money(beginRE);
+    document.getElementById('eOutNIAgain').textContent = money(netIncome);
+    document.getElementById('eOutEndRE').textContent = money(endRE);
+
+    document.getElementById('eLadderWrap').style.display = 'block';
+  });
+
+})();
+</script>
+
+</body>
+</html>

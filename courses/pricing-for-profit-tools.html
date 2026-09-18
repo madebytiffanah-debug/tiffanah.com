@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing for Profit — Working Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #332A22;
+    --navy-deep: #241D18;
+    --ice: #C68D33;
+    --gold: #C68D33;
+    --gold-tint: rgba(198, 141, 51, 0.16);
+    --berry: #B2543A;
+    --berry-tint: rgba(178, 84, 58, 0.14);
+    --paper: #F1E4CC;
+    --paper-soft: #EAD9B8;
+    --ink: #332A22;
+    --muted: #6B5D4C;
+    --line: rgba(51, 42, 34, 0.16);
+    --teal: #1E5C52;
+    --teal-tint: rgba(30, 92, 82, 0.14);
+    --sage: #A3AE8A;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Karla', sans-serif;
+    background: var(--navy);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 40px 16px 60px;
+  }
+  h1, h2, h3 { font-family: 'Fraunces', serif; font-weight: 500; margin: 0; }
+  .shell { width: 100%; max-width: 880px; margin: 0 auto; }
+  .eyebrow { color: var(--ice); font-size: 13px; margin: 0 0 6px; text-align: center; }
+  .headline {
+    color: var(--paper);
+    font-size: 28px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+    text-align: center;
+  }
+  .sub-lede { color: rgba(241,228,204,0.68); font-size: 14.5px; text-align: center; margin: 0 0 28px; }
+  .back-link { display: block; text-align: center; color: var(--ice); font-size: 13px; text-decoration: none; margin-bottom: 18px; }
+  .back-link:hover { text-decoration: underline; }
+
+  .tabs { display: flex; background: rgba(241,228,204,0.08); border-radius: 10px; padding: 5px; margin-bottom: 22px; gap: 4px; }
+  .tabs button {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: 7px;
+    color: rgba(241,228,204,0.65);
+    cursor: pointer;
+    font-family: 'Karla', sans-serif;
+  }
+  .tabs button.active { background: var(--teal); color: var(--paper); }
+
+  .card { background: var(--paper); border-radius: 12px; padding: 32px 34px; box-shadow: 0 20px 50px rgba(10, 14, 40, 0.35); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .panel h2 { font-size: 21px; color: var(--navy-deep); margin-bottom: 6px; }
+  .panel .panel-desc { font-size: 14px; color: var(--muted); margin-bottom: 24px; line-height: 1.55; }
+
+  .field-row { display: flex; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+  .field { flex: 1 1 140px; }
+  .field label { display: block; font-size: 11.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px; }
+  .field input, .field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-family: inherit;
+    background: var(--paper-soft);
+    color: var(--ink);
+  }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--teal); }
+
+  .btn {
+    display: inline-block;
+    border: none;
+    border-radius: 7px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 11px 20px;
+    font-size: 14px;
+  }
+  .btn-teal { background: var(--teal); color: var(--paper); }
+  .btn-teal:hover { background: #164740; }
+  .btn-row { display: flex; gap: 10px; margin: 6px 0 24px; flex-wrap: wrap; }
+
+  .tier-block { border: 1.5px solid var(--line); border-radius: 9px; padding: 16px 18px; margin-bottom: 14px; }
+  .tier-block h3 { font-size: 15px; margin-bottom: 10px; }
+  .tier-block.tier-bronze h3 { color: #9A6A3C; }
+  .tier-block.tier-silver h3 { color: #6B5D4C; }
+  .tier-block.tier-gold h3 { color: #C68D33; }
+
+  .result-box { background: var(--teal-tint); border-radius: 9px; padding: 18px 20px; margin-top: 6px; }
+  .result-row { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; font-size: 14px; }
+  .result-row.big .val { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; color: var(--navy-deep); }
+  .result-row .lbl { color: var(--ink); }
+  .result-row .val { font-weight: 700; color: var(--navy-deep); }
+  .result-note { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.5; font-style: italic; }
+
+  .tier-results { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+  .tier-result-card { flex: 1 1 200px; background: var(--paper-soft); border-radius: 9px; padding: 16px; }
+  .tier-result-card h4 { font-size: 14px; margin-bottom: 8px; color: var(--navy-deep); }
+  .tier-result-card .row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
+  .tier-result-card .row .v { font-weight: 700; }
+
+  /* Checklist */
+  .checklist-group { margin-bottom: 22px; }
+  .checklist-group h3 { font-size: 15px; color: var(--navy-deep); margin-bottom: 10px; }
+  .checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .checklist-item input[type="checkbox"] { margin-top: 3px; width: 17px; height: 17px; accent-color: var(--teal); flex: 0 0 auto; }
+  .checklist-item label { font-size: 14px; line-height: 1.4; cursor: pointer; }
+  .score-banner { border-radius: 9px; padding: 16px 20px; margin-top: 6px; font-size: 15px; font-weight: 700; }
+  .score-good { background: var(--teal-tint); color: var(--teal); }
+  .score-mid { background: var(--gold-tint); color: #7A551F; }
+  .score-low { background: var(--berry-tint); color: var(--berry); }
+
+  /* Scorecard */
+  .quadrant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .quadrant { border-radius: 9px; padding: 16px 18px; }
+  .quadrant h3 { font-size: 14px; margin-bottom: 10px; }
+  .quadrant.q-financial { background: var(--gold-tint); }
+  .quadrant.q-customer { background: var(--teal-tint); }
+  .quadrant.q-process { background: rgba(163, 174, 138, 0.22); }
+  .quadrant.q-people { background: var(--berry-tint); }
+  .quadrant input { width: 100%; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 6px; font-size: 13.5px; font-family: inherit; background: var(--paper); margin-bottom: 8px; }
+  .quadrant input:last-child { margin-bottom: 0; }
+  .quadrant .field-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); margin-bottom: 3px; display: block; }
+
+  @media (max-width: 560px) {
+    .card { padding: 22px 18px; }
+    .headline { font-size: 22px; }
+    .quadrant-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <a class="back-link" href="pricing-for-profit.html">&larr; Pricing for Profit</a>
+  <p class="eyebrow">Financial Acumen Training Series</p>
+  <h1 class="headline">Working Tools</h1>
+  <p class="sub-lede">Use these with your own numbers &mdash; nothing here is saved or sent anywhere, so feel free to experiment.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-panel="breakeven">Break-Even &amp; Tiers</button>
+    <button class="tab-btn" data-panel="controls">Controls Self-Audit</button>
+    <button class="tab-btn" data-panel="scorecard">Scorecard Builder</button>
+  </div>
+
+  <div class="card">
+
+    <!-- PANEL 1: Break-Even & Tiered Pricing -->
+    <div class="panel active" id="panel-breakeven">
+      <h2>Break-Even &amp; Tiered Pricing Calculator</h2>
+      <p class="panel-desc">From Module 1: enter fixed costs once, then price up to three tiers of the same offer to compare break-even volume across them.</p>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="beFixed">Fixed costs ($)</label>
+          <input type="number" id="beFixed" min="0" step="0.01" placeholder="e.g. 2000">
+        </div>
+      </div>
+
+      <div class="tier-block tier-bronze">
+        <h3>Bronze tier</h3>
+        <div class="field-row">
+          <div class="field"><label for="bronzePrice">Price per unit ($)</label><input type="number" id="bronzePrice" min="0" step="0.01" placeholder="e.g. 40"></div>
+          <div class="field"><label for="bronzeVar">Variable cost per unit ($)</label><input type="number" id="bronzeVar" min="0" step="0.01" placeholder="e.g. 12"></div>
+        </div>
+      </div>
+      <div class="tier-block tier-silver">
+        <h3>Silver tier</h3>
+        <div class="field-row">
+          <div class="field"><label for="silverPrice">Price per unit ($)</label><input type="number" id="silverPrice" min="0" step="0.01" placeholder="e.g. 55"></div>
+          <div class="field"><label for="silverVar">Variable cost per unit ($)</label><input type="number" id="silverVar" min="0" step="0.01" placeholder="e.g. 15"></div>
+        </div>
+      </div>
+      <div class="tier-block tier-gold">
+        <h3>Gold tier</h3>
+        <div class="field-row">
+          <div class="field"><label for="goldPrice">Price per unit ($)</label><input type="number" id="goldPrice" min="0" step="0.01" placeholder="e.g. 80"></div>
+          <div class="field"><label for="goldVar">Variable cost per unit ($)</label><input type="number" id="goldVar" min="0" step="0.01" placeholder="e.g. 22"></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-teal" id="beCalcBtn">Calculate break-even for all tiers</button>
+      </div>
+
+      <div class="tier-results" id="beResults" style="display:none;"></div>
+      <p class="result-note">Break-even volume = Fixed Costs &divide; (Price &minus; Variable Cost per unit). Compare the volume each tier needs against how many of that tier you realistically expect to sell.</p>
+    </div>
+
+    <!-- PANEL 2: Internal Controls Self-Audit -->
+    <div class="panel" id="panel-controls">
+      <h2>Internal Controls Self-Audit Checklist</h2>
+      <p class="panel-desc">From Module 2: check off what's actually true for your operation today, not what the policy manual says should be true.</p>
+
+      <div class="checklist-group">
+        <h3>Segregation of Duties</h3>
+        <div class="checklist-item"><input type="checkbox" id="c1"><label for="c1">No single person both processes refunds and reconciles the cash drawer</label></div>
+        <div class="checklist-item"><input type="checkbox" id="c2"><label for="c2">The person taking physical inventory counts is different from the person who orders</label></div>
+        <div class="checklist-item"><input type="checkbox" id="c3"><label for="c3">Someone other than the preparer reviews and approves purchase orders above a set dollar threshold</label></div>
+      </div>
+
+      <div class="checklist-group">
+        <h3>Reconciliation &amp; Reporting</h3>
+        <div class="checklist-item"><input type="checkbox" id="c4"><label for="c4">The stock ledger is reconciled against the general ledger on a regular, calendared schedule</label></div>
+        <div class="checklist-item"><input type="checkbox" id="c5"><label for="c5">An accounts payable aging report is reviewed at least monthly, and nothing sits unexplained past 60 days</label></div>
+        <div class="checklist-item"><input type="checkbox" id="c6"><label for="c6">POS voids, refunds, and comps are reviewed on a recurring basis, not just when something seems off</label></div>
+      </div>
+
+      <div class="checklist-group">
+        <h3>Physical &amp; System Access</h3>
+        <div class="checklist-item"><input type="checkbox" id="c7"><label for="c7">Storage areas, safes, and registers are locked when not actively in use</label></div>
+        <div class="checklist-item"><input type="checkbox" id="c8"><label for="c8">Only current employees who need it have active POS or accounting system logins</label></div>
+        <div class="checklist-item"><input type="checkbox" id="c9"><label for="c9">Someone other than the register operator has final sign-off on manual price overrides</label></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-teal" id="auditScoreBtn">See my score</button>
+      </div>
+
+      <div id="auditScoreOut"></div>
+    </div>
+
+    <!-- PANEL 3: Balanced Scorecard Builder -->
+    <div class="panel" id="panel-scorecard">
+      <h2>Balanced Scorecard Builder</h2>
+      <p class="panel-desc">From Module 3: enter one real metric and target for each quadrant, so financial performance isn't the only thing you're watching.</p>
+
+      <div class="quadrant-grid">
+        <div class="quadrant q-financial">
+          <h3>Financial</h3>
+          <span class="field-label">Metric</span>
+          <input type="text" id="sFinMetric" placeholder="e.g. Net profit margin">
+          <span class="field-label">Current / Target</span>
+          <input type="text" id="sFinValue" placeholder="e.g. 6% / 9%">
+        </div>
+        <div class="quadrant q-customer">
+          <h3>Customer</h3>
+          <span class="field-label">Metric</span>
+          <input type="text" id="sCustMetric" placeholder="e.g. Net Promoter Score">
+          <span class="field-label">Current / Target</span>
+          <input type="text" id="sCustValue" placeholder="e.g. 42 / 55">
+        </div>
+        <div class="quadrant q-process">
+          <h3>Process</h3>
+          <span class="field-label">Metric</span>
+          <input type="text" id="sProcMetric" placeholder="e.g. Inventory turnover ratio">
+          <span class="field-label">Current / Target</span>
+          <input type="text" id="sProcValue" placeholder="e.g. 4.2x / 6x per period">
+        </div>
+        <div class="quadrant q-people">
+          <h3>People</h3>
+          <span class="field-label">Metric</span>
+          <input type="text" id="sPeopleMetric" placeholder="e.g. Voluntary turnover rate">
+          <span class="field-label">Current / Target</span>
+          <input type="text" id="sPeopleValue" placeholder="e.g. 38% / 20%">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-teal" id="scorecardBtn">Build my scorecard summary</button>
+      </div>
+
+      <div class="result-box" id="scorecardOut" style="display:none;"></div>
+      <p class="result-note">A scorecard only works if every quadrant has something in it. If any box above is hard to fill in, that's usually the quadrant you're tracking the least &mdash; and often the one worth starting with.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      tabBtns.forEach(function (b) { b.classList.remove('active'); });
+      panels.forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.getAttribute('data-panel')).classList.add('active');
+    });
+  });
+
+  function money(n) {
+    if (isNaN(n) || n === null) return '$0.00';
+    var sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function num(v) {
+    var n = parseFloat(v);
+    return isNaN(n) ? 0 : n;
+  }
+
+  // ---------- PANEL 1: Break-Even & Tiered Pricing ----------
+  document.getElementById('beCalcBtn').addEventListener('click', function () {
+    var fixed = num(document.getElementById('beFixed').value);
+    var tiers = [
+      { name: 'Bronze', price: num(document.getElementById('bronzePrice').value), varCost: num(document.getElementById('bronzeVar').value) },
+      { name: 'Silver', price: num(document.getElementById('silverPrice').value), varCost: num(document.getElementById('silverVar').value) },
+      { name: 'Gold', price: num(document.getElementById('goldPrice').value), varCost: num(document.getElementById('goldVar').value) }
+    ];
+
+    var resultsWrap = document.getElementById('beResults');
+    resultsWrap.innerHTML = '';
+    tiers.forEach(function (t) {
+      var contribution = t.price - t.varCost;
+      var breakEvenExact = contribution > 0 ? fixed / contribution : Infinity;
+      var breakEvenUnits = breakEvenExact !== Infinity ? Math.ceil(breakEvenExact) : Infinity;
+      var breakEvenRevenue = breakEvenUnits !== Infinity ? breakEvenUnits * t.price : Infinity;
+
+      var card = document.createElement('div');
+      card.className = 'tier-result-card';
+      card.innerHTML =
+        '<h4>' + t.name + '</h4>' +
+        '<div class="row"><span>Contribution margin</span><span class="v">' + money(contribution) + '</span></div>' +
+        '<div class="row"><span>Break-even units</span><span class="v">' + (breakEvenUnits === Infinity ? 'N/A' : breakEvenUnits) + '</span></div>' +
+        '<div class="row"><span>Break-even revenue</span><span class="v">' + (breakEvenRevenue === Infinity ? 'N/A' : money(breakEvenRevenue)) + '</span></div>';
+      resultsWrap.appendChild(card);
+    });
+    resultsWrap.style.display = 'flex';
+  });
+
+  // ---------- PANEL 2: Internal Controls Self-Audit ----------
+  document.getElementById('auditScoreBtn').addEventListener('click', function () {
+    var checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+    var total = checkboxes.length;
+    var checked = 0;
+    checkboxes.forEach(function (cb) { if (cb.checked) checked++; });
+
+    var pct = Math.round((checked / total) * 100);
+    var scoreClass, scoreMsg;
+    if (pct >= 80) {
+      scoreClass = 'score-good';
+      scoreMsg = 'Strong control environment. Keep the gaps you do have on a short list with an owner and a date.';
+    } else if (pct >= 50) {
+      scoreClass = 'score-mid';
+      scoreMsg = 'A workable foundation with real gaps. Prioritize the segregation-of-duties items first \u2014 they carry the most risk.';
+    } else {
+      scoreClass = 'score-low';
+      scoreMsg = 'Significant gaps in place right now. Pick one item to fix this week rather than trying to fix everything at once.';
+    }
+
+    document.getElementById('auditScoreOut').innerHTML =
+      '<div class="score-banner ' + scoreClass + '">' + checked + ' of ' + total + ' controls in place (' + pct + '%) \u2014 ' + scoreMsg + '</div>';
+  });
+
+  // ---------- PANEL 3: Balanced Scorecard Builder ----------
+  document.getElementById('scorecardBtn').addEventListener('click', function () {
+    var quadrants = [
+      { label: 'Financial', metric: document.getElementById('sFinMetric').value.trim(), value: document.getElementById('sFinValue').value.trim() },
+      { label: 'Customer', metric: document.getElementById('sCustMetric').value.trim(), value: document.getElementById('sCustValue').value.trim() },
+      { label: 'Process', metric: document.getElementById('sProcMetric').value.trim(), value: document.getElementById('sProcValue').value.trim() },
+      { label: 'People', metric: document.getElementById('sPeopleMetric').value.trim(), value: document.getElementById('sPeopleValue').value.trim() }
+    ];
+
+    var filled = quadrants.filter(function (q) { return q.metric && q.value; }).length;
+    var rowsHtml = quadrants.map(function (q) {
+      var display = q.metric ? (q.metric + ': ' + (q.value || 'no current/target set')) : 'Not yet filled in';
+      return '<div class="result-row"><span class="lbl">' + q.label + '</span><span class="val">' + display + '</span></div>';
+    }).join('');
+
+    var out = document.getElementById('scorecardOut');
+    out.innerHTML =
+      '<div class="result-row big"><span class="lbl">Quadrants filled in</span><span class="val">' + filled + ' of 4</span></div>' +
+      rowsHtml;
+    out.style.display = 'block';
+  });
+
+})();
+</script>
+
+</body>
+</html>

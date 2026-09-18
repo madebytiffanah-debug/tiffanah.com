@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Behind the Bottom Line — Course Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #332A22;
+    --navy-deep: #241D18;
+    --ice: #C68D33;
+    --gold: #C68D33;
+    --gold-tint: rgba(198, 141, 51, 0.16);
+    --berry: #B2543A;
+    --berry-tint: rgba(178, 84, 58, 0.14);
+    --paper: #F1E4CC;
+    --paper-soft: #EAD9B8;
+    --ink: #332A22;
+    --muted: #6B5D4C;
+    --line: rgba(51, 42, 34, 0.16);
+    --teal: #1E5C52;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Karla', sans-serif;
+    background: var(--navy);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  .quiz-shell { width: 100%; max-width: 640px; }
+  .eyebrow { color: var(--ice); font-size: 13px; margin: 0 0 6px; }
+  .headline {
+    font-family: 'Fraunces', serif;
+    color: var(--paper);
+    font-size: 28px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0 0 28px;
+    font-weight: 500;
+  }
+  .card { background: var(--paper); border-radius: 10px; padding: 36px 40px 32px; box-shadow: 0 20px 50px rgba(10, 14, 40, 0.35); }
+  .progress-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .progress-label { font-size: 13px; color: var(--muted); }
+  .progress-track { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; margin-bottom: 26px; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.35s ease; }
+  .question-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.45;
+    color: var(--navy-deep);
+    margin: 0 0 22px;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 6px; }
+  .option {
+    text-align: left;
+    background: var(--paper-soft);
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 13px 16px;
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover:not(:disabled) { border-color: var(--teal); }
+  .option:disabled { cursor: default; }
+  .option.correct { border-color: var(--gold); background: var(--gold-tint); font-weight: 600; }
+  .option.incorrect { border-color: var(--berry); background: var(--berry-tint); }
+  .hint-row { margin: 14px 0 0; }
+  .hint-toggle {
+    background: none;
+    border: none;
+    color: var(--teal);
+    font-size: 13.5px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+  }
+  .hint-text { font-size: 14px; color: var(--muted); margin-top: 8px; font-style: italic; }
+  .feedback { margin-top: 20px; padding: 16px 18px; border-radius: 8px; font-size: 14.5px; line-height: 1.55; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--gold-tint); color: var(--navy-deep); }
+  .feedback.incorrect-fb { background: var(--berry-tint); color: var(--berry); }
+  .feedback strong { display: block; margin-bottom: 4px; font-size: 15px; }
+  .feedback .explain { color: var(--ink); font-style: normal; }
+  .controls { display: flex; justify-content: flex-end; margin-top: 24px; }
+  .next-btn {
+    background: var(--teal);
+    color: var(--paper);
+    border: none;
+    border-radius: 7px;
+    padding: 11px 24px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    display: none;
+  }
+  .next-btn.show { display: inline-block; }
+  .next-btn:hover { background: #164740; }
+
+  .results { display: none; }
+  .results.show { display: block; }
+  .quiz-body.hide { display: none; }
+  .score-wrap { text-align: center; padding: 6px 0 22px; }
+  .score-num { font-family: 'Fraunces', serif; font-size: 52px; color: var(--navy-deep); font-weight: 600; line-height: 1; }
+  .score-of { font-size: 16px; color: var(--muted); margin-top: 4px; }
+  .score-msg { font-size: 15px; color: var(--ink); margin-top: 12px; }
+  .review-list { border-top: 1px solid var(--line); margin-top: 22px; padding-top: 18px; }
+  .review-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .review-item:last-child { border-bottom: none; }
+  .review-mark {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--paper);
+    margin-top: 2px;
+  }
+  .review-mark.right { background: var(--gold); color: var(--navy-deep); }
+  .review-mark.wrong { background: var(--berry); }
+  .review-q { font-size: 14px; color: var(--ink); }
+  .review-q .rq-prompt { font-weight: 600; display: block; margin-bottom: 2px; }
+  .restart-row { text-align: center; margin-top: 26px; }
+  .restart-btn {
+    background: none;
+    border: 1.5px solid var(--teal);
+    color: var(--teal);
+    border-radius: 7px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .restart-btn:hover { background: var(--teal); color: var(--paper); }
+
+  @media (max-width: 480px) {
+    .card { padding: 26px 20px 24px; }
+    .headline { font-size: 23px; }
+    .question-text { font-size: 17px; }
+    .score-num { font-size: 42px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="quiz-shell">
+  <p class="eyebrow">From the Behind the Bottom Line course</p>
+  <h1 class="headline">Check your understanding</h1>
+
+  <div class="card">
+
+    <div class="quiz-body" id="quizBody">
+      <div class="progress-row">
+        <span class="progress-label" id="progressLabel">Question 1 of 6</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width: 16.6%;"></div>
+      </div>
+
+      <p class="question-text" id="questionText"></p>
+      <div class="options" id="optionsWrap"></div>
+
+      <div class="hint-row" id="hintRow">
+        <button class="hint-toggle" id="hintToggle">Show hint</button>
+        <p class="hint-text" id="hintText" style="display:none;"></p>
+      </div>
+
+      <div class="feedback" id="feedback">
+        <strong id="feedbackLabel"></strong>
+        <span class="explain" id="feedbackExplain"></span>
+      </div>
+
+      <div class="controls">
+        <button class="next-btn" id="nextBtn">Next question</button>
+      </div>
+    </div>
+
+    <div class="results" id="results">
+      <div class="score-wrap">
+        <div class="score-num" id="scoreNum">0/6</div>
+        <div class="score-of">correct</div>
+        <p class="score-msg" id="scoreMsg"></p>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+      <div class="restart-row">
+        <button class="restart-btn" id="restartBtn">Retake the quiz</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+const QUESTIONS = [
+  {
+    prompt: "What is Prime Cost, and why is it the single number most department heads should watch first?",
+    options: [
+      "COGS plus Labor \u2014 together, the two costs most directly controllable by daily operating decisions",
+      "Total revenue minus total expenses",
+      "The cost of goods sold only, expressed as a percentage",
+      "A company's total debt obligations for the year"
+    ],
+    correct: 0,
+    hint: "It combines the two cost lines a department head actually influences shift to shift.",
+    explain: "Prime Cost = COGS + Labor. It's the benchmark most department heads track because both pieces respond directly to daily decisions \u2014 staffing, scheduling, ordering, portioning \u2014 unlike rent or insurance."
+  },
+  {
+    prompt: "Last month's revenue was $80,000 from 4,000 covers. This month's revenue is $86,400 from 3,600 covers. What actually happened?",
+    options: [
+      "Business grew \u2014 more covers drove the increase",
+      "Covers fell, but average check rose enough to more than offset it",
+      "Nothing meaningful changed \u2014 revenue is revenue",
+      "This can't be determined from the information given"
+    ],
+    correct: 1,
+    hint: "Compare average check ($80,000/4,000 vs. $86,400/3,600) before judging the top line.",
+    explain: "Average check rose from $20.00 to $24.00 \u2014 a 20% increase that more than offset a 10% drop in covers. A rising revenue number hid a falling traffic count."
+  },
+  {
+    prompt: "When diagnosing a variance, why does the course treat this month's performance as the \u2018cause\u2019 and year-to-date as the \u2018effect\u2019?",
+    options: [
+      "Because year-to-date numbers are always more accurate",
+      "Because each month's actual results are what accumulate into and shift the YTD trend, not the other way around",
+      "Because this month's numbers don't actually matter",
+      "Because YTD numbers are set at the start of the year and don't change"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "YTD figures are just an accumulation of every month behind them. This month's actual performance is the newest input causing the YTD trend to move \u2014 so root-causing starts with the current month, not the cumulative total."
+  },
+  {
+    prompt: "What does EBITDA strip out that a plain net profit figure does not?",
+    options: [
+      "Revenue and cost of goods sold",
+      "Interest, taxes, depreciation, and amortization",
+      "Labor costs only",
+      "Nothing \u2014 EBITDA and net profit are the same calculation"
+    ],
+    correct: 1,
+    hint: "The letters in EBITDA are also the answer.",
+    explain: "EBITDA stands for Earnings Before Interest, Taxes, Depreciation, and Amortization \u2014 it strips out financing and accounting variables to isolate how much operating income the business actually generates."
+  },
+  {
+    prompt: "According to the \u2018Secret Link,\u2019 how does a month's net profit affect the balance sheet?",
+    options: [
+      "It doesn't \u2014 the income statement and balance sheet are unrelated",
+      "It flows into Equity as Retained Earnings, directly changing the fundamental accounting equation",
+      "It only affects the cash flow statement, never the balance sheet",
+      "It reduces the company's total liabilities automatically"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "Net profit generated in a period flows directly into the Equity section of the balance sheet as Retained Earnings. Every profitable month literally builds the company's equity; every loss erodes it."
+  },
+  {
+    prompt: "A department's labor cost percentage rose even though total labor dollars spent stayed flat month over month. What is the most likely explanation?",
+    options: [
+      "Labor cost percentage is unrelated to revenue",
+      "Revenue fell, so the same labor dollars now represent a larger share of a smaller number",
+      "The math must be wrong \u2014 this cannot happen",
+      "Overtime was eliminated"
+    ],
+    correct: 1,
+    hint: "Labor % = labor dollars \u00f7 revenue. If the top of that fraction didn't move, look at the bottom.",
+    explain: "Labor cost percentage is labor dollars divided by revenue. If labor dollars stayed flat but revenue dropped, the percentage rises purely from a smaller denominator \u2014 not from any change in staffing decisions."
+  }
+];
+
+let current = 0;
+let answered = false;
+const userAnswers = new Array(QUESTIONS.length).fill(null);
+
+const questionText = document.getElementById('questionText');
+const optionsWrap = document.getElementById('optionsWrap');
+const progressLabel = document.getElementById('progressLabel');
+const progressFill = document.getElementById('progressFill');
+const feedback = document.getElementById('feedback');
+const feedbackLabel = document.getElementById('feedbackLabel');
+const feedbackExplain = document.getElementById('feedbackExplain');
+const nextBtn = document.getElementById('nextBtn');
+const hintRow = document.getElementById('hintRow');
+const hintToggle = document.getElementById('hintToggle');
+const hintText = document.getElementById('hintText');
+const quizBody = document.getElementById('quizBody');
+const results = document.getElementById('results');
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  answered = false;
+  questionText.textContent = q.prompt;
+  progressLabel.textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+  progressFill.style.width = `${((current) / QUESTIONS.length) * 100 + (100 / QUESTIONS.length)}%`;
+
+  optionsWrap.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => selectOption(i));
+    optionsWrap.appendChild(btn);
+  });
+
+  feedback.classList.remove('show', 'correct-fb', 'incorrect-fb');
+  nextBtn.classList.remove('show');
+
+  if (q.hint) {
+    hintRow.style.display = 'block';
+    hintToggle.style.display = 'inline';
+    hintText.style.display = 'none';
+    hintToggle.textContent = 'Show hint';
+  } else {
+    hintRow.style.display = 'none';
+  }
+}
+
+hintToggle.addEventListener('click', () => {
+  const visible = hintText.style.display === 'block';
+  hintText.style.display = visible ? 'none' : 'block';
+  hintText.textContent = QUESTIONS[current].hint;
+  hintToggle.textContent = visible ? 'Show hint' : 'Hide hint';
+});
+
+function selectOption(i) {
+  if (answered) return;
+  answered = true;
+  const q = QUESTIONS[current];
+  userAnswers[current] = i;
+  const buttons = optionsWrap.querySelectorAll('.option');
+  Array.prototype.forEach.call(buttons, function (b, idx) {
+    b.disabled = true;
+    if (idx === q.correct) b.classList.add('correct');
+    if (idx === i && i !== q.correct) b.classList.add('incorrect');
+  });
+
+  feedback.classList.add('show');
+  if (i === q.correct) {
+    feedback.classList.add('correct-fb');
+    feedbackLabel.textContent = 'Correct.';
+  } else {
+    feedback.classList.add('incorrect-fb');
+    feedbackLabel.textContent = 'Not quite.';
+  }
+  feedbackExplain.textContent = q.explain;
+
+  nextBtn.classList.add('show');
+  nextBtn.textContent = current === QUESTIONS.length - 1 ? 'See your results' : 'Next question';
+}
+
+nextBtn.addEventListener('click', () => {
+  if (current < QUESTIONS.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+});
+
+function showResults() {
+  quizBody.classList.add('hide');
+  results.classList.add('show');
+
+  let score = 0;
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = '';
+
+  QUESTIONS.forEach((q, i) => {
+    const isRight = userAnswers[i] === q.correct;
+    if (isRight) score++;
+    const item = document.createElement('div');
+    item.className = 'review-item';
+    item.innerHTML = `
+      <div class="review-mark ${isRight ? 'right' : 'wrong'}">${isRight ? '✓' : '✕'}</div>
+      <div class="review-q">
+        <span class="rq-prompt">${q.prompt}</span>
+        ${isRight ? '' : `Correct answer: ${q.options[q.correct]}`}
+      </div>
+    `;
+    reviewList.appendChild(item);
+  });
+
+  document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+  const msg = document.getElementById('scoreMsg');
+  if (score === QUESTIONS.length) {
+    msg.textContent = "Perfect score — you can trace a variance back to its cause with confidence.";
+  } else if (score >= QUESTIONS.length - 1) {
+    msg.textContent = "Strong grasp of the material, with one spot worth a second look.";
+  } else if (score >= QUESTIONS.length / 2) {
+    msg.textContent = "A solid start — revisit the modules above for the ones you missed.";
+  } else {
+    msg.textContent = "Worth another pass through the course material before moving on.";
+  }
+}
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  current = 0;
+  userAnswers.fill(null);
+  results.classList.remove('show');
+  quizBody.classList.remove('hide');
+  renderQuestion();
+});
+
+renderQuestion();
+})();
+</script>
+
+</body>
+</html>

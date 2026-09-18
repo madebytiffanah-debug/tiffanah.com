@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Managing the Room — Slide Deck</title>
+<title>The Whole Show — Slide Deck</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
     --ink: #332A22;
     --muted: #6B5D4C;
     --line: rgba(51, 42, 34, 0.16);
-    --plum: #6B3F4B;
+    --plum: #1E5C52;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -95,6 +95,7 @@
   .stage:fullscreen { border-radius: 0; max-width: none; }
   .stage:fullscreen .slide { border-radius: 0; }
 
+  /* Font scale relative to stage width (design width 1280px) */
   .stage {
     --fs-tiny: 1.05cqw;
     --fs-small: 1.22cqw;
@@ -167,7 +168,7 @@
   }
 
   /* ---------- Agenda ---------- */
-  .tpl-agenda h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.2cqw; }
+  .tpl-agenda h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.2cqw; }
   .agenda-row {
     display: flex;
     align-items: flex-start;
@@ -187,7 +188,7 @@
     align-items: center;
     justify-content: center;
     font-family: 'Fraunces', serif;
-    font-weight: 700;
+    font-weight: 600;
     font-size: var(--fs-h3);
   }
   .agenda-body .a-title { font-size: var(--fs-body-lg); font-weight: 700; color: var(--navy-deep); margin-bottom: 0.3cqw; }
@@ -208,7 +209,7 @@
     padding: 0 2cqw;
   }
   .split-left .icon-badge { width: 5cqw; height: 5cqw; margin-bottom: 1.6cqw; }
-  .split-left h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); margin: 0; }
+  .split-left h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); margin: 0; }
   .split-right {
     flex: 1;
     display: flex;
@@ -245,11 +246,11 @@
     opacity: 0.9;
   }
   .tpl-module .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); margin: 0 0 1cqw; letter-spacing: 0.03em; }
-  .tpl-module h1 { font-family: 'Fraunces', serif; font-size: 3.1cqw; font-weight: 500; margin: 0 0 1.2cqw; max-width: 88%; line-height: 1.18; }
+  .tpl-module h1 { font-family: 'Fraunces', serif; font-size: 3.15cqw; font-weight: 500; margin: 0 0 1.2cqw; max-width: 85%; line-height: 1.18; }
   .tpl-module .source { font-size: var(--fs-body); color: var(--ice); }
 
   /* ---------- 3-row content ---------- */
-  .tpl-rows h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.4cqw; }
+  .tpl-rows h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.4cqw; }
   .row-list { display: flex; flex-direction: column; gap: 1.7cqw; }
   .row-item { display: flex; gap: 1.4cqw; align-items: flex-start; }
   .row-num-circle {
@@ -262,9 +263,8 @@
   }
   .row-heading { flex: 0 0 26%; font-size: var(--fs-body-lg); font-weight: 700; color: var(--plum); padding-top: 0.3cqw; }
   .row-text { flex: 1; font-size: var(--fs-body); line-height: 1.55; padding-top: 0.3cqw; }
-  .row-list-foot { font-size: var(--fs-body); color: var(--muted); margin-top: 1.6cqw; line-height: 1.5; }
 
-  /* ---------- Exercise / demo / case study ---------- */
+  /* ---------- Exercise / case study / discussion ---------- */
   .badge-pill {
     display: inline-flex;
     align-self: flex-start;
@@ -278,7 +278,7 @@
   }
   .badge-navy { background: var(--plum); }
   .badge-berry { background: var(--berry); }
-  .tpl-exercise h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.1cqw; }
+  .tpl-exercise h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.1cqw; }
   .ex-list { display: flex; flex-direction: column; gap: 1.35cqw; }
   .ex-item { display: flex; gap: 1.3cqw; align-items: center; }
   .ex-num {
@@ -294,12 +294,12 @@
   .tpl-takeaway .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); letter-spacing: 0.05em; margin: 0 0 1.1cqw; }
   .tpl-takeaway .quote { max-width: 78%; font-size: var(--fs-quote); line-height: 1.5; margin: 0; }
 
-  /* ---------- Comparison cards ---------- */
-  .tpl-compare h2 { font-family: 'Fraunces', serif; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  /* ---------- Comparison (contribution margin vs gross profit) ---------- */
+  .tpl-compare h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 0.5cqw; }
   .tpl-compare .compare-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.8cqw; }
   .compare-row { display: flex; gap: 1.6cqw; flex: 1; }
   .compare-card { flex: 1; border-radius: 10px; padding: 1.8cqw 1.9cqw; display: flex; flex-direction: column; gap: 0.9cqw; }
-  .compare-card.tint-blue { background: rgba(107, 63, 75, 0.12); }
+  .compare-card.tint-blue { background: rgba(30, 92, 82, 0.12); }
   .compare-card.tint-berry { background: var(--berry-tint); }
   .compare-head { font-size: var(--fs-h3); font-weight: 700; letter-spacing: 0.02em; }
   .compare-head.c-navy { color: var(--plum); }
@@ -309,7 +309,7 @@
   .compare-foot { font-size: var(--fs-body); color: var(--muted); margin-top: 1.6cqw; line-height: 1.5; }
 
   /* ---------- Action plan ---------- */
-  .tpl-action h2 { font-family: 'Fraunces', serif; font-size: 2.9cqw; color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  .tpl-action h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 2.9cqw; color: var(--navy-deep); margin: 0 0 0.5cqw; }
   .tpl-action .action-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.9cqw; }
   .action-row { display: flex; gap: 1.4cqw; align-items: center; margin-bottom: 1.15cqw; }
   .action-icon {
@@ -383,8 +383,8 @@
 <body>
 
 <div class="deck-top">
-  <a class="deck-back" href="team-dynamics.html">&larr; Managing the Room</a>
-  <div class="deck-title">Slide Deck <span>&mdash; Manager Workshop</span></div>
+  <a class="deck-back" href="the-whole-show.html">&larr; The Whole Show</a>
+  <div class="deck-title">Slide Deck <span>&mdash; Financial Acumen Training</span></div>
   <div class="deck-actions">
     <button class="icon-btn" id="fsBtn" type="button" title="Fullscreen" aria-label="Toggle fullscreen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
@@ -397,12 +397,12 @@
 
     <!-- Slide 1 -->
     <section class="slide slide-navy tpl-title active" data-slide="1">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-      <p class="eyebrow">MANAGER &amp; LEADERSHIP TRAINING SERIES</p>
-      <h1>Managing the Room</h1>
-      <p class="sub">Group Dynamics &amp; Team Leadership for Managers</p>
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+      <p class="eyebrow">FINANCIAL ACUMEN TRAINING SERIES &mdash; COURSE 4 OF 4</p>
+      <h1>The Whole Show</h1>
+      <p class="sub">Consolidating Revenue Streams Into One Bottom Line</p>
       <div class="divider"></div>
-      <p class="caption">Half-day workshop&nbsp; &bull; &nbsp;Grounded in Social Psychology research&nbsp; &bull; &nbsp;For people managers &amp; team leads</p>
+      <p class="caption">Half-day session&nbsp; &bull; &nbsp;Includes three working tools&nbsp; &bull; &nbsp;The capstone course in this series</p>
       <span class="pagenum">1</span>
     </section>
 
@@ -412,53 +412,46 @@
       <div class="agenda-row">
         <div class="agenda-num">01</div>
         <div class="agenda-body">
-          <div class="a-title">Why Groups Underperform</div>
-          <div class="a-desc">Social loafing, process loss &amp; groupthink</div>
+          <div class="a-title">Six Streams, One Bottom Line</div>
+          <div class="a-desc">Consolidating department P&amp;Ls, and why overhead changes the answer</div>
         </div>
       </div>
       <div class="agenda-row">
         <div class="agenda-num">02</div>
         <div class="agenda-body">
-          <div class="a-title">Group Polarization &amp; Decision-Making</div>
-          <div class="a-desc">Why teams land on extremes</div>
+          <div class="a-title">The Talent Settlement</div>
+          <div class="a-desc">Guarantees, splits, and hospitality/tech rider overages backed out at close</div>
         </div>
       </div>
       <div class="agenda-row">
         <div class="agenda-num">03</div>
         <div class="agenda-body">
-          <div class="a-title">Leadership Styles &amp; Fit</div>
-          <div class="a-desc">Matching style to the situation</div>
+          <div class="a-title">Loss Leaders &amp; Overhead</div>
+          <div class="a-desc">Reading a department's real job, not just its own P&amp;L</div>
         </div>
       </div>
-      <div class="agenda-row">
-        <div class="agenda-num">04</div>
-        <div class="agenda-body">
-          <div class="a-title">First Impressions &amp; Attribution Errors</div>
-          <div class="a-desc">Fairer, more accurate feedback</div>
-        </div>
-      </div>
-      <p class="agenda-extra">+ Personal action planning and wrap-up</p>
+      <p class="agenda-extra">+ Three working tools you'll leave with, built around your own venue's numbers</p>
       <span class="pagenum">2</span>
     </section>
 
     <!-- Slide 3 -->
     <section class="slide slide-white tpl-split" data-slide="3">
       <div class="split-left">
-        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
         <h2>Why This Matters</h2>
       </div>
       <div class="split-right">
         <div class="why-item">
           <div class="why-num">1</div>
-          <div class="why-text">Managers run meetings and make group calls constantly, but rarely learn how groups actually behave.</div>
+          <div class="why-text">F&amp;B, Talent, VIP/Bottle, Merch, Ticketing, and Sponsorships each run their own numbers &mdash; but none of them carry security, cleaning, or utilities.</div>
         </div>
         <div class="why-item">
           <div class="why-num">2</div>
-          <div class="why-text">More people in the room doesn&rsquo;t mean a better decision &mdash; the structure of the discussion decides that.</div>
+          <div class="why-text">Those shared costs sit below every department, and they're exactly the line that can turn a profitable-looking lineup into a losing night.</div>
         </div>
         <div class="why-item">
           <div class="why-num">3</div>
-          <div class="why-text">This course gives you the mechanics behind team decisions, leadership fit, and fair feedback.</div>
+          <div class="why-text">This course ties together everything from Courses 1&ndash;3 into one consolidated view &mdash; plus the settlement math specific to live events.</div>
         </div>
       </div>
       <span class="pagenum">3</span>
@@ -466,48 +459,44 @@
 
     <!-- Slide 4 -->
     <section class="slide slide-navy tpl-module" data-slide="4">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
       <p class="eyebrow">MODULE 1</p>
-      <h1>Why Groups Underperform</h1>
-      <p class="source">Source: Ch. 9 &mdash; Group Processes</p>
+      <h1>Six Streams, One Bottom Line</h1>
+      <p class="source">Tool: Consolidated P&amp;L Builder</p>
       <span class="pagenum">4</span>
     </section>
 
     <!-- Slide 5 -->
-    <section class="slide slide-white tpl-compare" data-slide="5">
-      <h2>What Groups Discuss &mdash; and What They Miss</h2>
-      <p class="compare-sub">The hidden profile problem</p>
-      <div class="compare-row">
-        <div class="compare-card tint-blue">
-          <div class="compare-head c-navy">SHARED INFORMATION</div>
-          <ul>
-            <li>Facts everyone in the group already has</li>
-            <li>Comfortable to repeat &mdash; feels productive</li>
-            <li>Reinforces the group&rsquo;s existing lean</li>
-          </ul>
+    <section class="slide slide-white tpl-rows" data-slide="5">
+      <h2>Six Streams, Then One Line Below Them</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">Six department P&amp;Ls</div>
+          <div class="row-text">F&amp;B, Talent, VIP/Bottle Service, Merch, Ticketing, and Sponsorships each get their own revenue, cost, and profit line &mdash; exactly like the single-department statements from Course 2.</div>
         </div>
-        <div class="compare-card tint-berry">
-          <div class="compare-head c-berry">UNIQUE INFORMATION</div>
-          <ul>
-            <li>Facts only one person holds</li>
-            <li>Feels riskier to bring up</li>
-            <li>Often the fact that would change the decision</li>
-          </ul>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Combined departmental profit</div>
+          <div class="row-text">Add all six together and you get combined departmental profit &mdash; the number that looks like &ldquo;how the night did,&rdquo; but isn't the final answer yet.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Shared overhead comes last</div>
+          <div class="row-text">Security, cleaning, and utilities aren't charged to any one department &mdash; they're subtracted from the combined total, and they're the line most likely to turn a good-looking night into a loss.</div>
         </div>
       </div>
-      <p class="compare-foot">Social loafing compounds this: when contributions aren&rsquo;t identifiable, individual effort quietly drops too.</p>
       <span class="pagenum">5</span>
     </section>
 
     <!-- Slide 6 -->
     <section class="slide slide-white tpl-exercise" data-slide="6">
       <span class="badge-pill badge-navy">EXERCISE &bull; 20 MIN</span>
-      <h2>The Hidden Profile Exercise</h2>
+      <h2>Build the Consolidated View</h2>
       <div class="ex-list">
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">1</div><div class="ex-text">Each group member gets a briefing: some shared facts, some facts only they hold, about a fictional hiring decision.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">2</div><div class="ex-text">Discuss and reach a decision without comparing full briefings.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">3</div><div class="ex-text">Reveal: the correct call required combining everyone&rsquo;s unique facts.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">4</div><div class="ex-text">Debrief: what structural change would have surfaced the missing information?</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">1</div><div class="ex-text">Use the Consolidated P&amp;L Builder to enter revenue and cost for all six streams from a real or recent night.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">2</div><div class="ex-text">Compare each department's individual profit to the combined total after overhead.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">3</div><div class="ex-text">Discuss: which department's contribution surprised you most once overhead was applied?</div></div>
       </div>
       <span class="pagenum">6</span>
     </section>
@@ -516,200 +505,170 @@
     <section class="slide slide-navy tpl-takeaway" data-slide="7">
       <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
       <p class="eyebrow">KEY TAKEAWAY</p>
-      <p class="quote">If a meeting only confirms what everyone already agreed on, it isn&rsquo;t a discussion &mdash; it&rsquo;s a rehearsal. Structure meetings to force unique information into the open.</p>
+      <p class="quote">A department can win, and the show can still lose. Read the whole page &mdash; not just your line on it.</p>
       <span class="pagenum">7</span>
     </section>
 
     <!-- Slide 8 -->
     <section class="slide slide-navy tpl-module" data-slide="8">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></div>
       <p class="eyebrow">MODULE 2</p>
-      <h1>Group Polarization &amp; Decision-Making</h1>
-      <p class="source">Source: Ch. 9 &mdash; Group Processes</p>
+      <h1>The Talent Settlement</h1>
+      <p class="source">Tool: Artist Settlement Calculator</p>
       <span class="pagenum">8</span>
     </section>
 
     <!-- Slide 9 -->
-    <section class="slide slide-white tpl-rows" data-slide="9">
-      <h2>Why Groups Land on Extremes</h2>
-      <div class="row-list">
-        <div class="row-item">
-          <div class="row-num-circle">1</div>
-          <div class="row-heading">Group polarization</div>
-          <div class="row-text">Discussion strengthens the group&rsquo;s average initial lean &mdash; it doesn&rsquo;t moderate it. Cautious groups get more cautious; risk-tolerant groups get riskier.</div>
+    <section class="slide slide-white tpl-compare" data-slide="9">
+      <h2>Guarantee vs. Door Deal</h2>
+      <p class="compare-sub">Two ways to structure what an artist gets paid</p>
+      <div class="compare-row">
+        <div class="compare-card tint-blue">
+          <div class="compare-head c-navy">GUARANTEE</div>
+          <ul>
+            <li>A fixed fee, regardless of attendance</li>
+            <li>Artist's risk is low; the venue carries the downside if the show underperforms</li>
+            <li>Best for: predictable costs, a known or proven draw</li>
+          </ul>
         </div>
-        <div class="row-item">
-          <div class="row-num-circle">2</div>
-          <div class="row-heading">Two driving forces</div>
-          <div class="row-text">New supporting arguments surface (persuasive arguments), and people shift to match where the group&rsquo;s values seem to be heading (social comparison).</div>
-        </div>
-        <div class="row-item">
-          <div class="row-num-circle">3</div>
-          <div class="row-heading">Practical translation</div>
-          <div class="row-text">Capture individual positions privately before group discussion starts. The gap between that average and the final group call is worth examining.</div>
+        <div class="compare-card tint-berry">
+          <div class="compare-head c-berry">DOOR DEAL / SPLIT</div>
+          <ul>
+            <li>Artist pay tied to a percentage of ticket revenue</li>
+            <li>Both sides share the upside and downside of attendance</li>
+            <li>Best for: uncertain draw, aligning incentives with the venue</li>
+          </ul>
         </div>
       </div>
+      <p class="compare-foot">Many real deals blend both &mdash; a base guarantee plus a split once ticket revenue clears an agreed threshold.</p>
       <span class="pagenum">9</span>
     </section>
 
     <!-- Slide 10 -->
-    <section class="slide slide-white tpl-exercise" data-slide="10">
-      <span class="badge-pill badge-berry">LIVE DEMO &bull; 20 MIN</span>
-      <h2>Live Polarization Demo</h2>
-      <div class="ex-list">
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">1</div><div class="ex-text">Present a moderately risky business scenario. Everyone privately rates their risk tolerance 1&ndash;10 before any discussion.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">2</div><div class="ex-text">Average the private scores and set them aside without revealing them yet.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">3</div><div class="ex-text">Small groups discuss and agree on one group score.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">4</div><div class="ex-text">Compare each group&rsquo;s score to its own pre-discussion average &mdash; groups usually land further from the middle.</div></div>
+    <section class="slide slide-white tpl-rows" data-slide="10">
+      <h2>How a Settlement Actually Closes</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">Two budgets set at booking</div>
+          <div class="row-text">Hospitality and tech each get their own agreed budget when the deal is signed &mdash; well before anyone knows the actual show-night numbers.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Actual costs tracked separately through the show</div>
+          <div class="row-text">Real hospitality spend and real tech/production spend are each tracked as the show comes together, and each is compared against its own original budget.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Each overage backed out at settlement</div>
+          <div class="row-text">If either actual spend exceeds its own budget, that difference is backed out against what's owed to the artist when the show closes &mdash; not quietly absorbed, and not renegotiated after the fact.</div>
+        </div>
       </div>
       <span class="pagenum">10</span>
     </section>
 
     <!-- Slide 11 -->
-    <section class="slide slide-navy tpl-takeaway" data-slide="11">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-      <p class="eyebrow">KEY TAKEAWAY</p>
-      <p class="quote">Group discussion doesn&rsquo;t average opinions &mdash; it tends to amplify the room&rsquo;s initial lean. Capture individual views before the discussion, not just after.</p>
+    <section class="slide slide-white tpl-exercise" data-slide="11">
+      <span class="badge-pill badge-berry">EXERCISE &bull; 20 MIN</span>
+      <h2>Close a Settlement</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">1</div><div class="ex-text">Use the Artist Settlement Calculator with a guarantee or split, plus budgeted and actual figures for both the hospitality and tech riders.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">2</div><div class="ex-text">Calculate the final settlement amount after any overage is backed out.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">3</div><div class="ex-text">Discuss: what would you want in writing before the show, to avoid a dispute at settlement?</div></div>
+      </div>
       <span class="pagenum">11</span>
     </section>
 
     <!-- Slide 12 -->
-    <section class="slide slide-navy tpl-module" data-slide="12">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
-      <p class="eyebrow">MODULE 3</p>
-      <h1>Leadership Styles &amp; Fit</h1>
-      <p class="source">Source: Ch. 9 &mdash; Group Processes (Leadership in Groups)</p>
+    <section class="slide slide-navy tpl-takeaway" data-slide="12">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">A budget set at booking is a plan, not a guarantee of actual cost. The settlement is where the plan meets what really happened.</p>
       <span class="pagenum">12</span>
     </section>
 
     <!-- Slide 13 -->
-    <section class="slide slide-white tpl-compare" data-slide="13">
-      <h2>Two Leadership Orientations</h2>
-      <p class="compare-sub">Neither style is universally &ldquo;better&rdquo;</p>
-      <div class="compare-row">
-        <div class="compare-card tint-blue">
-          <div class="compare-head c-navy">TASK-ORIENTED</div>
-          <ul>
-            <li>Clear direction, structure, standards</li>
-            <li>Fits highly favorable or highly unfavorable situations</li>
-            <li>Best when the task is ambiguous or urgency is high</li>
-          </ul>
-        </div>
-        <div class="compare-card tint-berry">
-          <div class="compare-head c-berry">RELATIONSHIP-ORIENTED</div>
-          <ul>
-            <li>Support, morale, interpersonal trust</li>
-            <li>Fits moderately favorable situations</li>
-            <li>Best when the team is established but needs cohesion</li>
-          </ul>
-        </div>
-      </div>
-      <p class="compare-foot">Situational favorability &mdash; task clarity, leader power, team relationships &mdash; decides which orientation fits. Personality alone predicts leadership success surprisingly poorly.</p>
+    <section class="slide slide-navy tpl-module" data-slide="13">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></div>
+      <p class="eyebrow">MODULE 3</p>
+      <h1>Loss Leaders &amp; Overhead</h1>
+      <p class="source">Tool: Loss-Leader Impact Calculator</p>
       <span class="pagenum">13</span>
     </section>
 
     <!-- Slide 14 -->
-    <section class="slide slide-white tpl-exercise" data-slide="14">
-      <span class="badge-pill badge-navy">EXERCISE &bull; 20 MIN</span>
-      <h2>Style-Situation Matching</h2>
-      <div class="ex-list">
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">1</div><div class="ex-text">Review four team scenarios that vary in task clarity and team cohesion.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">2</div><div class="ex-text">In small groups, choose a task- or relationship-oriented approach for each, and justify the choice.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">3</div><div class="ex-text">Full-group share-out: discuss where the &ldquo;right&rdquo; style flips as the situation changes.</div></div>
+    <section class="slide slide-white tpl-rows" data-slide="14">
+      <h2>Loss Leaders, and the Line Below Everything</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">What makes something a loss leader</div>
+          <div class="row-text">A stream priced to break even, or even lose a little, specifically because it drives spend somewhere else &mdash; cheap bar pricing that keeps people in the building buying tickets and merch.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Loss leaders need consolidated thinking</div>
+          <div class="row-text">Judged alone, a loss-leader department looks like it's failing. Judged by its actual job &mdash; driving revenue elsewhere &mdash; it may be working exactly as intended.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Overhead is the real scoreboard</div>
+          <div class="row-text">Whatever the department mix, security, cleaning, and utilities still come off the top of the combined total &mdash; and that line, not any single department's P&amp;L, decides whether the night actually made money.</div>
+        </div>
       </div>
       <span class="pagenum">14</span>
     </section>
 
     <!-- Slide 15 -->
-    <section class="slide slide-navy tpl-takeaway" data-slide="15">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-      <p class="eyebrow">KEY TAKEAWAY</p>
-      <p class="quote">There is no universally &ldquo;best&rdquo; leadership style &mdash; only the style that fits this team, this task, and this moment.</p>
+    <section class="slide slide-white tpl-exercise" data-slide="15">
+      <span class="badge-pill badge-navy">EXERCISE &bull; 15 MIN</span>
+      <h2>Model a Loss Leader</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">1</div><div class="ex-text">Use the Loss-Leader Impact Calculator to model reducing F&amp;B pricing to drive more foot traffic.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">2</div><div class="ex-text">Compare F&amp;B's own profit against the combined total once the modeled traffic increase is applied.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--plum);">3</div><div class="ex-text">Discuss: at what point does a loss leader stop paying for itself?</div></div>
+      </div>
       <span class="pagenum">15</span>
     </section>
 
     <!-- Slide 16 -->
-    <section class="slide slide-navy tpl-module" data-slide="16">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
-      <p class="eyebrow">MODULE 4</p>
-      <h1>First Impressions &amp; Attribution Errors</h1>
-      <p class="source">Source: Ch. 4 &mdash; Social Perception</p>
+    <section class="slide slide-navy tpl-takeaway" data-slide="16">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">A loss leader isn't a mistake to fix. It's a strategy to measure correctly &mdash; by its effect on the whole show, not its own line.</p>
       <span class="pagenum">16</span>
     </section>
 
     <!-- Slide 17 -->
-    <section class="slide slide-white tpl-rows" data-slide="17">
-      <h2>Why We Misjudge Other People&rsquo;s Setbacks</h2>
-      <div class="row-list">
-        <div class="row-item">
-          <div class="row-num-circle">1</div>
-          <div class="row-heading">First impressions</div>
-          <div class="row-text">They form fast and linger, coloring how a person&rsquo;s later behavior gets read &mdash; long after their actual performance has changed.</div>
-        </div>
-        <div class="row-item">
-          <div class="row-num-circle">2</div>
-          <div class="row-heading">Fundamental attribution error</div>
-          <div class="row-text">When explaining someone else&rsquo;s behavior, we default to character (&ldquo;they&rsquo;re careless&rdquo;) and underweight situational factors (&ldquo;priorities were unclear&rdquo;).</div>
-        </div>
-        <div class="row-item">
-          <div class="row-num-circle">3</div>
-          <div class="row-heading">Self-serving bias</div>
-          <div class="row-text">The opposite direction for our own outcomes: we credit our successes to skill and blame our failures on circumstances.</div>
-        </div>
+    <section class="slide slide-white tpl-action" data-slide="17">
+      <h2>Your Action Plan</h2>
+      <p class="action-sub">Before your next event review, answer these:</p>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Do I know our combined departmental profit for a typical night, both before and after overhead?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Is there a department in our mix that might be an intentional loss leader I've been judging the wrong way?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Do I understand exactly how our hospitality and tech rider overages each get backed out at settlement?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">What's one number from this course I should be asking finance for on a regular basis?</div>
       </div>
       <span class="pagenum">17</span>
     </section>
 
     <!-- Slide 18 -->
-    <section class="slide slide-white tpl-exercise" data-slide="18">
-      <span class="badge-pill badge-berry">EXERCISE &bull; 15 MIN</span>
-      <h2>Attribution Rewrite</h2>
-      <div class="ex-list">
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">1</div><div class="ex-text">Read three scenarios of employee &ldquo;failures&rdquo; written in character-based language.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">2</div><div class="ex-text">In pairs, rewrite each with a plausible situational factor &mdash; without dropping accountability.</div></div>
-        <div class="ex-item"><div class="ex-num" style="background:var(--berry);">3</div><div class="ex-text">Draft one line of feedback that names the factor and still holds the person accountable.</div></div>
-      </div>
-      <span class="pagenum">18</span>
-    </section>
-
-    <!-- Slide 19 -->
-    <section class="slide slide-navy tpl-takeaway" data-slide="19">
-      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-      <p class="eyebrow">KEY TAKEAWAY</p>
-      <p class="quote">The story you tell about someone&rsquo;s failure &mdash; character flaw or bad circumstances &mdash; determines whether feedback helps them improve or just makes them defensive.</p>
-      <span class="pagenum">19</span>
-    </section>
-
-    <!-- Slide 20 -->
-    <section class="slide slide-white tpl-action" data-slide="20">
-      <h2>Your Action Plan</h2>
-      <p class="action-sub">Return to the decision or feedback moment from your pre-work:</p>
-      <div class="action-row">
-        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-        <div class="action-text">Where might process loss or groupthink have shaped this decision &mdash; what unique information didn&rsquo;t surface?</div>
-      </div>
-      <div class="action-row">
-        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-        <div class="action-text">Did the outcome look more extreme than the individual views going in?</div>
-      </div>
-      <div class="action-row">
-        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-        <div class="action-text">Did the leadership style I used fit this team and task, or was it just habit?</div>
-      </div>
-      <div class="action-row">
-        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
-        <div class="action-text">Is there a dispositional assumption in this feedback? What situational factor would a fair observer add?</div>
-      </div>
-      <span class="pagenum">20</span>
-    </section>
-
-    <!-- Slide 21 -->
-    <section class="slide slide-navy tpl-closing" data-slide="21">
-      <h1>The room shapes the decision.</h1>
-      <p class="sub">Structure it on purpose.</p>
+    <section class="slide slide-navy tpl-closing" data-slide="18">
+      <h1>Every stream tells its own story.</h1>
+      <p class="sub">Only the consolidated view tells the truth.</p>
       <div class="divider"></div>
       <p class="caption">Thank you&nbsp; &mdash; &nbsp;Questions &amp; Evaluation</p>
-      <span class="pagenum">21</span>
+      <span class="pagenum">18</span>
     </section>
 
   </div>
@@ -721,7 +680,7 @@
   </button>
   <div class="progress-wrap">
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="slide-counter" id="slideCounter">Slide 1 of 21</div>
+    <div class="slide-counter" id="slideCounter">Slide 1 of 18</div>
   </div>
   <button class="nav-btn" id="nextBtn" type="button" aria-label="Next slide">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -768,6 +727,7 @@
     else if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); }
   });
 
+  // Touch swipe
   var touchStartX = null;
   stage.addEventListener('touchstart', function (e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
   stage.addEventListener('touchend', function (e) {

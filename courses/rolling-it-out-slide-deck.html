@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rolling It Out — Slide Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #332A22;
+    --navy-deep: #241D18;
+    --ice: #C68D33;
+    --gold: #C68D33;
+    --gold-tint: rgba(198, 141, 51, 0.16);
+    --berry: #B2543A;
+    --berry-tint: rgba(178, 84, 58, 0.14);
+    --paper: #F1E4CC;
+    --paper-soft: #EAD9B8;
+    --ink: #332A22;
+    --muted: #6B5D4C;
+    --line: rgba(51, 42, 34, 0.16);
+    --accent: #9C4A2E;
+    --accent-deep: #753722;
+    --accent-tint: rgba(156, 74, 46, 0.18);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Karla', sans-serif;
+    background: var(--navy-deep);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 16px 28px;
+  }
+
+  /* Top bar */
+  .deck-top {
+    width: 100%;
+    max-width: 1040px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .deck-back { color: var(--ice); font-size: 13.5px; text-decoration: none; }
+  .deck-back:hover { text-decoration: underline; }
+  .deck-title { color: var(--paper); font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500; text-align: center; flex: 1; }
+  .deck-title span { color: var(--ice); font-weight: 400; font-family: inherit; }
+  .deck-actions { display: flex; align-items: center; gap: 10px; }
+  .icon-btn {
+    background: rgba(241,228,204,0.08);
+    border: 1px solid rgba(241,228,204,0.2);
+    color: var(--paper);
+    width: 34px;
+    height: 34px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .icon-btn:hover { background: rgba(241,228,204,0.16); }
+  .icon-btn svg { width: 17px; height: 17px; }
+
+  /* Stage */
+  .stage-wrap { width: 100%; max-width: 1040px; }
+  .stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(6, 10, 34, 0.45);
+    container-type: inline-size;
+    background: var(--paper);
+  }
+  .stage:fullscreen { border-radius: 0; max-width: none; }
+  .stage:fullscreen .slide { border-radius: 0; }
+
+  .stage {
+    --fs-tiny: 1.05cqw;
+    --fs-small: 1.22cqw;
+    --fs-body: 1.5cqw;
+    --fs-body-lg: 1.72cqw;
+    --fs-h3: 1.95cqw;
+    --fs-h2: 2.62cqw;
+    --fs-h1: 3.4cqw;
+    --fs-hero: 4.3cqw;
+    --fs-quote: 2.34cqw;
+    --pad: 5cqw;
+  }
+
+  .slide { position: absolute; inset: 0; display: none; flex-direction: column; padding: var(--pad); }
+  .slide.active { display: flex; }
+  .slide-navy { background: var(--navy); color: var(--paper); }
+  .slide-white { background: var(--paper); color: var(--ink); }
+
+  .pagenum { position: absolute; right: 2.4cqw; bottom: 2cqw; font-size: var(--fs-tiny); color: var(--muted); }
+  .slide-navy .pagenum { color: rgba(241,228,204,0.45); }
+
+  .icon-badge svg { display: block; }
+
+  /* ---------- Title slide ---------- */
+  .tpl-title { justify-content: center; }
+  .tpl-title .icon-badge { width: 5.6cqw; height: 5.6cqw; color: var(--paper); margin-bottom: 2.6cqw; }
+  .tpl-title .eyebrow { font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.04em; color: var(--ice); margin: 0 0 1.1cqw; }
+  .tpl-title h1 { font-family: 'Fraunces', serif; font-size: var(--fs-hero); font-weight: 500; letter-spacing: -0.01em; margin: 0 0 1.4cqw; line-height: 1.1; }
+  .tpl-title .sub { font-size: var(--fs-h3); color: var(--ice); margin: 0 0 2.6cqw; font-weight: 400; }
+  .tpl-title .divider { width: 15%; height: 3px; background: var(--gold); border-radius: 2px; margin-bottom: 2.2cqw; }
+  .tpl-title .caption { font-size: var(--fs-body); color: rgba(241,228,204,0.65); }
+
+  /* ---------- Agenda ---------- */
+  .tpl-agenda h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.2cqw; }
+  .agenda-row { display: flex; align-items: flex-start; gap: 1.6cqw; padding: 1.35cqw 0; border-top: 1px solid var(--line); }
+  .agenda-row:last-of-type { border-bottom: 1px solid var(--line); }
+  .agenda-num {
+    flex: 0 0 auto; width: 3.2cqw; height: 3.2cqw; border-radius: 8px;
+    background: var(--accent); color: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: var(--fs-h3);
+  }
+  .agenda-body .a-title { font-size: var(--fs-body-lg); font-weight: 700; color: var(--navy-deep); margin-bottom: 0.3cqw; }
+  .agenda-body .a-desc { font-size: var(--fs-small); color: var(--muted); }
+  .agenda-extra { font-size: var(--fs-small); color: var(--muted); margin-top: 1.4cqw; }
+
+  /* ---------- Why matters (split) ---------- */
+  .tpl-split { flex-direction: row; padding: 0; }
+  .split-left {
+    flex: 0 0 36%; background: var(--accent); color: var(--paper);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 0 2cqw;
+  }
+  .split-left .icon-badge { width: 5cqw; height: 5cqw; margin-bottom: 1.6cqw; color: var(--paper); }
+  .split-left h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); margin: 0; }
+  .split-right { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 1.7cqw; padding: var(--pad); }
+  .why-item { display: flex; gap: 1.3cqw; align-items: flex-start; }
+  .why-num {
+    flex: 0 0 auto; width: 2.6cqw; height: 2.6cqw; border-radius: 50%;
+    background: var(--gold); color: var(--navy-deep);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: var(--fs-body);
+  }
+  .why-text { font-size: var(--fs-body-lg); line-height: 1.55; padding-top: 0.2cqw; }
+
+  /* ---------- Module divider ---------- */
+  .tpl-module { justify-content: center; }
+  .tpl-module .icon-badge { position: absolute; top: var(--pad); right: var(--pad); width: 4.6cqw; height: 4.6cqw; color: var(--paper); opacity: 0.9; }
+  .tpl-module .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); margin: 0 0 1cqw; letter-spacing: 0.03em; }
+  .tpl-module h1 { font-family: 'Fraunces', serif; font-size: 3.15cqw; font-weight: 500; margin: 0 0 1.2cqw; max-width: 85%; line-height: 1.18; }
+  .tpl-module .source { font-size: var(--fs-body); color: var(--ice); }
+
+  /* ---------- 3-row content ---------- */
+  .tpl-rows h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.4cqw; }
+  .row-list { display: flex; flex-direction: column; gap: 1.7cqw; }
+  .row-item { display: flex; gap: 1.4cqw; align-items: flex-start; }
+  .row-num-circle {
+    flex: 0 0 auto; width: 3cqw; height: 3cqw; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: var(--fs-h3);
+    background: var(--gold); color: var(--navy-deep);
+  }
+  .row-heading { flex: 0 0 26%; font-size: var(--fs-body-lg); font-weight: 700; color: var(--accent-deep); padding-top: 0.3cqw; }
+  .row-text { flex: 1; font-size: var(--fs-body); line-height: 1.55; padding-top: 0.3cqw; }
+
+  /* ---------- Exercise / discussion ---------- */
+  .badge-pill {
+    display: inline-flex; align-self: flex-start; padding: 0.55cqw 1.4cqw; border-radius: 20px;
+    font-size: var(--fs-small); font-weight: 700; letter-spacing: 0.03em; margin-bottom: 1.4cqw;
+  }
+  .badge-sage { background: var(--accent); color: var(--paper); }
+  .badge-berry { background: var(--berry); color: var(--paper); }
+  .tpl-exercise h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 2.1cqw; }
+  .ex-list { display: flex; flex-direction: column; gap: 1.35cqw; }
+  .ex-item { display: flex; gap: 1.3cqw; align-items: center; }
+  .ex-num {
+    flex: 0 0 auto; width: 2.8cqw; height: 2.8cqw; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: var(--fs-body-lg);
+  }
+  .ex-text { font-size: var(--fs-body); line-height: 1.5; }
+
+  /* ---------- Key takeaway ---------- */
+  .tpl-takeaway { justify-content: center; align-items: center; text-align: center; }
+  .tpl-takeaway .icon-badge { width: 4.4cqw; height: 4.4cqw; color: var(--paper); margin-bottom: 1.6cqw; }
+  .tpl-takeaway .eyebrow { font-size: var(--fs-body); font-weight: 700; color: var(--gold); letter-spacing: 0.05em; margin: 0 0 1.1cqw; }
+  .tpl-takeaway .quote { max-width: 78%; font-size: var(--fs-quote); line-height: 1.5; margin: 0; }
+
+  /* ---------- Comparison ---------- */
+  .tpl-compare h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: var(--fs-h1); color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  .tpl-compare .compare-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.8cqw; }
+  .compare-row { display: flex; gap: 1.6cqw; flex: 1; }
+  .compare-card { flex: 1; border-radius: 10px; padding: 1.8cqw 1.9cqw; display: flex; flex-direction: column; gap: 0.9cqw; }
+  .compare-card.tint-berry { background: var(--berry-tint); }
+  .compare-card.tint-sage { background: var(--accent-tint); }
+  .compare-head { font-size: var(--fs-h3); font-weight: 700; letter-spacing: 0.02em; }
+  .compare-head.c-berry { color: var(--berry); }
+  .compare-head.c-sage { color: var(--accent-deep); }
+  .compare-card ul { margin: 0; padding-left: 1.3cqw; font-size: var(--fs-body); line-height: 1.65; color: var(--ink); }
+  .compare-card li { margin-bottom: 0.3cqw; }
+  .compare-foot { font-size: var(--fs-body); color: var(--muted); margin-top: 1.6cqw; line-height: 1.5; }
+
+  /* ---------- Action plan ---------- */
+  .tpl-action h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 2.9cqw; color: var(--navy-deep); margin: 0 0 0.5cqw; }
+  .tpl-action .action-sub { font-size: var(--fs-body); color: var(--muted); margin: 0 0 1.9cqw; }
+  .action-row { display: flex; gap: 1.4cqw; align-items: center; margin-bottom: 1.15cqw; }
+  .action-icon {
+    flex: 0 0 auto; width: 3cqw; height: 3cqw; border-radius: 8px;
+    background: var(--accent); display: flex; align-items: center; justify-content: center;
+  }
+  .action-icon svg { width: 55%; height: 55%; color: var(--paper); }
+  .action-text { font-size: var(--fs-body-lg); line-height: 1.45; }
+
+  /* ---------- Closing ---------- */
+  .tpl-closing { justify-content: center; }
+  .tpl-closing h1 { font-family: 'Fraunces', serif; font-size: 3.3cqw; font-weight: 500; margin: 0 0 1cqw; }
+  .tpl-closing .sub { font-size: var(--fs-h3); color: var(--ice); margin: 0 0 2.2cqw; font-weight: 400; }
+  .tpl-closing .divider { width: 15%; height: 3px; background: var(--gold); border-radius: 2px; margin-bottom: 2cqw; }
+  .tpl-closing .caption { font-size: var(--fs-body); color: rgba(241,228,204,0.65); }
+
+  /* ---------- Controls ---------- */
+  .deck-controls { width: 100%; max-width: 1040px; display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 18px; }
+  .nav-btn {
+    background: rgba(241,228,204,0.08); border: 1px solid rgba(241,228,204,0.22); color: var(--paper);
+    width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex: 0 0 auto;
+  }
+  .nav-btn:hover:not(:disabled) { background: rgba(241,228,204,0.18); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .nav-btn svg { width: 18px; height: 18px; }
+  .progress-wrap { flex: 1; max-width: 480px; }
+  .progress-track { height: 4px; background: rgba(241,228,204,0.15); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.25s ease; }
+  .slide-counter { color: rgba(241,228,204,0.55); font-size: 13px; text-align: center; margin-top: 8px; }
+
+  @media (max-width: 700px) {
+    .stage { --fs-tiny: 1.6cqw; --fs-small: 1.9cqw; --fs-body: 2.3cqw; --fs-body-lg: 2.6cqw; --fs-h3: 3cqw; --fs-h2: 3.9cqw; --fs-h1: 4.6cqw; --fs-hero: 5.6cqw; --fs-quote: 3.2cqw; }
+    .deck-title { font-size: 14px; }
+    .row-heading { flex-basis: 32%; }
+  }
+  @media (max-width: 460px) {
+    .tpl-split { flex-direction: column; }
+    .split-left { flex: 0 0 auto; padding: 3cqw 4cqw; }
+    .row-item, .compare-row { flex-direction: column; }
+    .row-heading { flex-basis: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck-top">
+  <a class="deck-back" href="rolling-it-out.html">&larr; Rolling It Out</a>
+  <div class="deck-title">Slide Deck <span>&mdash; Operations Training</span></div>
+  <div class="deck-actions">
+    <button class="icon-btn" id="fsBtn" type="button" title="Fullscreen" aria-label="Toggle fullscreen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="stage-wrap">
+  <div class="stage" id="stage">
+
+    <!-- Slide 1: Title -->
+    <section class="slide slide-navy tpl-title active" data-slide="1">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      <p class="eyebrow">MANAGER &amp; LEADERSHIP TRAINING SERIES</p>
+      <h1>Rolling It Out</h1>
+      <p class="sub">Project Management for System &amp; Process Rollouts</p>
+      <div class="divider"></div>
+      <p class="caption">Half-day workshop&nbsp; &bull; &nbsp;Includes four working templates&nbsp; &bull; &nbsp;For department heads &amp; project leads</p>
+      <span class="pagenum">1</span>
+    </section>
+
+    <!-- Slide 2: Agenda -->
+    <section class="slide slide-white tpl-agenda" data-slide="2">
+      <h2>Today&rsquo;s Agenda</h2>
+      <div class="agenda-row">
+        <div class="agenda-num">01</div>
+        <div class="agenda-body">
+          <div class="a-title">Why Most Implementations Fail Before They Launch</div>
+          <div class="a-desc">Scoping the rollout and defining real success</div>
+        </div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-num">02</div>
+        <div class="agenda-body">
+          <div class="a-title">The Project Plan Nobody Ignores</div>
+          <div class="a-desc">Milestones, owners, and dependencies that actually get used</div>
+        </div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-num">03</div>
+        <div class="agenda-body">
+          <div class="a-title">Getting Buy-In Before You Need It</div>
+          <div class="a-desc">Mapping resistance and leading with the "why"</div>
+        </div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-num">04</div>
+        <div class="agenda-body">
+          <div class="a-title">Adoption Is the Real Finish Line</div>
+          <div class="a-desc">30 days of support and measuring real usage</div>
+        </div>
+      </div>
+      <p class="agenda-extra">+ Four working templates you'll leave with, built around your own rollout</p>
+      <span class="pagenum">2</span>
+    </section>
+
+    <!-- Slide 3: Why This Matters -->
+    <section class="slide slide-white tpl-split" data-slide="3">
+      <div class="split-left">
+        <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <h2>Why This Matters</h2>
+      </div>
+      <div class="split-right">
+        <div class="why-item">
+          <div class="why-num">1</div>
+          <div class="why-text">Every rollout you've ever seen fail didn't fail on launch day &mdash; it failed weeks earlier, in a decision nobody treated as a real project.</div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">2</div>
+          <div class="why-text">The system was never the risk. The risk is asking a busy team to change how they work without a real plan or a real reason.</div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">3</div>
+          <div class="why-text">This course gives you a scoping method, a plan people actually follow, and a way to measure adoption instead of just go-live.</div>
+        </div>
+      </div>
+      <span class="pagenum">3</span>
+    </section>
+
+    <!-- Slide 4: Module 1 divider -->
+    <section class="slide slide-navy tpl-module" data-slide="4">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+      <p class="eyebrow">MODULE 1</p>
+      <h1>Why Most Implementations Fail Before They Launch</h1>
+      <p class="source">Tool: Rollout Scope &amp; Success Criteria Worksheet</p>
+      <span class="pagenum">4</span>
+    </section>
+
+    <!-- Slide 5: Module 1 rows -->
+    <section class="slide slide-white tpl-rows" data-slide="5">
+      <h2>Scoping It Like a Real Project</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">Define "done" in behavior, not installation</div>
+          <div class="row-text">"Done" means specific people doing specific things differently &mdash; not just a login page that works.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Name who actually has to change</div>
+          <div class="row-text">List the roles whose day-to-day work changes, not just who approved the budget.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Set one measurable success signal</div>
+          <div class="row-text">Pick a number you'll check 30 days out &mdash; usage, not attendance at the kickoff meeting.</div>
+        </div>
+      </div>
+      <span class="pagenum">5</span>
+    </section>
+
+    <!-- Slide 6: Module 1 exercise -->
+    <section class="slide slide-white tpl-exercise" data-slide="6">
+      <span class="badge-pill badge-sage">EXERCISE &bull; 15 MIN</span>
+      <h2>Scope Your Own Rollout</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--accent); color:var(--paper);">1</div><div class="ex-text">Using the Scope &amp; Success Criteria Worksheet, write down what "done" looks like for a rollout you're planning or running.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--accent); color:var(--paper);">2</div><div class="ex-text">List every role whose daily work actually changes &mdash; not just who signed off on the project.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--accent); color:var(--paper);">3</div><div class="ex-text">Pick the one number you'll check 30 days after launch to know if it worked.</div></div>
+      </div>
+      <span class="pagenum">6</span>
+    </section>
+
+    <!-- Slide 7: Module 1 takeaway -->
+    <section class="slide slide-navy tpl-takeaway" data-slide="7">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">The tool was never the hard part. Getting a busy team to actually change how they work is.</p>
+      <span class="pagenum">7</span>
+    </section>
+
+    <!-- Slide 8: Module 2 divider -->
+    <section class="slide slide-navy tpl-module" data-slide="8">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
+      <p class="eyebrow">MODULE 2</p>
+      <h1>The Project Plan Nobody Ignores</h1>
+      <p class="source">Tool: Milestone &amp; Owner Tracker</p>
+      <span class="pagenum">8</span>
+    </section>
+
+    <!-- Slide 9: Module 2 compare -->
+    <section class="slide slide-white tpl-compare" data-slide="9">
+      <h2>Two Kinds of Project Plans</h2>
+      <p class="compare-sub">One gets checked every week. The other gets built once and forgotten.</p>
+      <div class="compare-row">
+        <div class="compare-card tint-berry">
+          <div class="compare-head c-berry">BUILT TO BE FILED</div>
+          <ul>
+            <li>Every task the project could possibly touch, in exhaustive detail</li>
+            <li>Lives in a shared drive nobody opens after kickoff</li>
+            <li>No single owner for most milestones</li>
+          </ul>
+        </div>
+        <div class="compare-card tint-sage">
+          <div class="compare-head c-sage">BUILT TO BE CHECKED</div>
+          <ul>
+            <li>A short list of milestones that actually matter, each with one owner</li>
+            <li>Reviewed on a standing weekly cadence, not just at kickoff</li>
+            <li>Slipping dates get flagged the week they slip, not the week before launch</li>
+          </ul>
+        </div>
+      </div>
+      <p class="compare-foot">The goal isn't a more complete plan. It's a plan short enough that someone actually looks at it.</p>
+      <span class="pagenum">9</span>
+    </section>
+
+    <!-- Slide 10: Module 2 rows -->
+    <section class="slide slide-white tpl-rows" data-slide="10">
+      <h2>What Makes a Plan Get Used</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">One owner per milestone</div>
+          <div class="row-text">Shared ownership quietly becomes no ownership &mdash; every milestone needs exactly one name attached.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">A standing weekly check, not just a kickoff</div>
+          <div class="row-text">Five minutes a week catches a slipping date while it's still fixable.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Dependencies called out explicitly</div>
+          <div class="row-text">The milestone that's actually blocking three others should look visibly more urgent than the rest.</div>
+        </div>
+      </div>
+      <span class="pagenum">10</span>
+    </section>
+
+    <!-- Slide 11: Module 2 exercise -->
+    <section class="slide slide-white tpl-exercise" data-slide="11">
+      <span class="badge-pill badge-berry">EXERCISE &bull; 20 MIN</span>
+      <h2>Build the Tracker</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry); color:var(--paper);">1</div><div class="ex-text">Using the Milestone &amp; Owner Tracker, list the 5&ndash;8 milestones that actually matter for your rollout.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry); color:var(--paper);">2</div><div class="ex-text">Assign exactly one owner to each &mdash; no shared ownership.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--berry); color:var(--paper);">3</div><div class="ex-text">Mark which milestones are blocking others, and put those at the top.</div></div>
+      </div>
+      <span class="pagenum">11</span>
+    </section>
+
+    <!-- Slide 12: Module 2 takeaway -->
+    <section class="slide slide-navy tpl-takeaway" data-slide="12">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">A plan nobody checks is just a document that used to be a plan.</p>
+      <span class="pagenum">12</span>
+    </section>
+
+    <!-- Slide 13: Module 3 divider -->
+    <section class="slide slide-navy tpl-module" data-slide="13">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <p class="eyebrow">MODULE 3</p>
+      <h1>Getting Buy-In Before You Need It</h1>
+      <p class="source">Tool: Stakeholder &amp; Resistance Map</p>
+      <span class="pagenum">13</span>
+    </section>
+
+    <!-- Slide 14: Module 3 rows -->
+    <section class="slide slide-white tpl-rows" data-slide="14">
+      <h2>Leading With the Why</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">Map who resists and why, before launch</div>
+          <div class="row-text">Most resistance is predictable in advance if you actually ask the question.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Explain the why before the how</div>
+          <div class="row-text">Skip this and people invent their own reason for the change &mdash; usually a worse one than the truth.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Give real concerns a real channel</div>
+          <div class="row-text">A place to raise concerns before launch beats hearing them for the first time during it.</div>
+        </div>
+      </div>
+      <span class="pagenum">14</span>
+    </section>
+
+    <!-- Slide 15: Module 3 exercise -->
+    <section class="slide slide-white tpl-exercise" data-slide="15">
+      <span class="badge-pill badge-sage">EXERCISE &bull; 15 MIN</span>
+      <h2>Map Your Resistance</h2>
+      <div class="ex-list">
+        <div class="ex-item"><div class="ex-num" style="background:var(--accent); color:var(--paper);">1</div><div class="ex-text">Using the Stakeholder &amp; Resistance Map, list who's affected by your rollout and how likely each is to resist.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--accent); color:var(--paper);">2</div><div class="ex-text">For your two highest-resistance stakeholders, write the actual "why" you'd give them in one sentence.</div></div>
+        <div class="ex-item"><div class="ex-num" style="background:var(--accent); color:var(--paper);">3</div><div class="ex-text">Decide where people can raise concerns before launch day &mdash; not just after.</div></div>
+      </div>
+      <span class="pagenum">15</span>
+    </section>
+
+    <!-- Slide 16: Module 3 takeaway -->
+    <section class="slide slide-navy tpl-takeaway" data-slide="16">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <p class="eyebrow">KEY TAKEAWAY</p>
+      <p class="quote">Silence before a rollout usually isn't agreement. It's people who haven't engaged yet.</p>
+      <span class="pagenum">16</span>
+    </section>
+
+    <!-- Slide 17: Module 4 divider -->
+    <section class="slide slide-navy tpl-module" data-slide="17">
+      <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+      <p class="eyebrow">MODULE 4</p>
+      <h1>Adoption Is the Real Finish Line</h1>
+      <p class="source">Tool: 30-Day Adoption Scorecard</p>
+      <span class="pagenum">17</span>
+    </section>
+
+    <!-- Slide 18: Module 4 rows -->
+    <section class="slide slide-white tpl-rows" data-slide="18">
+      <h2>Measuring What Actually Happened</h2>
+      <div class="row-list">
+        <div class="row-item">
+          <div class="row-num-circle">1</div>
+          <div class="row-heading">Track usage, not attendance</div>
+          <div class="row-text">Who came to training tells you nothing about who's still using the old spreadsheet three weeks later.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">2</div>
+          <div class="row-heading">Check in at day 30, not just day 1</div>
+          <div class="row-text">Old habits creep back quietest in the first month &mdash; that's when to catch it.</div>
+        </div>
+        <div class="row-item">
+          <div class="row-num-circle">3</div>
+          <div class="row-heading">Fix drift while it's still small</div>
+          <div class="row-text">A handful of holdouts in week 2 is a conversation. The same holdouts in month three is a culture.</div>
+        </div>
+      </div>
+      <span class="pagenum">18</span>
+    </section>
+
+    <!-- Slide 19: Action plan -->
+    <section class="slide slide-white tpl-action" data-slide="19">
+      <h2>Your Action Plan</h2>
+      <p class="action-sub">Before you leave today, answer these:</p>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">What does "done" actually mean for the rollout I'm planning or running &mdash; and have I written it down?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Who on my team actually has to change their daily work, and have I talked to them yet &mdash; not just their manager?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">Which milestone in my plan has no single owner right now?</div>
+      </div>
+      <div class="action-row">
+        <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        <div class="action-text">What's the one usage number I'll check 30 days after launch to know if this actually worked?</div>
+      </div>
+      <span class="pagenum">19</span>
+    </section>
+
+    <!-- Slide 20: Closing -->
+    <section class="slide slide-navy tpl-closing" data-slide="20">
+      <h1>A launch date is a milestone. Adoption is the goal.</h1>
+      <p class="sub">Plan for the behavior change, not just the go-live.</p>
+      <div class="divider"></div>
+      <p class="caption">Thank you&nbsp; &mdash; &nbsp;Questions &amp; Evaluation</p>
+      <span class="pagenum">20</span>
+    </section>
+
+  </div>
+</div>
+
+<div class="deck-controls">
+  <button class="nav-btn" id="prevBtn" type="button" aria-label="Previous slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="slide-counter" id="slideCounter">Slide 1 of 20</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" type="button" aria-label="Next slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var current = 0;
+
+  var stage = document.getElementById('stage');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var progressFill = document.getElementById('progressFill');
+  var slideCounter = document.getElementById('slideCounter');
+  var fsBtn = document.getElementById('fsBtn');
+
+  function render() {
+    slides.forEach(function (s, i) {
+      s.classList.toggle('active', i === current);
+    });
+    progressFill.style.width = (((current + 1) / total) * 100) + '%';
+    slideCounter.textContent = 'Slide ' + (current + 1) + ' of ' + total;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  function goTo(i) {
+    if (i < 0 || i > total - 1) return;
+    current = i;
+    render();
+  }
+
+  prevBtn.addEventListener('click', function () { goTo(current - 1); });
+  nextBtn.addEventListener('click', function () { goTo(current + 1); });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { goTo(current + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { goTo(current - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { goTo(0); }
+    else if (e.key === 'End') { goTo(total - 1); }
+    else if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); }
+  });
+
+  var touchStartX = null;
+  stage.addEventListener('touchstart', function (e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchend', function (e) {
+    if (touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) { dx < 0 ? goTo(current + 1) : goTo(current - 1); }
+    touchStartX = null;
+  }, { passive: true });
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      if (stage.requestFullscreen) stage.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+    }
+  }
+  fsBtn.addEventListener('click', toggleFullscreen);
+
+  render();
+})();
+</script>
+
+</body>
+</html>

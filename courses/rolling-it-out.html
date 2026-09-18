@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rolling It Out — Project Management & Systems Implementation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #332A22;
+    --navy-deep: #241D18;
+    --ice: #C68D33;
+    --gold: #C68D33;
+    --gold-tint: rgba(198, 141, 51, 0.16);
+    --berry: #B2543A;
+    --berry-tint: rgba(178, 84, 58, 0.14);
+    --paper: #F1E4CC;
+    --paper-soft: #EAD9B8;
+    --ink: #332A22;
+    --muted: #6B5D4C;
+    --line: rgba(51, 42, 34, 0.16);
+    --plum: #6B3F4B;
+    --sage: #9C4A2E;
+    --sage-deep: #753722;
+    --sage-tint: rgba(156, 74, 46, 0.16);
+    --maxw: 1040px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Karla', sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.5;
+  }
+  h1, h2, h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    margin: 0;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+  a { color: inherit; }
+
+  /* Top bar */
+  .topbar { background: var(--navy); padding: 18px 0; }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; }
+  .brand { color: var(--paper); font-family: 'Fraunces', serif; font-size: 16px; font-weight: 500; letter-spacing: 0.2px; }
+  .brand span { color: var(--ice); font-weight: 400; }
+  .btn { display: inline-block; text-decoration: none; border-radius: 7px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; }
+  .btn-gold { background: var(--gold); color: var(--navy-deep); padding: 10px 20px; font-size: 14px; }
+  .btn-gold:hover { background: #D9A94F; }
+  .btn-outline { border: 1.5px solid var(--ice); color: var(--paper); padding: 9px 18px; font-size: 13.5px; }
+  .btn-outline:hover { background: rgba(241,228,204,0.08); }
+
+  /* Hero */
+  .hero { background: var(--navy); padding: 64px 0 0; }
+  .hero-inner { display: flex; gap: 48px; align-items: center; padding-bottom: 64px; }
+  .hero-inner > div:first-child { flex: 1.1 1 0; }
+  .hero-inner > .demo-card { flex: 1 1 0; }
+  .eyebrow { color: var(--ice); font-size: 14px; margin: 0 0 14px; }
+  .hero h1 { color: var(--paper); font-size: 44px; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 18px; }
+  .hero p.lede { color: rgba(241,228,204,0.72); font-size: 17px; line-height: 1.6; max-width: 46ch; margin-bottom: 28px; }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  /* Demo card */
+  .demo-card { background: var(--paper); border-radius: 14px; padding: 28px 28px 24px; box-shadow: 0 24px 60px rgba(6, 10, 34, 0.4); }
+  .demo-title { font-size: 13.5px; color: var(--muted); margin-bottom: 14px; }
+  .demo-toggle { display: flex; background: var(--paper-soft); border-radius: 8px; padding: 4px; margin-bottom: 18px; }
+  .demo-toggle button { flex: 1; background: none; border: none; padding: 9px 10px; font-size: 13.5px; font-weight: 600; border-radius: 6px; color: var(--muted); cursor: pointer; font-family: inherit; }
+  .demo-toggle button.active-central { background: var(--sage); color: var(--paper); }
+  .demo-toggle button.active-peripheral { background: var(--berry); color: var(--paper); }
+  .demo-msg { font-size: 15px; line-height: 1.55; color: var(--ink); min-height: 92px; }
+  .demo-caption { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); margin-top: 16px; padding-top: 14px; font-style: italic; }
+
+  /* Sections */
+  section { padding: 76px 0; }
+  .section-head { max-width: 640px; margin-bottom: 40px; }
+  .section-head h2 { font-size: 30px; color: var(--navy-deep); line-height: 1.25; }
+  .section-head p { color: var(--muted); font-size: 16px; margin-top: 14px; }
+
+  /* Why + stats */
+  .why-grid { display: flex; gap: 48px; align-items: flex-start; }
+  .why-grid > div:first-child { flex: 1.2 1 0; }
+  .why-grid > .stat-list { flex: 1 1 0; }
+  .why-grid p { font-size: 16px; color: var(--ink); line-height: 1.7; }
+  .stat-list { display: flex; flex-direction: column; gap: 22px; }
+  .stat { border-left: 3px solid var(--gold); padding-left: 16px; }
+  .stat .num { font-family: 'Fraunces', serif; font-size: 30px; color: var(--navy-deep); font-weight: 600; line-height: 1; }
+  .stat .label { font-size: 13.5px; color: var(--muted); margin-top: 4px; }
+
+  /* Curriculum */
+  .curriculum { background: var(--paper-soft); }
+  .module-row { display: flex; gap: 22px; padding: 26px 0; border-top: 1px solid var(--line); }
+  .module-row > .module-num { flex: 0 0 70px; }
+  .module-row > div:last-child { flex: 1 1 0; }
+  .module-row:last-child { border-bottom: 1px solid var(--line); }
+  .module-num { font-family: 'Fraunces', serif; font-size: 26px; color: var(--gold); font-weight: 600; }
+  .module-title { font-size: 19px; font-weight: 700; color: var(--navy-deep); margin-bottom: 6px; }
+  .module-desc { font-size: 15px; color: var(--ink); margin-bottom: 6px; }
+  .module-source { font-size: 13px; color: var(--muted); font-style: italic; }
+
+  /* Quote */
+  .quote-band { background: var(--sage-tint); text-align: center; padding: 72px 0; }
+  .quote-band blockquote { margin: 0 auto; max-width: 700px; font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 25px; line-height: 1.5; color: var(--navy-deep); }
+  .quote-band cite { display: block; margin-top: 18px; font-size: 13.5px; color: var(--muted); font-style: normal; }
+
+  /* Audience */
+  .audience-grid { display: flex; gap: 48px; }
+  .audience-grid > div { flex: 1 1 0; }
+  .audience-grid ul { padding-left: 20px; margin: 0; color: var(--ink); font-size: 15.5px; line-height: 1.9; }
+  .audience-grid p { color: var(--ink); font-size: 16px; line-height: 1.7; }
+
+  /* Sample question */
+  .sample { background: var(--paper-soft); }
+  .sample-card { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 30px 32px; max-width: 680px; }
+  .sample-q { font-family: 'Fraunces', serif; font-weight: 500; font-size: 19px; color: var(--navy-deep); margin-bottom: 18px; }
+  .sample-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .sample-opt { text-align: left; background: var(--paper-soft); border: 1.5px solid var(--line); border-radius: 7px; padding: 12px 15px; font-size: 14.5px; cursor: pointer; font-family: inherit; color: var(--ink); }
+  .sample-opt:hover:not(:disabled) { border-color: var(--sage-deep); }
+  .sample-opt.s-correct { border-color: var(--gold); background: var(--gold-tint); font-weight: 600; }
+  .sample-opt.s-incorrect { border-color: var(--berry); background: var(--berry-tint); }
+  .sample-fb { display: none; font-size: 14px; color: var(--ink); background: var(--paper-soft); border-radius: 7px; padding: 14px 16px; margin-bottom: 16px; }
+  .sample-fb.show { display: block; }
+  .sample-link { font-size: 14.5px; }
+
+  /* Materials */
+  .materials { background: var(--navy); }
+  .materials .section-head h2 { color: var(--paper); }
+  .materials .section-head p { color: rgba(241,228,204,0.72); }
+  .material-cards { display: flex; gap: 20px; flex-wrap: wrap; }
+  .material-card { flex: 1 1 260px; background: var(--paper); border-top: 3px solid var(--sage); border-radius: 10px; padding: 26px 24px; display: flex; flex-direction: column; }
+  .material-cards .material-card:nth-child(2) { border-top-color: var(--berry); }
+  .material-cards .material-card:nth-child(3) { border-top-color: var(--gold); }
+  .material-icon { width: 38px; height: 38px; border-radius: 50%; background: var(--gold-tint); color: var(--navy-deep); display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; margin-bottom: 16px; }
+  .material-name { font-size: 17px; font-weight: 700; color: var(--navy-deep); margin-bottom: 8px; }
+  .material-desc { font-size: 14px; color: var(--muted); line-height: 1.55; margin-bottom: 20px; flex-grow: 1; }
+  .material-btn { display: inline-block; text-align: center; text-decoration: none; background: var(--sage); color: var(--paper); padding: 10px 0; border-radius: 7px; font-size: 14px; font-weight: 600; }
+  .material-btn:hover { background: var(--sage-deep); color: var(--paper); }
+
+  /* Footer */
+  footer { background: var(--navy-deep); color: rgba(241,228,204,0.55); font-size: 12.5px; text-align: center; padding: 22px 0; }
+
+  @media (max-width: 800px) {
+    .topbar .wrap { flex-wrap: wrap; gap: 12px; }
+    .brand span { display: none; }
+    .hero-inner { flex-direction: column; }
+    .hero h1 { font-size: 33px; }
+    .why-grid { flex-direction: column; }
+    .audience-grid { flex-direction: column; }
+    .module-row { gap: 14px; }
+    .module-row > .module-num { flex-basis: 44px; }
+    .material-cards { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">Rolling It Out <span>&mdash; Operations Training</span></div>
+    <a class="btn btn-outline" href="#materials">Course Materials</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <p class="eyebrow">Manager &amp; Leadership Training Series</p>
+      <h1>Rolling It Out</h1>
+      <p class="lede">A half-day workshop on running a system or process rollout like a real project &mdash; scoping it, getting buy-in before you need it, and making sure people actually use what you just spent months implementing.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-gold" href="rolling-it-out-quiz.html">Take the quiz</a>
+        <a class="btn btn-outline" href="rolling-it-out-slide-deck.html" style="border-color:rgba(241,228,204,0.45);">Open the slide deck</a>
+      </div>
+      <p style="margin-top:16px;"><a href="#curriculum" style="color:rgba(241,228,204,0.75); font-size:13.5px; text-decoration:underline;">See what's inside</a></p>
+    </div>
+
+    <div class="demo-card">
+      <p class="demo-title">Same rollout, two different launch days</p>
+      <div class="demo-toggle">
+        <button id="btnCentral" type="button">Planned rollout</button>
+        <button id="btnPeripheral" type="button">Just flip the switch</button>
+      </div>
+      <div class="demo-msg" id="demoMsg"></div>
+      <p class="demo-caption">Same system, same launch date. The difference is everything that happened in the weeks before it. Module 2 covers how.</p>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap why-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:20px;">
+        <h2>A system going live isn't the finish line. People actually using it is.</h2>
+      </div>
+      <p>Most rollouts get treated like an IT event &mdash; pick the tool, schedule the migration, send an announcement. But the tool was never the hard part. The hard part is getting a team that's already busy to change how they work, and that takes the same discipline as any other project: a real scope, a plan people actually follow, and buy-in secured before launch day instead of scrambled together after it.</p>
+      <p>This workshop replaces "we bought the software, so now what" with a repeatable way to scope a rollout, build a plan that doesn't rot in a shared drive, and measure whether it actually worked by usage &mdash; not just whether it launched on schedule.</p>
+    </div>
+    <div class="stat-list">
+      <div class="stat"><div class="num">4 hrs</div><div class="label">Half-day workshop, in person or virtual</div></div>
+      <div class="stat"><div class="num">4</div><div class="label">Practical modules, each with a working tool</div></div>
+      <div class="stat"><div class="num">10&ndash;20</div><div class="label">Ideal group size per cohort</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="curriculum" id="curriculum">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What project leads walk out knowing</h2>
+      <p>Four modules, each pairing a concept briefing with a template you'll fill in around a real rollout you're planning or running.</p>
+    </div>
+
+    <div class="module-row">
+      <div class="module-num">01</div>
+      <div>
+        <div class="module-title">Why Most Implementations Fail Before They Launch</div>
+        <div class="module-desc">Scoping the rollout, defining what "done" actually means, and identifying who really has to change their behavior for this to work.</div>
+        <div class="module-source">Tool: Rollout Scope &amp; Success Criteria Worksheet</div>
+      </div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-num">02</div>
+      <div>
+        <div class="module-title">The Project Plan Nobody Ignores</div>
+        <div class="module-desc">Milestones, owners, and dependencies, kept simple enough that people actually check it instead of letting it rot in a shared drive.</div>
+        <div class="module-source">Tool: Milestone &amp; Owner Tracker</div>
+      </div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-num">03</div>
+      <div>
+        <div class="module-title">Getting Buy-In Before You Need It</div>
+        <div class="module-desc">Mapping who resists and why, and communicating the "why" before the "how" so you're not fighting the rollout and the skepticism at the same time.</div>
+        <div class="module-source">Tool: Stakeholder &amp; Resistance Map</div>
+      </div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-num">04</div>
+      <div>
+        <div class="module-title">Adoption Is the Real Finish Line</div>
+        <div class="module-desc">Thirty days of support after go-live, and measuring actual usage instead of just whether you flipped the switch on schedule.</div>
+        <div class="module-source">Tool: 30-Day Adoption Scorecard</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="quote-band">
+  <div class="wrap">
+    <blockquote>The tool was never the hard part. Getting a busy team to actually change how they work is.</blockquote>
+    <cite>Core takeaway, Module 1</cite>
+  </div>
+</div>
+
+<section class="audience">
+  <div class="wrap audience-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:18px;">
+        <h2>Who this is for</h2>
+      </div>
+      <p>Department heads, project leads, and managers rolling out a new tool, process, or system to their team &mdash; especially useful before a rollout is already scheduled, while there's still time to scope it properly.</p>
+    </div>
+    <div>
+      <div class="section-head" style="margin-bottom:18px;">
+        <h2 style="font-size:22px;">Runs best when&hellip;</h2>
+      </div>
+      <ul>
+        <li>Participants bring a real upcoming or recent rollout from their own team</li>
+        <li>Each person leaves with a scoped plan and a stakeholder map for their own rollout</li>
+        <li>Groups stay between 10 and 20 for hands-on template work</li>
+        <li>A 30-day follow-up checks adoption numbers, not just whether the system went live</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sample" id="sample">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Try a sample question</h2>
+      <p>One question from the course quiz &mdash; see how it feels before you dive in.</p>
+    </div>
+    <div class="sample-card">
+      <p class="sample-q">Your team is three weeks from launching a new scheduling system. Adoption has been quiet &mdash; no complaints, but nobody's said anything positive either. What's the highest-leverage thing to check before launch day?</p>
+      <div class="sample-opts" id="sampleOpts">
+        <button class="sample-opt" data-idx="0">Whether the software vendor's contract renewal date is set</button>
+        <button class="sample-opt" data-idx="1">Whether the people who'll actually use it daily know why it's changing and have had a chance to ask questions</button>
+        <button class="sample-opt" data-idx="2">Whether the launch announcement email has been drafted</button>
+        <button class="sample-opt" data-idx="3">Whether IT has tested the login page</button>
+      </div>
+      <div class="sample-fb" id="sampleFb">Silence before a rollout usually isn't agreement &mdash; it's people who haven't engaged yet. Checking whether they understand the "why" and have had a real chance to raise concerns catches resistance before launch day, instead of during it.</div>
+      <a class="sample-link" href="rolling-it-out-quiz.html">Want the full 7-question quiz? Take it here &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section class="materials" id="materials">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Course materials</h2>
+      <p>Everything for this module, ready to use.</p>
+    </div>
+    <div class="material-cards">
+      <div class="material-card">
+        <div class="material-icon">S</div>
+        <div class="material-name">Slide Deck</div>
+        <div class="material-desc">20 slides covering all four modules &mdash; concepts, real rollout scenarios, and takeaways, ready to present.</div>
+        <a class="material-btn" href="rolling-it-out-slide-deck.html">Open the slide deck</a>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">Q</div>
+        <div class="material-name">Quiz</div>
+        <div class="material-desc">An interactive 7-question check for understanding, with explanations for every answer.</div>
+        <a class="material-btn" href="rolling-it-out-quiz.html">Take the quiz</a>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">T</div>
+        <div class="material-name">Rollout Toolkit</div>
+        <div class="material-desc">Four templates participants leave with: a scope &amp; success criteria worksheet, a milestone tracker, a stakeholder map, and a 30-day adoption scorecard.</div>
+        <a class="material-btn" href="rolling-it-out-toolkit.html">Open the toolkit</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Grounded in project management and change-adoption practices built through real system implementations and cross-functional rollouts. &nbsp;|&nbsp; Manager &amp; Leadership Training Series
+</footer>
+
+<script>
+(function () {
+  var demoMsg = document.getElementById('demoMsg');
+  var btnC = document.getElementById('btnCentral');
+  var btnP = document.getElementById('btnPeripheral');
+
+  var CENTRAL_TEXT = "Three weeks before go-live, every team lead already knows what's changing and why. Launch day is quiet — everyone logs in and gets to work.";
+  var PERIPHERAL_TEXT = "Nobody heard about the new system until the email went out this morning. Launch day is a flood of confused messages, and half the team quietly goes back to the old spreadsheet.";
+
+  function showCentral() {
+    demoMsg.textContent = CENTRAL_TEXT;
+    btnC.className = 'active-central';
+    btnP.className = '';
+  }
+  function showPeripheral() {
+    demoMsg.textContent = PERIPHERAL_TEXT;
+    btnP.className = 'active-peripheral';
+    btnC.className = '';
+  }
+
+  btnC.addEventListener('click', showCentral);
+  btnP.addEventListener('click', showPeripheral);
+  showCentral();
+
+  var sampleOpts = document.getElementById('sampleOpts');
+  var sampleFb = document.getElementById('sampleFb');
+  var correctIdx = 1;
+  var sampleAnswered = false;
+
+  sampleOpts.addEventListener('click', function (e) {
+    var target = e.target;
+    if (!target.classList.contains('sample-opt') || sampleAnswered) return;
+    sampleAnswered = true;
+    var idx = parseInt(target.getAttribute('data-idx'), 10);
+    var opts = sampleOpts.querySelectorAll('.sample-opt');
+    Array.prototype.forEach.call(opts, function (o, i) {
+      o.disabled = true;
+      if (i === correctIdx) o.classList.add('s-correct');
+      if (i === idx && idx !== correctIdx) o.classList.add('s-incorrect');
+    });
+    sampleFb.classList.add('show');
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Built to Outlast You — Course Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #332A22;
+    --navy-deep: #241D18;
+    --ice: #C68D33;
+    --gold: #C68D33;
+    --gold-tint: rgba(198, 141, 51, 0.16);
+    --berry: #B2543A;
+    --berry-tint: rgba(178, 84, 58, 0.14);
+    --paper: #F1E4CC;
+    --paper-soft: #EAD9B8;
+    --ink: #332A22;
+    --muted: #6B5D4C;
+    --line: rgba(51, 42, 34, 0.16);
+    --sage: #9C4A2E;
+    --sage-deep: #753722;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Karla', sans-serif;
+    background: var(--navy);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  .quiz-shell { width: 100%; max-width: 640px; }
+  .eyebrow { color: var(--ice); font-size: 13px; margin: 0 0 6px; }
+  .headline {
+    font-family: 'Fraunces', serif;
+    color: var(--paper);
+    font-size: 28px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0 0 28px;
+    font-weight: 500;
+  }
+  .card { background: var(--paper); border-radius: 10px; padding: 36px 40px 32px; box-shadow: 0 20px 50px rgba(10, 14, 40, 0.35); }
+  .progress-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .progress-label { font-size: 13px; color: var(--muted); }
+  .progress-track { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; margin-bottom: 26px; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.35s ease; }
+  .question-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.45;
+    color: var(--navy-deep);
+    margin: 0 0 22px;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 6px; }
+  .option {
+    text-align: left;
+    background: var(--paper-soft);
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 13px 16px;
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .option:hover:not(:disabled) { border-color: var(--sage-deep); }
+  .option:disabled { cursor: default; }
+  .option.correct { border-color: var(--gold); background: var(--gold-tint); font-weight: 600; }
+  .option.incorrect { border-color: var(--berry); background: var(--berry-tint); }
+  .hint-row { margin: 14px 0 0; }
+  .hint-toggle {
+    background: none;
+    border: none;
+    color: var(--sage-deep);
+    font-size: 13.5px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+  }
+  .hint-text { font-size: 14px; color: var(--muted); margin-top: 8px; font-style: italic; }
+  .feedback { margin-top: 20px; padding: 16px 18px; border-radius: 8px; font-size: 14.5px; line-height: 1.55; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--gold-tint); color: var(--navy-deep); }
+  .feedback.incorrect-fb { background: var(--berry-tint); color: var(--berry); }
+  .feedback strong { display: block; margin-bottom: 4px; font-size: 15px; }
+  .feedback .explain { color: var(--ink); font-style: normal; }
+  .controls { display: flex; justify-content: flex-end; margin-top: 24px; }
+  .next-btn {
+    background: var(--sage);
+    color: var(--paper);
+    border: none;
+    border-radius: 7px;
+    padding: 11px 24px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    display: none;
+  }
+  .next-btn.show { display: inline-block; }
+  .next-btn:hover { background: var(--sage-deep); color: var(--paper); }
+
+  .results { display: none; }
+  .results.show { display: block; }
+  .quiz-body.hide { display: none; }
+  .score-wrap { text-align: center; padding: 6px 0 22px; }
+  .score-num { font-family: 'Fraunces', serif; font-size: 52px; color: var(--navy-deep); font-weight: 600; line-height: 1; }
+  .score-of { font-size: 16px; color: var(--muted); margin-top: 4px; }
+  .score-msg { font-size: 15px; color: var(--ink); margin-top: 12px; }
+  .review-list { border-top: 1px solid var(--line); margin-top: 22px; padding-top: 18px; }
+  .review-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .review-item:last-child { border-bottom: none; }
+  .review-mark {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--paper);
+    margin-top: 2px;
+  }
+  .review-mark.right { background: var(--gold); color: var(--navy-deep); }
+  .review-mark.wrong { background: var(--berry); }
+  .review-q { font-size: 14px; color: var(--ink); }
+  .review-q .rq-prompt { font-weight: 600; display: block; margin-bottom: 2px; }
+  .restart-row { text-align: center; margin-top: 26px; }
+  .restart-btn {
+    background: none;
+    border: 1.5px solid var(--sage-deep);
+    color: var(--sage-deep);
+    border-radius: 7px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .restart-btn:hover { background: var(--sage-deep); color: var(--paper); }
+
+  @media (max-width: 480px) {
+    .card { padding: 26px 20px 24px; }
+    .headline { font-size: 23px; }
+    .question-text { font-size: 17px; }
+    .score-num { font-size: 42px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="quiz-shell">
+  <p class="eyebrow">From the Built to Outlast You course</p>
+  <h1 class="headline">Check your understanding</h1>
+
+  <div class="card">
+
+    <div class="quiz-body" id="quizBody">
+      <div class="progress-row">
+        <span class="progress-label" id="progressLabel">Question 1 of 7</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width: 14.3%;"></div>
+      </div>
+
+      <p class="question-text" id="questionText"></p>
+      <div class="options" id="optionsWrap"></div>
+
+      <div class="hint-row" id="hintRow">
+        <button class="hint-toggle" id="hintToggle">Show hint</button>
+        <p class="hint-text" id="hintText" style="display:none;"></p>
+      </div>
+
+      <div class="feedback" id="feedback">
+        <strong id="feedbackLabel"></strong>
+        <span class="explain" id="feedbackExplain"></span>
+      </div>
+
+      <div class="controls">
+        <button class="next-btn" id="nextBtn">Next question</button>
+      </div>
+    </div>
+
+    <div class="results" id="results">
+      <div class="score-wrap">
+        <div class="score-num" id="scoreNum">0/7</div>
+        <div class="score-of">correct</div>
+        <p class="score-msg" id="scoreMsg"></p>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+      <div class="restart-row">
+        <button class="restart-btn" id="restartBtn">Retake the quiz</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+const QUESTIONS = [
+  {
+    prompt: "Which of these is the clearest sign of a single point of failure on a team?",
+    options: [
+      "Two people know how to do the same task, but one is faster at it",
+      "Only one person understands how a process works, and nothing about it is written down",
+      "A task takes longer to complete than everyone would like",
+      "A role has a detailed job description on file"
+    ],
+    correct: 1,
+    hint: "Think about what happens if that one person is unreachable tomorrow.",
+    explain: "A single point of failure isn't about speed or paperwork — it's about a task or process depending entirely on one person's memory, with nothing written down for anyone else to follow."
+  },
+  {
+    prompt: "What's the biggest problem with SOPs that only get written right before someone leaves?",
+    options: [
+      "They take too long to read",
+      "They're written under pressure, so they tend to skip the steps that feel too obvious to write down",
+      "They're usually too short to be useful",
+      "They cost too much to produce"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "Documentation written in a rush, by someone who's already leaving, tends to skip exactly the steps that only matter to someone who didn't already know them — because those steps feel too obvious to the person writing them down."
+  },
+  {
+    prompt: "What's the best way to capture a process from someone who's about to leave?",
+    options: [
+      "Have them write it up alone in a document",
+      "Have them walk someone through it live, while that person documents it and asks questions",
+      "Ask them to record a single video with no interruptions",
+      "Wait until their last day and debrief quickly"
+    ],
+    correct: 1,
+    hint: "The gaps in a solo document only show up when someone else tries to follow it.",
+    explain: "Documenting live, with a second person asking real-time questions, catches gaps a solo writer won't notice — because the writer already knows the parts a follower would get stuck on."
+  },
+  {
+    prompt: "A manager wants to build in cross-training without slowing the team down for a whole quarter. What's the right first move?",
+    options: [
+      "Cross-train every task on the team at once",
+      "Identify the two or three highest-risk tasks first, then build overlap for those",
+      "Wait for someone to resign, then start training their replacement",
+      "Assign cross-training only during slow weeks with no real deadline"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "Cross-training everything at once is what makes it feel like it eats a whole quarter. Starting with the two or three highest-risk tasks — the true single points of failure — gets the most protection for the least disruption."
+  },
+  {
+    prompt: "Why does shadowing work better than a written SOP alone for certain tasks?",
+    options: [
+      "Shadowing is always faster to complete",
+      "Some judgment calls and relationship-based knowledge don't translate well to a document, and are easier to absorb by watching and doing",
+      "Shadowing removes the need for any documentation at all",
+      "It's required by law in most industries"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "Some parts of a role — reading a vendor's tone, knowing which exception to escalate — are judgment calls that are hard to fully capture in writing. Shadowing transfers that kind of knowledge better than a document alone."
+  },
+  {
+    prompt: "A department head is planning a 30-day handoff for someone who gave notice. What should the first two weeks focus on?",
+    options: [
+      "Finishing every outstanding task on the departing person's list",
+      "Transferring core knowledge and documenting the process while the departing person can still answer questions",
+      "Interviewing external replacement candidates",
+      "Reducing the departing person's workload to zero immediately"
+    ],
+    correct: 1,
+    hint: "The clock on their knowledge starts running out the day they give notice.",
+    explain: "The highest-leverage use of the first two weeks is capturing what's in their head while they're still there to explain it — the rest of the 30-day plan (shadowing, sign-off, follow-up) builds on that foundation."
+  },
+  {
+    prompt: "What's the point of a 60-day follow-up after a handoff plan is completed?",
+    options: [
+      "To formally close out the departing employee's paperwork",
+      "To check whether the documentation and handoff actually held up under real work, not just on paper",
+      "To reassign the same tasks back to a senior manager",
+      "It has no real purpose beyond formality"
+    ],
+    correct: 1,
+    hint: null,
+    explain: "A handoff can look complete on the day it's signed off and still fail two months later when the new person hits a case the documentation didn't cover. The follow-up is what catches that before it becomes a crisis."
+  }
+];
+
+let current = 0;
+let answered = false;
+const userAnswers = new Array(QUESTIONS.length).fill(null);
+
+const questionText = document.getElementById('questionText');
+const optionsWrap = document.getElementById('optionsWrap');
+const progressLabel = document.getElementById('progressLabel');
+const progressFill = document.getElementById('progressFill');
+const feedback = document.getElementById('feedback');
+const feedbackLabel = document.getElementById('feedbackLabel');
+const feedbackExplain = document.getElementById('feedbackExplain');
+const nextBtn = document.getElementById('nextBtn');
+const hintRow = document.getElementById('hintRow');
+const hintToggle = document.getElementById('hintToggle');
+const hintText = document.getElementById('hintText');
+const quizBody = document.getElementById('quizBody');
+const results = document.getElementById('results');
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  answered = false;
+  questionText.textContent = q.prompt;
+  progressLabel.textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+  progressFill.style.width = `${((current) / QUESTIONS.length) * 100 + (100 / QUESTIONS.length)}%`;
+
+  optionsWrap.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => selectOption(i));
+    optionsWrap.appendChild(btn);
+  });
+
+  feedback.classList.remove('show', 'correct-fb', 'incorrect-fb');
+  nextBtn.classList.remove('show');
+
+  if (q.hint) {
+    hintRow.style.display = 'block';
+    hintToggle.style.display = 'inline';
+    hintText.style.display = 'none';
+    hintToggle.textContent = 'Show hint';
+  } else {
+    hintRow.style.display = 'none';
+  }
+}
+
+hintToggle.addEventListener('click', () => {
+  const visible = hintText.style.display === 'block';
+  hintText.style.display = visible ? 'none' : 'block';
+  hintText.textContent = QUESTIONS[current].hint;
+  hintToggle.textContent = visible ? 'Show hint' : 'Hide hint';
+});
+
+function selectOption(i) {
+  if (answered) return;
+  answered = true;
+  const q = QUESTIONS[current];
+  userAnswers[current] = i;
+  const buttons = optionsWrap.querySelectorAll('.option');
+  Array.prototype.forEach.call(buttons, function (b, idx) {
+    b.disabled = true;
+    if (idx === q.correct) b.classList.add('correct');
+    if (idx === i && i !== q.correct) b.classList.add('incorrect');
+  });
+
+  feedback.classList.add('show');
+  if (i === q.correct) {
+    feedback.classList.add('correct-fb');
+    feedbackLabel.textContent = 'Correct.';
+  } else {
+    feedback.classList.add('incorrect-fb');
+    feedbackLabel.textContent = 'Not quite.';
+  }
+  feedbackExplain.textContent = q.explain;
+
+  nextBtn.classList.add('show');
+  nextBtn.textContent = current === QUESTIONS.length - 1 ? 'See your results' : 'Next question';
+}
+
+nextBtn.addEventListener('click', () => {
+  if (current < QUESTIONS.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+});
+
+function showResults() {
+  quizBody.classList.add('hide');
+  results.classList.add('show');
+
+  let score = 0;
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = '';
+
+  QUESTIONS.forEach((q, i) => {
+    const isRight = userAnswers[i] === q.correct;
+    if (isRight) score++;
+    const item = document.createElement('div');
+    item.className = 'review-item';
+    item.innerHTML = `
+      <div class="review-mark ${isRight ? 'right' : 'wrong'}">${isRight ? '✓' : '✕'}</div>
+      <div class="review-q">
+        <span class="rq-prompt">${q.prompt}</span>
+        ${isRight ? '' : `Correct answer: ${q.options[q.correct]}`}
+      </div>
+    `;
+    reviewList.appendChild(item);
+  });
+
+  document.getElementById('scoreNum').textContent = `${score}/${QUESTIONS.length}`;
+  const msg = document.getElementById('scoreMsg');
+  if (score === QUESTIONS.length) {
+    msg.textContent = "Perfect score — you've got operational continuity down cold.";
+  } else if (score >= QUESTIONS.length - 1) {
+    msg.textContent = "Strong grasp of the material, with one spot worth a second look.";
+  } else if (score >= QUESTIONS.length / 2) {
+    msg.textContent = "A solid start — revisit the modules above for the ones you missed.";
+  } else {
+    msg.textContent = "Worth another pass through the course material before moving on.";
+  }
+}
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  current = 0;
+  userAnswers.fill(null);
+  results.classList.remove('show');
+  quizBody.classList.remove('hide');
+  renderQuestion();
+});
+
+renderQuestion();
+})();
+</script>
+
+</body>
+</html>

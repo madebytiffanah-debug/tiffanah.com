@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Whole Show — Working Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #332A22;
+    --navy-deep: #241D18;
+    --ice: #C68D33;
+    --gold: #C68D33;
+    --gold-tint: rgba(198, 141, 51, 0.16);
+    --berry: #B2543A;
+    --berry-tint: rgba(178, 84, 58, 0.14);
+    --paper: #F1E4CC;
+    --paper-soft: #EAD9B8;
+    --ink: #332A22;
+    --muted: #6B5D4C;
+    --line: rgba(51, 42, 34, 0.16);
+    --teal: #1E5C52;
+    --teal-tint: rgba(30, 92, 82, 0.14);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Karla', sans-serif;
+    background: var(--navy);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 40px 16px 60px;
+  }
+  h1, h2, h3 { font-family: 'Fraunces', serif; font-weight: 500; margin: 0; }
+  .shell { width: 100%; max-width: 900px; margin: 0 auto; }
+  .eyebrow { color: var(--ice); font-size: 13px; margin: 0 0 6px; text-align: center; }
+  .headline {
+    color: var(--paper);
+    font-size: 28px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+    text-align: center;
+  }
+  .sub-lede { color: rgba(241,228,204,0.68); font-size: 14.5px; text-align: center; margin: 0 0 28px; }
+  .back-link { display: block; text-align: center; color: var(--ice); font-size: 13px; text-decoration: none; margin-bottom: 18px; }
+  .back-link:hover { text-decoration: underline; }
+
+  .tabs { display: flex; background: rgba(241,228,204,0.08); border-radius: 10px; padding: 5px; margin-bottom: 22px; gap: 4px; }
+  .tabs button {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: 7px;
+    color: rgba(241,228,204,0.65);
+    cursor: pointer;
+    font-family: 'Karla', sans-serif;
+  }
+  .tabs button.active { background: var(--teal); color: var(--paper); }
+
+  .card { background: var(--paper); border-radius: 12px; padding: 32px 34px; box-shadow: 0 20px 50px rgba(10, 14, 40, 0.35); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .panel h2 { font-size: 21px; color: var(--navy-deep); margin-bottom: 6px; }
+  .panel .panel-desc { font-size: 14px; color: var(--muted); margin-bottom: 24px; line-height: 1.55; }
+
+  .field-row { display: flex; gap: 14px; margin-bottom: 12px; flex-wrap: wrap; }
+  .field { flex: 1 1 140px; }
+  .field label { display: block; font-size: 11.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 5px; }
+  .field input, .field select {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1.5px solid var(--line);
+    border-radius: 7px;
+    font-size: 14px;
+    font-family: inherit;
+    background: var(--paper-soft);
+    color: var(--ink);
+  }
+  .field input:focus, .field select:focus { outline: none; border-color: var(--teal); }
+
+  .btn { display: inline-block; border: none; border-radius: 7px; font-weight: 600; cursor: pointer; font-family: inherit; padding: 11px 20px; font-size: 14px; }
+  .btn-teal { background: var(--teal); color: var(--paper); }
+  .btn-teal:hover { background: #164740; }
+  .btn-row { display: flex; gap: 10px; margin: 6px 0 20px; flex-wrap: wrap; }
+
+  .stream-block { border: 1.5px solid var(--line); border-radius: 9px; padding: 14px 16px; margin-bottom: 10px; }
+  .stream-block h3 { font-size: 14px; margin-bottom: 8px; color: var(--navy-deep); }
+
+  .table-wrap { overflow-x: auto; margin-top: 8px; }
+  table.consol-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.consol-table th { text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); padding: 7px 8px; border-bottom: 1.5px solid var(--line); }
+  table.consol-table td { padding: 7px 8px; border-bottom: 1px solid var(--line); }
+  table.consol-table td.num { text-align: right; }
+  table.consol-table tr.neg td.num { color: var(--berry); font-weight: 700; }
+
+  .result-box { background: var(--teal-tint); border-radius: 9px; padding: 18px 20px; margin-top: 10px; }
+  .result-row { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; font-size: 14px; }
+  .result-row.big { border-top: 1px solid rgba(30,92,82,0.25); margin-top: 6px; padding-top: 14px; }
+  .result-row.big .val { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; color: var(--navy-deep); }
+  .result-row .lbl { color: var(--ink); }
+  .result-row .val { font-weight: 700; color: var(--navy-deep); }
+  .result-row.negative .val { color: var(--berry); }
+  .result-note { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.5; font-style: italic; }
+
+  .ladder-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed var(--line); }
+  .ladder-row.total { font-weight: 700; color: var(--navy-deep); border-bottom: none; border-top: 1.5px solid var(--line); margin-top: 4px; padding-top: 12px; }
+  .ladder-row .val { font-weight: 600; }
+  .ladder-row.subtract .val::before { content: "\2212 "; color: var(--berry); }
+
+  .compare-cols { display: flex; gap: 16px; margin-top: 8px; }
+  .compare-cols .col { flex: 1; background: var(--paper-soft); border-radius: 9px; padding: 16px; }
+  .compare-cols .col h4 { font-size: 14px; margin-bottom: 10px; color: var(--navy-deep); }
+  .compare-cols .row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; }
+
+  @media (max-width: 560px) {
+    .card { padding: 22px 18px; }
+    .headline { font-size: 22px; }
+    .compare-cols { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <a class="back-link" href="the-whole-show.html">&larr; The Whole Show</a>
+  <p class="eyebrow">Financial Acumen Training Series</p>
+  <h1 class="headline">Working Tools</h1>
+  <p class="sub-lede">Use these with your own numbers &mdash; nothing here is saved or sent anywhere, so feel free to experiment.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-panel="consol">Consolidated P&amp;L</button>
+    <button class="tab-btn" data-panel="settlement">Settlement Calculator</button>
+    <button class="tab-btn" data-panel="lossleader">Loss-Leader Impact</button>
+  </div>
+
+  <div class="card">
+
+    <!-- PANEL 1: Consolidated P&L Builder -->
+    <div class="panel active" id="panel-consol">
+      <h2>Consolidated P&amp;L Builder</h2>
+      <p class="panel-desc">From Module 1: enter revenue and cost for each stream, then subtract shared overhead once at the bottom &mdash; not per department.</p>
+
+      <div id="streamRows"></div>
+
+      <div class="field-row" style="margin-top:6px;">
+        <div class="field">
+          <label for="overheadAmt">Shared overhead ($) &mdash; security, cleaning, utilities</label>
+          <input type="number" id="overheadAmt" min="0" step="0.01" placeholder="e.g. 3200">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-teal" id="consolCalcBtn">Consolidate the night</button>
+      </div>
+
+      <div class="table-wrap" id="consolTableWrap" style="display:none;">
+        <table class="consol-table">
+          <thead><tr><th>Stream</th><th class="num">Revenue</th><th class="num">Cost</th><th class="num">Profit</th></tr></thead>
+          <tbody id="consolTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="result-box" id="consolResults" style="display:none;">
+        <div class="result-row"><span class="lbl">Combined departmental profit (before overhead)</span><span class="val" id="cBeforeOverhead">&mdash;</span></div>
+        <div class="result-row"><span class="lbl">Shared overhead</span><span class="val" id="cOverhead">&mdash;</span></div>
+        <div class="result-row big" id="cAfterRow"><span class="lbl">Combined profit after overhead</span><span class="val" id="cAfterOverhead">&mdash;</span></div>
+      </div>
+      <p class="result-note">This is the number the &ldquo;before/after overhead&rdquo; demo on the course page is built from &mdash; every department can be positive and this final number can still be negative.</p>
+    </div>
+
+    <!-- PANEL 2: Artist Settlement Calculator -->
+    <div class="panel" id="panel-settlement">
+      <h2>Artist Settlement Calculator</h2>
+      <p class="panel-desc">From Module 2: model a guarantee or a door deal, then back out any hospitality or tech rider overage once actual spend is known.</p>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="dealType">Deal type</label>
+          <select id="dealType">
+            <option value="guarantee">Guarantee (fixed fee)</option>
+            <option value="split">Door deal (% of ticket revenue)</option>
+          </select>
+        </div>
+        <div class="field" id="guaranteeField">
+          <label for="guaranteeAmt">Guarantee amount ($)</label>
+          <input type="number" id="guaranteeAmt" min="0" step="0.01" placeholder="e.g. 5000">
+        </div>
+        <div class="field" id="splitFields1" style="display:none;">
+          <label for="ticketRevenue">Ticket revenue ($)</label>
+          <input type="number" id="ticketRevenue" min="0" step="0.01" placeholder="e.g. 18000">
+        </div>
+        <div class="field" id="splitFields2" style="display:none;">
+          <label for="splitPct">Artist split (%)</label>
+          <input type="number" id="splitPct" min="0" max="100" step="0.5" placeholder="e.g. 30">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="riderBudget">Hospitality rider budget ($, set at booking)</label>
+          <input type="number" id="riderBudget" min="0" step="0.01" placeholder="e.g. 600">
+        </div>
+        <div class="field">
+          <label for="riderActual">Actual hospitality spend ($)</label>
+          <input type="number" id="riderActual" min="0" step="0.01" placeholder="e.g. 850">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="techRiderBudget">Tech rider budget ($, set at booking)</label>
+          <input type="number" id="techRiderBudget" min="0" step="0.01" placeholder="e.g. 1200">
+        </div>
+        <div class="field">
+          <label for="techRiderActual">Actual tech rider spend ($)</label>
+          <input type="number" id="techRiderActual" min="0" step="0.01" placeholder="e.g. 1450">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-teal" id="settleCalcBtn">Close the settlement</button>
+      </div>
+
+      <div id="settleOut" style="display:none;">
+        <div class="ladder-row"><span id="sBaseLabel">Base artist pay</span><span class="val" id="sBaseVal">&mdash;</span></div>
+        <div class="ladder-row subtract"><span>Hospitality rider overage (actual over budget)</span><span class="val" id="sOverageVal">&mdash;</span></div>
+        <div class="ladder-row subtract"><span>Tech rider overage (actual over budget)</span><span class="val" id="sTechOverageVal">&mdash;</span></div>
+        <div class="ladder-row total"><span>Final settlement to artist</span><span class="val" id="sFinalVal">&mdash;</span></div>
+      </div>
+      <p class="result-note">Each rider &mdash; hospitality and tech &mdash; gets its own budget at booking and is reconciled separately. If either comes in at or under its own budget, there's no overage from that rider to back out.</p>
+    </div>
+
+    <!-- PANEL 3: Loss-Leader Impact Calculator -->
+    <div class="panel" id="panel-lossleader">
+      <h2>Loss-Leader Impact Calculator</h2>
+      <p class="panel-desc">From Module 3: model what happens when you reduce pricing on one stream (like F&amp;B) to drive volume in another (like ticketing or merch).</p>
+
+      <h3 style="font-size:14px; margin-bottom:8px;">The stream you're subsidizing</h3>
+      <div class="field-row">
+        <div class="field"><label for="llCurrentPrice">Current price per unit ($)</label><input type="number" id="llCurrentPrice" min="0" step="0.01" placeholder="e.g. 12"></div>
+        <div class="field"><label for="llNewPrice">New (lower) price per unit ($)</label><input type="number" id="llNewPrice" min="0" step="0.01" placeholder="e.g. 8"></div>
+        <div class="field"><label for="llCost">Variable cost per unit ($)</label><input type="number" id="llCost" min="0" step="0.01" placeholder="e.g. 4"></div>
+        <div class="field"><label for="llCurrentVolume">Current volume (units)</label><input type="number" id="llCurrentVolume" min="0" step="1" placeholder="e.g. 300"></div>
+      </div>
+
+      <h3 style="font-size:14px; margin: 16px 0 8px;">The stream you expect to benefit</h3>
+      <div class="field-row">
+        <div class="field"><label for="llBenefitMargin">Contribution margin per unit ($)</label><input type="number" id="llBenefitMargin" min="0" step="0.01" placeholder="e.g. 25"></div>
+        <div class="field"><label for="llExtraVolume">Extra units expected from the traffic boost</label><input type="number" id="llExtraVolume" min="0" step="1" placeholder="e.g. 40"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-teal" id="llCalcBtn">Model the impact</button>
+      </div>
+
+      <div class="compare-cols" id="llOut" style="display:none;"></div>
+      <p class="result-note">This models direct contribution effects only &mdash; it doesn't include shared overhead. Use the Consolidated P&amp;L Builder afterward to see how the net effect lands once overhead is applied.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.panel');
+  tabBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      tabBtns.forEach(function (b) { b.classList.remove('active'); });
+      panels.forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.getAttribute('data-panel')).classList.add('active');
+    });
+  });
+
+  function money(n) {
+    if (isNaN(n) || n === null) return '$0.00';
+    var sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function num(v) {
+    var n = parseFloat(v);
+    return isNaN(n) ? 0 : n;
+  }
+
+  // ---------- PANEL 1: Consolidated P&L Builder ----------
+  var STREAMS = ['F&B', 'Talent', 'VIP / Bottle Service', 'Merch', 'Ticketing', 'Sponsorships'];
+  var streamRowsWrap = document.getElementById('streamRows');
+
+  STREAMS.forEach(function (name, i) {
+    var block = document.createElement('div');
+    block.className = 'stream-block';
+    block.innerHTML =
+      '<h3>' + name + '</h3>' +
+      '<div class="field-row">' +
+        '<div class="field"><label>Revenue ($)</label><input type="number" min="0" step="0.01" class="stream-rev" data-name="' + name + '" placeholder="e.g. 10000"></div>' +
+        '<div class="field"><label>Cost ($)</label><input type="number" min="0" step="0.01" class="stream-cost" data-name="' + name + '" placeholder="e.g. 6000"></div>' +
+      '</div>';
+    streamRowsWrap.appendChild(block);
+  });
+
+  document.getElementById('consolCalcBtn').addEventListener('click', function () {
+    var revInputs = document.querySelectorAll('.stream-rev');
+    var costInputs = document.querySelectorAll('.stream-cost');
+    var tableBody = document.getElementById('consolTableBody');
+    tableBody.innerHTML = '';
+
+    var totalProfit = 0;
+    revInputs.forEach(function (revInput, i) {
+      var name = revInput.getAttribute('data-name');
+      var rev = num(revInput.value);
+      var cost = num(costInputs[i].value);
+      var profit = rev - cost;
+      totalProfit += profit;
+
+      var tr = document.createElement('tr');
+      if (profit < 0) tr.className = 'neg';
+      tr.innerHTML =
+        '<td>' + name + '</td>' +
+        '<td class="num">' + money(rev) + '</td>' +
+        '<td class="num">' + money(cost) + '</td>' +
+        '<td class="num">' + money(profit) + '</td>';
+      tableBody.appendChild(tr);
+    });
+
+    var overhead = num(document.getElementById('overheadAmt').value);
+    var afterOverhead = totalProfit - overhead;
+
+    document.getElementById('cBeforeOverhead').textContent = money(totalProfit);
+    document.getElementById('cOverhead').textContent = money(overhead);
+    document.getElementById('cAfterOverhead').textContent = money(afterOverhead);
+
+    var afterRow = document.getElementById('cAfterRow');
+    afterRow.classList.toggle('negative', afterOverhead < 0);
+
+    document.getElementById('consolTableWrap').style.display = 'block';
+    document.getElementById('consolResults').style.display = 'block';
+  });
+
+  // ---------- PANEL 2: Artist Settlement Calculator ----------
+  var dealType = document.getElementById('dealType');
+  var guaranteeField = document.getElementById('guaranteeField');
+  var splitFields1 = document.getElementById('splitFields1');
+  var splitFields2 = document.getElementById('splitFields2');
+
+  dealType.addEventListener('change', function () {
+    var isSplit = dealType.value === 'split';
+    guaranteeField.style.display = isSplit ? 'none' : 'block';
+    splitFields1.style.display = isSplit ? 'block' : 'none';
+    splitFields2.style.display = isSplit ? 'block' : 'none';
+  });
+
+  document.getElementById('settleCalcBtn').addEventListener('click', function () {
+    var basePay, baseLabel;
+    if (dealType.value === 'split') {
+      var ticketRev = num(document.getElementById('ticketRevenue').value);
+      var pct = num(document.getElementById('splitPct').value);
+      basePay = ticketRev * (pct / 100);
+      baseLabel = 'Artist pay (' + pct + '% of ' + money(ticketRev) + ' ticket revenue)';
+    } else {
+      basePay = num(document.getElementById('guaranteeAmt').value);
+      baseLabel = 'Base guarantee';
+    }
+
+    var budget = num(document.getElementById('riderBudget').value);
+    var actual = num(document.getElementById('riderActual').value);
+    var overage = Math.max(0, actual - budget);
+
+    var techBudget = num(document.getElementById('techRiderBudget').value);
+    var techActual = num(document.getElementById('techRiderActual').value);
+    var techOverage = Math.max(0, techActual - techBudget);
+
+    var final = basePay - overage - techOverage;
+
+    document.getElementById('sBaseLabel').textContent = baseLabel;
+    document.getElementById('sBaseVal').textContent = money(basePay);
+    document.getElementById('sOverageVal').textContent = money(overage);
+    document.getElementById('sTechOverageVal').textContent = money(techOverage);
+    document.getElementById('sFinalVal').textContent = money(final);
+
+    document.getElementById('settleOut').style.display = 'block';
+  });
+
+  // ---------- PANEL 3: Loss-Leader Impact Calculator ----------
+  document.getElementById('llCalcBtn').addEventListener('click', function () {
+    var currentPrice = num(document.getElementById('llCurrentPrice').value);
+    var newPrice = num(document.getElementById('llNewPrice').value);
+    var cost = num(document.getElementById('llCost').value);
+    var currentVolume = num(document.getElementById('llCurrentVolume').value);
+    var benefitMargin = num(document.getElementById('llBenefitMargin').value);
+    var extraVolume = num(document.getElementById('llExtraVolume').value);
+
+    var currentContribution = (currentPrice - cost) * currentVolume;
+    var newContribution = (newPrice - cost) * currentVolume;
+    var subsidizedStreamChange = newContribution - currentContribution;
+    var benefitStreamGain = benefitMargin * extraVolume;
+    var netEffect = subsidizedStreamChange + benefitStreamGain;
+
+    var out = document.getElementById('llOut');
+    out.innerHTML =
+      '<div class="col">' +
+        '<h4>Subsidized Stream</h4>' +
+        '<div class="row"><span>Contribution before</span><span>' + money(currentContribution) + '</span></div>' +
+        '<div class="row"><span>Contribution after price cut</span><span>' + money(newContribution) + '</span></div>' +
+        '<div class="row"><span><strong>Change</strong></span><span><strong>' + money(subsidizedStreamChange) + '</strong></span></div>' +
+      '</div>' +
+      '<div class="col">' +
+        '<h4>Benefiting Stream</h4>' +
+        '<div class="row"><span>Extra units from traffic boost</span><span>' + extraVolume + '</span></div>' +
+        '<div class="row"><span>Contribution margin per unit</span><span>' + money(benefitMargin) + '</span></div>' +
+        '<div class="row"><span><strong>Gain</strong></span><span><strong>' + money(benefitStreamGain) + '</strong></span></div>' +
+      '</div>' +
+      '<div class="col" style="background:' + (netEffect >= 0 ? 'var(--teal-tint)' : 'var(--berry-tint)') + ';">' +
+        '<h4>Net Effect</h4>' +
+        '<div class="row"><span><strong>Combined change</strong></span><span><strong>' + money(netEffect) + '</strong></span></div>' +
+        '<div class="row"><span style="font-size:12px; font-style:italic;">' + (netEffect >= 0 ? 'This loss leader is paying for itself.' : 'This price cut is currently costing more than it\'s generating elsewhere.') + '</span></div>' +
+      '</div>';
+    out.style.display = 'flex';
+  });
+
+})();
+</script>
+
+</body>
+</html>

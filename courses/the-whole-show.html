@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Whole Show — Consolidating Revenue Streams</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Caveat:wght@500;600&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #332A22;
+    --navy-deep: #241D18;
+    --ice: #C68D33;
+    --gold: #C68D33;
+    --gold-tint: rgba(198, 141, 51, 0.16);
+    --berry: #B2543A;
+    --berry-tint: rgba(178, 84, 58, 0.14);
+    --paper: #F1E4CC;
+    --paper-soft: #EAD9B8;
+    --ink: #332A22;
+    --muted: #6B5D4C;
+    --line: rgba(51, 42, 34, 0.16);
+    --teal: #1E5C52;
+    --teal-tint: rgba(30, 92, 82, 0.14);
+    --sage: #A3AE8A;
+    --maxw: 1040px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Karla', sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.5;
+  }
+  h1, h2, h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    margin: 0;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+  a { color: inherit; }
+
+  /* Top bar */
+  .topbar { background: var(--navy); padding: 18px 0; }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; }
+  .brand { color: var(--paper); font-family: 'Fraunces', serif; font-size: 16px; font-weight: 500; letter-spacing: 0.2px; }
+  .brand span { color: var(--ice); font-weight: 400; }
+  .btn { display: inline-block; text-decoration: none; border-radius: 7px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; }
+  .btn-gold { background: var(--gold); color: var(--navy-deep); padding: 10px 20px; font-size: 14px; }
+  .btn-gold:hover { background: #D9A94F; }
+  .btn-outline { border: 1.5px solid var(--ice); color: var(--paper); padding: 9px 18px; font-size: 13.5px; }
+  .btn-outline:hover { background: rgba(241,228,204,0.08); }
+
+  /* Hero */
+  .hero { background: var(--navy); padding: 64px 0 0; }
+  .hero-inner { display: flex; gap: 48px; align-items: center; padding-bottom: 64px; }
+  .hero-inner > div:first-child { flex: 1.1 1 0; }
+  .hero-inner > .demo-card { flex: 1 1 0; }
+  .eyebrow { color: var(--ice); font-size: 14px; margin: 0 0 14px; }
+  .hero h1 { color: var(--paper); font-size: 44px; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 18px; }
+  .hero p.lede { color: rgba(241,228,204,0.72); font-size: 17px; line-height: 1.6; max-width: 46ch; margin-bottom: 28px; }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  /* Demo card */
+  .demo-card { background: var(--paper); border-radius: 14px; padding: 28px 28px 24px; box-shadow: 0 24px 60px rgba(6, 10, 34, 0.4); }
+  .demo-title { font-size: 13.5px; color: var(--muted); margin-bottom: 14px; }
+  .demo-toggle { display: flex; background: var(--paper-soft); border-radius: 8px; padding: 4px; margin-bottom: 18px; }
+  .demo-toggle button { flex: 1; background: none; border: none; padding: 9px 10px; font-size: 13.5px; font-weight: 600; border-radius: 6px; color: var(--muted); cursor: pointer; font-family: inherit; }
+  .demo-toggle button.active-central { background: var(--teal); color: var(--paper); }
+  .demo-toggle button.active-peripheral { background: var(--berry); color: var(--paper); }
+  .demo-msg { font-size: 15px; line-height: 1.55; color: var(--ink); min-height: 92px; }
+  .demo-caption { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); margin-top: 16px; padding-top: 14px; font-style: italic; }
+
+  /* Sections */
+  section { padding: 76px 0; }
+  .section-head { max-width: 640px; margin-bottom: 40px; }
+  .section-head h2 { font-size: 30px; color: var(--navy-deep); line-height: 1.25; }
+  .section-head p { color: var(--muted); font-size: 16px; margin-top: 14px; }
+
+  /* Why + stats */
+  .why-grid { display: flex; gap: 48px; align-items: flex-start; }
+  .why-grid > div:first-child { flex: 1.2 1 0; }
+  .why-grid > .stat-list { flex: 1 1 0; }
+  .why-grid p { font-size: 16px; color: var(--ink); line-height: 1.7; }
+  .stat-list { display: flex; flex-direction: column; gap: 22px; }
+  .stat { border-left: 3px solid var(--gold); padding-left: 16px; }
+  .stat .num { font-family: 'Fraunces', serif; font-size: 30px; color: var(--navy-deep); font-weight: 600; line-height: 1; }
+  .stat .label { font-size: 13.5px; color: var(--muted); margin-top: 4px; }
+
+  /* Curriculum */
+  .curriculum { background: var(--paper-soft); }
+  .module-row { display: flex; gap: 22px; padding: 26px 0; border-top: 1px solid var(--line); }
+  .module-row > .module-num { flex: 0 0 70px; }
+  .module-row > div:last-child { flex: 1 1 0; }
+  .module-row:last-child { border-bottom: 1px solid var(--line); }
+  .module-num { font-family: 'Fraunces', serif; font-size: 26px; color: var(--gold); font-weight: 600; }
+  .module-title { font-size: 19px; font-weight: 700; color: var(--navy-deep); margin-bottom: 6px; }
+  .module-desc { font-size: 15px; color: var(--ink); margin-bottom: 6px; }
+  .module-source { font-size: 13px; color: var(--muted); font-style: italic; }
+
+  /* Quote */
+  .quote-band { background: var(--teal-tint); text-align: center; padding: 72px 0; }
+  .quote-band blockquote { margin: 0 auto; max-width: 700px; font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 25px; line-height: 1.5; color: var(--navy-deep); }
+  .quote-band cite { display: block; margin-top: 18px; font-size: 13.5px; color: var(--muted); font-style: normal; }
+
+  /* Audience */
+  .audience-grid { display: flex; gap: 48px; }
+  .audience-grid > div { flex: 1 1 0; }
+  .audience-grid ul { padding-left: 20px; margin: 0; color: var(--ink); font-size: 15.5px; line-height: 1.9; }
+  .audience-grid p { color: var(--ink); font-size: 16px; line-height: 1.7; }
+
+  /* Sample question */
+  .sample { background: var(--paper-soft); }
+  .sample-card { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 30px 32px; max-width: 680px; }
+  .sample-q { font-family: 'Fraunces', serif; font-weight: 500; font-size: 19px; color: var(--navy-deep); margin-bottom: 18px; }
+  .sample-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .sample-opt { text-align: left; background: var(--paper-soft); border: 1.5px solid var(--line); border-radius: 7px; padding: 12px 15px; font-size: 14.5px; cursor: pointer; font-family: inherit; color: var(--ink); }
+  .sample-opt:hover:not(:disabled) { border-color: var(--teal); }
+  .sample-opt.s-correct { border-color: var(--gold); background: var(--gold-tint); font-weight: 600; }
+  .sample-opt.s-incorrect { border-color: var(--berry); background: var(--berry-tint); }
+  .sample-fb { display: none; font-size: 14px; color: var(--ink); background: var(--paper-soft); border-radius: 7px; padding: 14px 16px; margin-bottom: 16px; }
+  .sample-fb.show { display: block; }
+  .sample-link { font-size: 14.5px; }
+
+  /* Materials */
+  .materials { background: var(--navy); }
+  .materials .section-head h2 { color: var(--paper); }
+  .materials .section-head p { color: rgba(241,228,204,0.72); }
+  .material-cards { display: flex; gap: 20px; flex-wrap: wrap; }
+  .material-card { flex: 1 1 260px; background: var(--paper); border-top: 3px solid var(--teal); border-radius: 10px; padding: 26px 24px; display: flex; flex-direction: column; }
+  .material-cards .material-card:nth-child(2) { border-top-color: var(--berry); }
+  .material-cards .material-card:nth-child(3) { border-top-color: var(--gold); }
+  .material-icon { width: 38px; height: 38px; border-radius: 50%; background: var(--gold-tint); color: var(--navy-deep); display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; margin-bottom: 16px; }
+  .material-name { font-size: 17px; font-weight: 700; color: var(--navy-deep); margin-bottom: 8px; }
+  .material-desc { font-size: 14px; color: var(--muted); line-height: 1.55; margin-bottom: 20px; flex-grow: 1; }
+  .material-btn { display: inline-block; text-align: center; text-decoration: none; background: var(--teal); color: var(--paper); padding: 10px 0; border-radius: 7px; font-size: 14px; font-weight: 600; }
+  .material-btn:hover { background: #164740; }
+
+  /* Footer */
+  footer { background: var(--navy-deep); color: rgba(241,228,204,0.55); font-size: 12.5px; text-align: center; padding: 22px 0; }
+
+  @media (max-width: 800px) {
+    .topbar .wrap { flex-wrap: wrap; gap: 12px; }
+    .brand span { display: none; }
+    .hero-inner { flex-direction: column; }
+    .hero h1 { font-size: 33px; }
+    .why-grid { flex-direction: column; }
+    .audience-grid { flex-direction: column; }
+    .module-row { gap: 14px; }
+    .module-row > .module-num { flex-basis: 44px; }
+    .material-cards { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">The Whole Show <span>&mdash; Financial Acumen Training</span></div>
+    <a class="btn btn-outline" href="#materials">Course Materials</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <p class="eyebrow">Financial Acumen Training Series &mdash; Course 4 of 4</p>
+      <h1>The Whole Show</h1>
+      <p class="lede">A hands-on session on consolidating six revenue streams into one bottom line &mdash; and understanding why a department can win on its own P&amp;L while the whole night still loses money.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-gold" href="the-whole-show-quiz.html">Take the quiz</a>
+        <a class="btn btn-outline" href="the-whole-show-slide-deck.html" style="border-color:rgba(241,228,204,0.45);">Open the slide deck</a>
+      </div>
+      <p style="margin-top:16px;"><a href="#curriculum" style="color:rgba(241,228,204,0.75); font-size:13.5px; text-decoration:underline;">See what's inside</a></p>
+    </div>
+
+    <div class="demo-card">
+      <p class="demo-title">Every department shows a profit. Did the night make money?</p>
+      <div class="demo-toggle">
+        <button id="btnCentral" type="button">Before overhead</button>
+        <button id="btnPeripheral" type="button">After overhead</button>
+      </div>
+      <div class="demo-msg" id="demoMsg"></div>
+      <p class="demo-caption">Same six departments, same numbers. Module 1 covers the line that changes the answer.</p>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap why-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:20px;">
+        <h2>Six departments can each look healthy and the show can still lose money.</h2>
+      </div>
+      <p>F&amp;B, Talent, VIP and bottle service, merch, ticketing, and sponsorships each run their own numbers &mdash; but none of them include security, cleaning, or utilities. Those sit below every department as shared overhead, and they're exactly the line that turns a profitable-looking lineup of departments into a losing night.</p>
+      <p>This course teaches you to consolidate six streams into one statement, understand how a talent settlement actually reconciles after a show closes, and recognize when a stream is deliberately run at breakeven to drive money somewhere else.</p>
+    </div>
+    <div class="stat-list">
+      <div class="stat"><div class="num">3 hrs</div><div class="label">Half-day session, in person or virtual</div></div>
+      <div class="stat"><div class="num">6</div><div class="label">Revenue streams, consolidated into one view</div></div>
+      <div class="stat"><div class="num">8&ndash;15</div><div class="label">Ideal group size per cohort</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="curriculum" id="curriculum">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What this course pulls together</h2>
+      <p>Three modules, each pairing a concept briefing with a tool built around your own venue's numbers.</p>
+    </div>
+
+    <div class="module-row">
+      <div class="module-num">01</div>
+      <div>
+        <div class="module-title">Six Streams, One Bottom Line</div>
+        <div class="module-desc">F&amp;B, Talent, VIP/Bottle Service, Merch, Ticketing, and Sponsorships as separate department P&amp;Ls that roll up into one consolidated statement &mdash; and why department profit isn't the same question as show profit.</div>
+        <div class="module-source">Tool: Consolidated P&amp;L Builder</div>
+      </div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-num">02</div>
+      <div>
+        <div class="module-title">The Talent Settlement</div>
+        <div class="module-desc">Guarantees vs. door deals and splits, separate hospitality and tech rider budgets set at time of booking, and how overages against each one get backed out once the actual show costs are known.</div>
+        <div class="module-source">Tool: Artist Settlement Calculator</div>
+      </div>
+    </div>
+
+    <div class="module-row">
+      <div class="module-num">03</div>
+      <div>
+        <div class="module-title">Loss Leaders &amp; Overhead</div>
+        <div class="module-desc">Recognizing when a stream is intentionally run at breakeven to drive spend elsewhere, and why shared overhead &mdash; security, cleaning, utilities &mdash; is what actually decides whether a good-looking night made money.</div>
+        <div class="module-source">Tool: Loss-Leader Impact Calculator</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="quote-band">
+  <div class="wrap">
+    <blockquote>A department can win, and the show can still lose. Read the whole page &mdash; not just your line on it.</blockquote>
+    <cite>Core takeaway, Module 1</cite>
+  </div>
+</div>
+
+<section class="audience">
+  <div class="wrap audience-grid">
+    <div>
+      <div class="section-head" style="margin-bottom:18px;">
+        <h2>Who this is for</h2>
+      </div>
+      <p>The capstone in this series &mdash; built for anyone who now needs to explain a consolidated, multi-stream P&amp;L to ownership, not just their own department's numbers. Courses 1&ndash;3 are not required, but the material assumes comfort with Prime Cost, contribution margin, and reading a departmental statement.</p>
+    </div>
+    <div>
+      <div class="section-head" style="margin-bottom:18px;">
+        <h2 style="font-size:22px;">Runs best when&hellip;</h2>
+      </div>
+      <ul>
+        <li>Participants bring an actual multi-stream night or event to work through together</li>
+        <li>Groups stay small, between 8 and 15, given how specific the settlement math gets</li>
+        <li>At least one person present has actually closed out a real artist settlement</li>
+        <li>Finance is available afterward to reconcile the workshop numbers against real reports</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sample" id="sample">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Try a sample question</h2>
+      <p>One question from the course quiz &mdash; see how it feels before you dive in.</p>
+    </div>
+    <div class="sample-card">
+      <p class="sample-q">An artist's contract includes a $600 hospitality rider budget, agreed at time of booking. Actual hospitality spend for the show comes to $850. What typically happens to the $250 overage?</p>
+      <div class="sample-opts" id="sampleOpts">
+        <button class="sample-opt" data-idx="0">The venue simply absorbs it with no further reconciliation</button>
+        <button class="sample-opt" data-idx="1">It's backed out against the artist's settlement once actual costs are known</button>
+        <button class="sample-opt" data-idx="2">It's added to the ticket price retroactively</button>
+        <button class="sample-opt" data-idx="3">Hospitality spend can never exceed the budget, so this cannot happen</button>
+      </div>
+      <div class="sample-fb" id="sampleFb">Hospitality and tech riders are each budgeted separately at time of booking, but actual spend on each is only known after the show. When actual spend on either one exceeds its own budgeted amount, that overage is typically backed out at settlement &mdash; reconciled against what's owed to the artist &mdash; rather than silently absorbed or ignored.</div>
+      <a class="sample-link" href="the-whole-show-quiz.html">Want the full 6-question quiz? Take it here &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section class="materials" id="materials">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Course materials</h2>
+      <p>Everything for this module, ready to use.</p>
+    </div>
+    <div class="material-cards">
+      <div class="material-card">
+        <div class="material-icon">S</div>
+        <div class="material-name">Slide Deck</div>
+        <div class="material-desc">18 slides covering all three modules &mdash; concepts, worked examples, and takeaways, ready to present.</div>
+        <a class="material-btn" href="the-whole-show-slide-deck.html">Open the slide deck</a>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">Q</div>
+        <div class="material-name">Quiz</div>
+        <div class="material-desc">An interactive 6-question check for understanding, with explanations for every answer.</div>
+        <a class="material-btn" href="the-whole-show-quiz.html">Take the quiz</a>
+      </div>
+      <div class="material-card">
+        <div class="material-icon">T</div>
+        <div class="material-name">Working Tools</div>
+        <div class="material-desc">Three tools participants can use with their own numbers: a consolidated P&amp;L builder, a settlement calculator, and a loss-leader impact model.</div>
+        <a class="material-btn" href="the-whole-show-tools.html">Open the tools</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Grounded in operational cost-control best practices across food &amp; beverage and live-event operations. &nbsp;|&nbsp; Financial Acumen Training Series
+</footer>
+
+<script>
+(function () {
+  var demoMsg = document.getElementById('demoMsg');
+  var btnC = document.getElementById('btnCentral');
+  var btnP = document.getElementById('btnPeripheral');
+
+  var CENTRAL_TEXT = "Add up F&B, Talent, VIP/Bottle, Merch, Ticketing, and Sponsorships and every single department is in the black tonight. On paper, it looks like a great night.";
+  var PERIPHERAL_TEXT = "Subtract security, cleaning, and utilities \u2014 the shared overhead none of those departments carry on their own \u2014 and the combined total flips negative. Same night, different answer.";
+
+  function showCentral() {
+    demoMsg.textContent = CENTRAL_TEXT;
+    btnC.className = 'active-central';
+    btnP.className = '';
+  }
+  function showPeripheral() {
+    demoMsg.textContent = PERIPHERAL_TEXT;
+    btnP.className = 'active-peripheral';
+    btnC.className = '';
+  }
+
+  btnC.addEventListener('click', showCentral);
+  btnP.addEventListener('click', showPeripheral);
+  showCentral();
+
+  var sampleOpts = document.getElementById('sampleOpts');
+  var sampleFb = document.getElementById('sampleFb');
+  var correctIdx = 1;
+  var sampleAnswered = false;
+
+  sampleOpts.addEventListener('click', function (e) {
+    var target = e.target;
+    if (!target.classList.contains('sample-opt') || sampleAnswered) return;
+    sampleAnswered = true;
+    var idx = parseInt(target.getAttribute('data-idx'), 10);
+    var opts = sampleOpts.querySelectorAll('.sample-opt');
+    Array.prototype.forEach.call(opts, function (o, i) {
+      o.disabled = true;
+      if (i === correctIdx) o.classList.add('s-correct');
+      if (i === idx && idx !== correctIdx) o.classList.add('s-incorrect');
+    });
+    sampleFb.classList.add('show');
+  });
+})();
+</script>
+
+</body>
+</html>
